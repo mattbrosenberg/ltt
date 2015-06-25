@@ -41,7 +41,7 @@ INSTALLED_APPS = (
     'bank',
     'cashflow',
     'libor',
-    'ltt',
+    'main_controller',
     'trancheur',
     'users',
 )

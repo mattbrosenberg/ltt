@@ -67,9 +67,9 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('DATABASE_NAME'),
-        'USER': env('DATABASE_USER'),
-        'PASSWORD': env('DATABASE_PASSWORD'),
+        'NAME': 'ltt_db',
+        'USER': 'demetri',
+        'PASSWORD': 'p_gres',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -80,7 +80,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'US/Eastern'
 
 USE_I18N = True
 
@@ -93,3 +93,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"

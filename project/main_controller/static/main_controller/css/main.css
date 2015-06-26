@@ -11,8 +11,8 @@ header {
 }
 
 body {
-	padding-left: 5%;
-	padding-right: 5%;
+	padding-left: 10%;
+	padding-right: 10%;
 	background-color: white;
 }
 
@@ -37,4 +37,21 @@ body {
 .navbar-inverse .navbar-nav>li>a {
 	padding:1em 2em 1em 2em;
 	color: white;
+}
+
+#content {
+	margin-top:5%;
+	position: relative;
+}
+#content img {
+width: 100%;
+
+}  	
+
+.post-content {
+    top:0;
+    left:0;
+    position: absolute;
+    color: white;
+    padding: 1em;
 }

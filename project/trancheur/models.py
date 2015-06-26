@@ -21,5 +21,3 @@ class MoneyMarket(Contract):
 
 class InverseFloater(Contract):
     payments_per_year = models.IntegerField()
-    
-

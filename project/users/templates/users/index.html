@@ -1,0 +1,34 @@
+<html>
+<head>
+
+</head>
+	<body>
+		<p>LTT - Login/Register</p>
+		<p><b>Login<b></p>
+	  <form name="login_form" action='/login/' method="POST">
+	    <span style="font-weight:normal;">
+	      {% csrf_token %}
+	      {{ login_form.as_p }} <!-- can also be form.as_p, form.as_ul -->
+	    </span>
+    <input type="submit" value="login">
+  	</form>
+
+  <p><b>Create Account<b></p>
+  <form name="register_form" action='/register/' method="POST">
+    <span style="font-weight:normal;">
+      {% csrf_token %}
+      {{ register_form.as_p }} <!-- can also be form.as_p, form.as_ul -->
+    </span>
+  <input type="submit" value="register">
+  </form>
+  <p>
+    <span style="font-weight:normal;">
+      {% if error %}
+          {{error}}
+      {% endif %}
+    </span>
+  </p>
+
+
+	</body>
+</html>

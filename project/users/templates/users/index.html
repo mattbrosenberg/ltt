@@ -3,21 +3,21 @@
 
 </head>
 	<body>
-		<p>LTT - Login/Register</p>
+		<p>FLEX Invest</p>
 		<p><b>Login<b></p>
-	  <form name="login_form" action='/login/' method="POST">
+	  <form name="login_form" action='/clients/login/' method="POST">
 	    <span style="font-weight:normal;">
 	      {% csrf_token %}
-	      {{ login_form.as_p }} <!-- can also be form.as_p, form.as_ul -->
+	      {{ login_form.as_p }}
 	    </span>
     <input type="submit" value="login">
   	</form>
 
   <p><b>Create Account<b></p>
-  <form name="register_form" action='/register/' method="POST">
+  <form name="register_form" action='/clients/register/' method="POST">
     <span style="font-weight:normal;">
       {% csrf_token %}
-      {{ register_form.as_p }} <!-- can also be form.as_p, form.as_ul -->
+      {{ register_form.as_p }}
     </span>
   <input type="submit" value="register">
   </form>

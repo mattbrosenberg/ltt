@@ -14,7 +14,7 @@ class Quandl:
         dates_and_rates = response.json()['data']
         libor_list = []
         for date_and_rate in dates_and_rates:
-            rate = date_and_rate[1]
+            rate = float(date_and_rate[1]) * .01
             strfdate = date_and_rate[0]
             date = datetime.date(
                 year=int(strfdate[0:4]),

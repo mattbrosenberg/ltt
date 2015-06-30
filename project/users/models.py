@@ -15,6 +15,9 @@ class User(models.Model):
         else:
             return False
 
+    def __str__(self):
+        return self.name
+
     type_of = models.CharField(max_length=50, blank=False)
     name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)

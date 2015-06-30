@@ -14,6 +14,9 @@ from getenv import env
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'users/templates'),
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -44,6 +47,21 @@ INSTALLED_APPS = (
     'main_controller',
     'trancheur',
     'users',
+)
+
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.core.context_processors.tz",
+    "django.contrib.messages.context_processors.messages",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -80,7 +98,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'US/Eastern'
 
 USE_I18N = True
 
@@ -93,3 +111,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"

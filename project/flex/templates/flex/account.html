@@ -1,0 +1,21 @@
+{% extends "flex/base.html" %}
+
+{% block content %}
+
+  <div class="jumbotron">
+    <div class="container">
+    <h3>Update Your Account</h3>
+    <form role="form-horizontal" name="register_form" action='/clients/update/' method="POST">
+      {% csrf_token %}
+        <div class="form-group col-offset-1 col-12">
+          {{ form }}
+        </div>
+      </div>
+      <div id="update-submit" class="form-group">
+      <button type="submit" class="btn btn-default" >Submit</button>
+      </div>
+    </form>
+    </div>
+  </div>
+{% endblock %}
+

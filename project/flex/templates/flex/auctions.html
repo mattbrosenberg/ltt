@@ -1,0 +1,53 @@
+{% extends "flex/base.html" %}
+
+{% block content %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active" id="most_funded"><a href="#">Most Funded</a></li>
+            <li><a href="#">Least Funded</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li><a href="">Highest Yield</a></li>
+            <li><a href="">Lowest Yield</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li><a href="">12-15% Yield</a></li>
+            <li><a href="">15-18% Yield</a></li>
+            <li><a href="">18-21% Yield</a></li>
+          </ul>
+        </div>
+        
+
+        </div>
+      </div>
+    </div>
+    <div id="auction_div" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <div class="table-responsive">
+        <table id="auction_table" class="table header-fixed">
+          <thead id="auction_head">
+            <tr>
+              <th>Est. Yield</th>
+              <th>Funded</th>
+              <th>Remaining</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody id="auction_items">
+            <tr>
+              <td>18%</td>
+              <td>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                    80%
+                  </div>
+              </div>
+              </td>
+              <td>$12,500<br>3 days</td>
+              <td>$25,000<br>360 months</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+{% endblock %}

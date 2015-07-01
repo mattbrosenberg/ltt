@@ -9,11 +9,14 @@ class Libor(models.Model):
     def seed_libor_database(self):
         libor_list = Quandl().get_all_libor_rates_and_dates()
         for libor_dict in libor_list:
-            libor = Libor(
-                date=libor_dict['date'],
-                rate=libor_dict['rate']
-            )
-            libor.save()
+            try:
+                Libor.objects.get(date=libor_dict['date'])
+            except:
+                libor = Libor(
+                    date=libor_dict['date'],
+                    rate=libor_dict['rate']
+                )
+                libor.save()
 
     def get_most_recent_libor_object(self):
         day = 0

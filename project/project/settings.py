@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'main_controller',
     'trancheur',
     'users',
+    'flex',
 )
 
 MIDDLEWARE_CLASSES = (

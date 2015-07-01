@@ -9,6 +9,9 @@ class Bond(models.Model):
     maturity = models.DateTimeField()
     payments_per_year = models.IntegerField()
 
+    def __str__(self):
+        return self.cusip
+
 class Contract(models.Model):
     user = models.ForeignKey('users.User', related_name='user')
     face = models.DecimalField(max_digits=15, decimal_places=2)
@@ -21,4 +24,3 @@ class MoneyMarket(Contract):
 
 class InverseFloater(Contract):
     payments_per_year = models.IntegerField()
-    

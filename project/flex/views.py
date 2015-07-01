@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.http import HttpResponse
+from users.forms import UpdateForm
+
+from users.models import User
+from django import forms
 
 class Index(View):
 
@@ -22,4 +26,7 @@ class Portfolio(View):
 class Account(View):
 
     def get(self, request):
-        return render(request, "flex/base.html")
+        user = User.objects.get(id=request.session['user_id'])
+        data = {'name':user.name, 'email':user.email}
+        form = UpdateForm(initial=data)
+        return render(request, "flex/account.html", {'form':form})

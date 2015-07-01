@@ -8,6 +8,9 @@ class Bond(models.Model):
     maturity = models.DateField()
     payments_per_year = models.IntegerField()
 
+    def __str__(self):
+        return self.cusip
+
 class Contract(models.Model):
     face = models.DecimalField(max_digits=15, decimal_places=2)
     price = models.DecimalField(max_digits=15, decimal_places=3)
@@ -35,3 +38,4 @@ class BondPrice(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=5)
     date = models.DateField()
     bond = models.ForeignKey('Bond', related_name='prices')
+

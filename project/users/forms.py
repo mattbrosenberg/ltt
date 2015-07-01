@@ -7,7 +7,9 @@ class LoginForm(ModelForm):
         model = User
         fields = ['email', 'password']
         widgets = {
-            'password': forms.PasswordInput(),
+            'password': forms.PasswordInput({'class':'form-control'}),
+            'email': forms.TextInput({'class':'form-control'}),
+            'name': forms.TextInput({'class':'form-control'}),
         }
 
 class RegisterForm(ModelForm):
@@ -15,5 +17,18 @@ class RegisterForm(ModelForm):
         model = User
         fields = ['type_of', 'name', 'email', 'password']
         widgets = {
-            'password': forms.PasswordInput(),
+            'type_of': forms.TextInput({'class':'form-control'}),
+            'password': forms.PasswordInput({'class':'form-control'}),
+            'email': forms.TextInput({'class':'form-control'}),
+            'name': forms.TextInput({'class':'form-control'}),
+        }
+
+class UpdateForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['name', 'email', 'password']
+        widgets = {
+            'password': forms.PasswordInput({'class':'form-control'}),
+            'email': forms.TextInput({'class':'form-control'}),
+            'name': forms.TextInput({'class':'form-control'}),
         }

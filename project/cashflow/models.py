@@ -1,3 +1,7 @@
 from django.db import models
 
-# Create your models here.
+class Cashflow(models.Model):
+    amount = models.DecimalField(max_digits=6, decimal_places=5)
+    date = models.DateField()
+    contract = models.ForeignKey('trancheur.Contract', related_name='cashflows')
+

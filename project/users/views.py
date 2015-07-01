@@ -14,6 +14,14 @@ class IndexView(View):
     def get(self, request):
         return render(request, self.template, {'login_form':self.login_form, 'register_form':self.register_form})
 
+class RegistrationPageView(View):
+    template = 'users/registration.html'
+    login_form = LoginForm()
+    register_form = RegisterForm()
+
+    def get(self, request):
+        return render(request, self.template, {'login_form':self.login_form, 'register_form':self.register_form})
+
 class LoginView(View):
     login_form = LoginForm()
     register_form = RegisterForm()
@@ -39,7 +47,7 @@ class RegisterView(View):
         form = RegisterForm(request.POST)
         try:
             User.objects.get(email=request.POST['email'])
-            return render(request, "users/index.html", {'registration_error':"Email is already in the database.  Please enter another email.", 'register_form':self.register_form, 'login_form':self.login_form})
+            return render(request, "users/registration.html", {'registration_error':"Email is already in the database.  Please enter another email.", 'register_form':self.register_form, 'login_form':self.login_form})
         except:
             if form.is_valid():
                 user = User(
@@ -52,7 +60,7 @@ class RegisterView(View):
                 request.session['user_id'] = user.id
                 return redirect('/flex/')
             else:
-                return render(request, 'users/index.html', {'registration_error':'Invalid input - Please populate all fields on the form.', 'register_form':self.register_form, 'login_form':self.login_form})
+                return render(request, 'users/registration.html', {'registration_error':'Invalid input - Please populate all fields on the form.', 'register_form':self.register_form, 'login_form':self.login_form})
 
 class Update(View):
 

@@ -29,7 +29,8 @@ bonds = [
             cusip='64966JNF9',
             face=5000000,
             coupon=.05,
-            issuance_date=datetime.date(2011, 8, 9),
+            dated_date=datetime.date(2011, 8, 9),
+            auction_date = datetime.date(2011, 8, 9) - datetime.timedelta(days=7)
             maturity=datetime.date(2032, 8, 1),
             payments_per_year=2,
             )
@@ -39,7 +40,8 @@ bonds = [
             cusip='650035VB1',
             face=10000000,
             coupon=.05838,
-            issuance_date=datetime.date(2010, 12, 8),
+            dated_date=datetime.date(2010, 12, 8),
+            auction_date = datetime.date(2010, 12, 8) - datetime.timedelta(days=7)
             maturity=datetime.date(2040, 3, 15),
             payments_per_year=2,
             )

@@ -7,7 +7,6 @@ class Bond():
 		self.face_value = face_value
 		self.maturity = maturity
 		self.coupon = coupon
-		self.settle
 
 class Trancheur():
 	def __init__(self,bond,libor):
@@ -29,11 +28,11 @@ class Trancheur():
 		return (self.libor + self.money_market_spread)
 
 
-nyc = Bond(1000000, 1000000, 20, 0.05)
-t = Trancheur(nyc, 0.0015)	
-print ("---number of floater contracts----")
-print(t.number_of_floater_contracts())
-print ("---number of residual contracts----")
-print(t.number_of_residual_contracts())	
-print ("---money market coupon---")
-print (t.money_market_coupon())
+# nyc = Bond(1000000, 1000000, 20, 0.05)
+# t = Trancheur(nyc, 0.0015)	
+# print ("---number of floater contracts----")
+# print(t.number_of_floater_contracts())
+# print ("---number of residual contracts----")
+# print(t.number_of_residual_contracts())	
+# print ("---money market coupon---")
+# print (t.money_market_coupon())

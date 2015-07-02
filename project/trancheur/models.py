@@ -4,6 +4,7 @@ class Bond(models.Model):
     cusip = models.CharField(max_length=9)
     face = models.DecimalField(max_digits=15, decimal_places=2)
     coupon = models.DecimalField(max_digits=15, decimal_places=5)
+    initial_price = models.DecimalField(max_digits=6, decimal_places=5)
     dated_date = models.DateField()
     auction_date = models.DateTimeField()
     maturity = models.DateField()
@@ -14,7 +15,6 @@ class Bond(models.Model):
 
 class Contract(models.Model):
     face = models.DecimalField(max_digits=15, decimal_places=2)
-    price = models.DecimalField(max_digits=15, decimal_places=3)
     issuance_date = models.DateField()
     maturity = models.DateField()
     bond = models.ForeignKey('Bond', related_name='contracts')
@@ -25,7 +25,7 @@ class Trade(models.Model):
     buyer = models.ForeignKey('users.User', related_name='purchases')
     seller = models.ForeignKey('users.User', related_name='sales')
     contract = models.ForeignKey('Contract')
-    price = models.DecimalField(max_digits=15, decimal_places=3)
+    price = models.DecimalField(max_digits=6, decimal_places=5)
     time = models.DateTimeField()
 
 

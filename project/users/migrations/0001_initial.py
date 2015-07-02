@@ -11,11 +11,15 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Libor',
+            name='User',
             fields=[
                 ('id', models.AutoField(primary_key=True, auto_created=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateField(unique=True)),
-                ('rate', models.DecimalField(decimal_places=5, max_digits=8)),
+                ('type_of', models.CharField(max_length=50)),
+                ('name', models.CharField(max_length=50)),
+                ('email', models.EmailField(max_length=75, unique=True)),
+                ('password', models.CharField(max_length=200)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
             ],
             options={
             },

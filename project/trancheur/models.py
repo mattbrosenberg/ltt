@@ -4,7 +4,8 @@ class Bond(models.Model):
     cusip = models.CharField(max_length=9)
     face = models.DecimalField(max_digits=15, decimal_places=2)
     coupon = models.DecimalField(max_digits=15, decimal_places=5)
-    issuance_date = models.DateField()
+    dated_date = models.DateField()
+    auction_date = models.DateTimeField()
     maturity = models.DateField()
     payments_per_year = models.IntegerField()
 

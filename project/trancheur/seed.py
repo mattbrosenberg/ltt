@@ -21,7 +21,6 @@ def seed_bond_prices_from_csv(bond, filename):
                 price=price,
                 bond=bond,
             )
-            print
             bond_price.save()
 
 bonds = [
@@ -32,6 +31,16 @@ bonds = [
             coupon=.05,
             issuance_date=datetime.date(2011, 8, 9),
             maturity=datetime.date(2032, 8, 1),
+            payments_per_year=2,
+            )
+    },
+    {'filename':'trancheur/seeds/650035VB1.csv', 
+     'instance': Bond(
+            cusip='650035VB1',
+            face=255815000,
+            coupon=.05838,
+            issuance_date=datetime.date(2010, 12, 8),
+            maturity=datetime.date(2040, 3, 15),
             payments_per_year=2,
             )
     },

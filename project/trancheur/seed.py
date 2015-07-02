@@ -30,9 +30,10 @@ bonds = [
             face=5000000,
             coupon=.05,
             dated_date=datetime.date(2011, 8, 9),
-            auction_date = datetime.date(2011, 8, 9) - datetime.timedelta(days=7)
+            auction_date = datetime.date(2011, 8, 9) - datetime.timedelta(days=7),
             maturity=datetime.date(2032, 8, 1),
             payments_per_year=2,
+            initial_price = 1.04884,  
             )
     },
     {'filename':'trancheur/seeds/650035VB1.csv', 
@@ -41,9 +42,10 @@ bonds = [
             face=10000000,
             coupon=.05838,
             dated_date=datetime.date(2010, 12, 8),
-            auction_date = datetime.date(2010, 12, 8) - datetime.timedelta(days=7)
+            auction_date = datetime.date(2010, 12, 8) - datetime.timedelta(days=7),
             maturity=datetime.date(2040, 3, 15),
             payments_per_year=2,
+            initial_price = 1,
             )
     },
 ]

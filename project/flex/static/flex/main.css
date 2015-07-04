@@ -114,12 +114,20 @@ body {
   padding: 0;
 }
 
+#portfolio_div {
+  padding: 0;
+}
+
 #auction_head {
   background-color: #ddd;
 }
 
+#portfolio_head {
+  background-color: #ddd;
+}
+
 .header-fixed {
-    width: 100% 
+    width: 100%
 }
 
 .header-fixed > thead,
@@ -146,8 +154,19 @@ body {
 
 .header-fixed > tbody > tr > td,
 .header-fixed > thead > tr > th {
-    width: 25%;
+    width: 20%;
     float: left;
+}
+
+.investAmountInput {
+  width: 8em;
+  background-color: #eaeaea;
+  border: solid 1px #7f9db9;
+  font-size: 100%;
+  font-weight: normal;
+  text-align: left;
+  height: 1.4em;
+  line-height: 16px;
 }
 
 .jumbotron {

@@ -6,61 +6,50 @@ from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 import bcrypt
 
-class IndexView(View):
-    template = 'users/index.html'
+from django.contrib.auth import authenticate, login, logout
+
+class Login(View):
+    template = 'users/login.html'
     login_form = LoginForm()
-    register_form = RegisterForm()
 
     def get(self, request):
-        return render(request, self.template, {'login_form':self.login_form, 'register_form':self.register_form})
-
-class RegistrationPageView(View):
-    template = 'users/registration.html'
-    login_form = LoginForm()
-    register_form = RegisterForm()
-
-    def get(self, request):
-        return render(request, self.template, {'login_form':self.login_form, 'register_form':self.register_form})
-
-class LoginView(View):
-    login_form = LoginForm()
-    register_form = RegisterForm()
+        return render(request, self.template, {'login_form':self.login_form})
 
     def post(self, request):
-        entered_email = request.POST['email']
-        entered_password = request.POST['password']
-        try:
-            checked_user = User.objects.get(email=entered_email)
-            if checked_user.check_hash(entered_password, checked_user.password):
-                request.session['user_id'] = checked_user.id
+        user = authenticate(username=request.POST['username'], password=request.POST['password'])
+        if user is not None:
+            if user.is_active:
+                login(request, user)
                 return redirect('/flex/')
             else:
-                return render(request, "users/index.html", {'login_error':"Invalid password", 'login_form':self.login_form, 'register_form':self.register_form})
-        except ObjectDoesNotExist:
-            return render(request, "users/index.html", {'login_error':"Invalid login information", 'login_form':self.login_form, 'register_form':self.register_form})
+                return render(request, self.template, {'login_error':"Account no longer active.", 'login_form':self.login_form})
+        else:
+            return render(request, self.template, {'login_error':"Invalid login information.", 'login_form':self.login_form})
 
-class RegisterView(View):
+class Register(View):
+    template = 'users/register.html'
     register_form = RegisterForm()
-    login_form = LoginForm()
+
+    def get(self, request):
+        return render(request, self.template, {'register_form':self.register_form})
 
     def post(self, request):
         form = RegisterForm(request.POST)
         try:
-            User.objects.get(email=request.POST['email'])
-            return render(request, "users/registration.html", {'registration_error':"Email is already in the database.  Please enter another email.", 'register_form':self.register_form, 'login_form':self.login_form})
+            User.objects.get(username=request.POST['username'])
+            return render(request, self.template, {'registration_error': "Username already taken.", 'register_form': self.register_form})
         except:
             if form.is_valid():
                 user = User(
-                    type_of=form.cleaned_data.get('type_of'),
-                    name=form.cleaned_data.get('name'),
-                    email=form.cleaned_data.get('email'),
-                    password=User.create_hash(form.cleaned_data.get('password'))
+                    type_of='investor',
+                    username=form.cleaned_data['username'],
+                    password=form.cleaned_data['password'],
                 )
                 user.save()
-                request.session['user_id'] = user.id
+                login(request, user)
                 return redirect('/flex/')
             else:
-                return render(request, 'users/registration.html', {'registration_error':'Invalid input - Please populate all fields on the form.', 'register_form':self.register_form, 'login_form':self.login_form})
+                return render(request, self.template, {'registration_error':'Invalid input - Please populate all fields on the form.', 'register_form':self.register_form})
 
 class Update(View):
 
@@ -74,8 +63,8 @@ class Update(View):
             return redirect('/flex/account/')
 
 
-class LogoutView(View):
+class Logout(View):
 
     def get(self, request):
-        request.session.flush()
+        logout(request)
         return redirect('/')

@@ -1,27 +1,32 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from users.forms import UpdateForm
-
+from trancheur.models import Bond, Contract, Trade, MoneyMarket, Residual
 from users.models import User
 from django import forms
 
 class Index(View):
 
     def get(self, request):
-        return redirect("/flex/auctions/")
+        return redirect("/flex/investing/")
 
 
-class Auctions(View):
+class Investing(View):
 
     def get(self, request):
-        return render(request, "flex/auctions.html")
+        return render(request, "flex/investing.html")
 
 
 class Portfolio(View):
 
     def get(self, request):
-        return render(request, "flex/base.html")
+        user = User.objects.get(id=request.session['user_id'])
+        user_purchases = user.purchases.all()
+        user_purchases = [{'id':purchase.id, 'price':purchase.price, 'issuance_date':purchase.contract.issuance_date, 'face':purchase.contract.face, 'time':purchase.time} for purchase in user_purchases]
+        # return JsonResponse({'user_purchases':user_purchases})
+
+        return render(request, "flex/portfolio.html", {'user_purchases':user_purchases})
 
 class Account(View):
 

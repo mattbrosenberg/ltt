@@ -34,9 +34,8 @@ class MoneyMarket(Contract):
 
 class Residual(Contract):
     payments_per_year = models.IntegerField()
-    
+
 class BondPrice(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=5)
     date = models.DateField()
     bond = models.ForeignKey('Bond', related_name='prices')
-

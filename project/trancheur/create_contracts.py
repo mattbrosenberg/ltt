@@ -1,12 +1,12 @@
 #originates contracts that belong to the user flex
 
-from .trancheur_calculator import Trancheur 
-from .models import Bond, Contract, Residual, MoneyMarket  
+from .trancheur_calculator import Trancheur
+from .models import Bond, Contract, Residual, MoneyMarket
 from users.models import User
 import datetime
-from libor.models import Libor 
+from libor.models import Libor
 
-flex = User.objects.get(name = 'flex')
+# flex = User.objects.get(name = 'flex')
 # bond = Bond.objects.get(cusip = '64966JNF9')
 
 class Contract_originator():
@@ -27,12 +27,11 @@ class Contract_originator():
 					maturity = self.bond.maturity,
 					bond = self.bond,
 					payments_per_year = 2)
-			residual_contract.save()		
+			residual_contract.save()
 		money_market_contract = MoneyMarket(
 			face = Trancheur(self.bond).money_market_investment(),
 			issuance_date = self.bond.auction_date - datetime.timedelta(days = 14),
 			maturity = self.bond.dated_date + datetime.timedelta(days = 30),
 			bond = self.bond,
-			coupon = self.money_market_coupon())	
+			coupon = self.money_market_coupon())
 		money_market_contract.save()
-

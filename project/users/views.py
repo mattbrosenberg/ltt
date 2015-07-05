@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from users.models import User
-from users.forms import LoginForm, RegisterForm, UpdateForm
+from django.contrib.auth.models import User
+from users.forms import LoginForm, UpdateForm
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 import bcrypt
 
 from django.contrib.auth import authenticate, login, logout
+
+from django.contrib.auth.forms import UserCreationForm
 
 class Login(View):
     template = 'users/login.html'
@@ -28,28 +30,22 @@ class Login(View):
 
 class Register(View):
     template = 'users/register.html'
-    register_form = RegisterForm()
+    form = UserCreationForm
 
     def get(self, request):
-        return render(request, self.template, {'register_form':self.register_form})
+        return render(request, self.template, {'register_form':self.form})
 
     def post(self, request):
-        form = RegisterForm(request.POST)
+        form = self.form(request.POST)
         try:
             User.objects.get(username=request.POST['username'])
-            return render(request, self.template, {'registration_error': "Username already taken.", 'register_form': self.register_form})
+            return render(request, self.template, {'registration_error': "Username already taken.", 'register_form': self.form()})
         except:
             if form.is_valid():
-                user = User(
-                    type_of='investor',
-                    username=form.cleaned_data['username'],
-                    password=form.cleaned_data['password'],
-                )
-                user.save()
-                login(request, user)
-                return redirect('/flex/')
+                user = form.save()
+                return redirect('/clients/login/')
             else:
-                return render(request, self.template, {'registration_error':'Invalid input - Please populate all fields on the form.', 'register_form':self.register_form})
+                return render(request, self.template, {'registration_error':'Invalid input - Please populate all fields on the form.', 'register_form':self.form()})
 
 class Update(View):
 

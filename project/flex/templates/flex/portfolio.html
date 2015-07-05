@@ -21,23 +21,15 @@
         <table id="portfolio_table" class="table header-fixed">
           <thead id="portfolio_head">
             <tr>
-              <th>Trade Id</th>
-              <th>Face Amount</th>
-              <th>Price</th>
-              <th>Issuance Date</th>
+              <th>Contract</th>
+              <th>Buyer</th>
+              <th>Seller</th>
+              <th>Proceeds</th>
               <th>Trade Date</th>
             </tr>
           </thead>
           <tbody id="portfolio_items">
-            {% for purchase in user_purchases %}
-              <tr>
-                <td> {{ purchase.id }} </td>
-                <td> ${{ purchase.face }} </td>
-                <td> ${{ purchase.price }} </td>
-                <td> {{ purchase.issuance_date }} </td>
-                <td> {{ purchase.time }} </td>
-              </tr>
-            {% endfor %}
+            
           </tbody>
         </table>
       </div>

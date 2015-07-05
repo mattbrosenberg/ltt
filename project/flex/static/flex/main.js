@@ -44,18 +44,42 @@ $(document).ready(function(){
     event.preventDefault();
     $.ajax({
       type: "GET",
-      url: '/flex/portfolio/',
+      url: '/flex/trades/',
       success: function(json){
-        console.log(json['user_purchases']);
-        $('.portfolio_items').empty();
-          var data = eval(json);
-          for (var key in data){
-            var value = data[key];
-            for (var x in value){
-              $('.portfolio_items').append('<p>' + value[x]['id'] + value[x]['price'] + value[x]['issuance_date'] + value[x]['face'] + value[x]['time'] + '</p>')
-            } //close for
-          } //close for
+        console.log(json['user_purchases'][0]['id']);
+        $('#portfolio_items').empty();
+        var data = eval(json);
+        for (var key in data) {
+        	var value = data[key];
+        	for (x in value) {
+        		$("#portfolio_items").append("<tr> <td>" + value[x]['id'] + "</td> <td>" + value[x]['buyer'] + "<td>" + value[x]['seller'] + "</td> <td> $" + value[x]['proceeds'] + "</td> <td>" + value[x]['time'] + +"</td> </tr>"  )
+        		console.log(value[x]['id'])
+        	}
+        }
+        // $('#portfolio_items').html(
+        // 	"<tr> <td>" + json['user_purchases']['id'] + "</td> </tr>")
+      } //close success json
+    }) //close ajax
+  }) //close on click
 
+    $("#all_deals").on("click", function(event){
+    event.preventDefault();
+    $.ajax({
+      type: "GET",
+      url: '/flex/investing/all',
+      success: function(json){
+        console.log(json['user_purchases'][0]['id']);
+        $('#portfolio_items').empty();
+        var data = eval(json);
+        for (var key in data) {
+        	var value = data[key];
+        	for (x in value) {
+        		$("#portfolio_items").append("<tr> <td>" + value[x]['id'] + "</td> <td>" + value[x]['buyer'] + "<td>" + value[x]['seller'] + "</td> <td> $" + value[x]['proceeds'] + "</td> <td>" + value[x]['time'] + +"</td> </tr>"  )
+        		console.log(value[x]['id'])
+        	}
+        }
+        // $('#portfolio_items').html(
+        // 	"<tr> <td>" + json['user_purchases']['id'] + "</td> </tr>")
       } //close success json
     }) //close ajax
   }) //close on click

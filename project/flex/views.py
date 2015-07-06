@@ -3,9 +3,11 @@ from django.views.generic import View
 from django.http import HttpResponse, JsonResponse
 from users.forms import UpdateForm
 from trancheur.models import Bond, Contract, Trade, MoneyMarket, Residual
-from users.models import User
 from django import forms
 import datetime
+from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm, PasswordResetForm
+from django.contrib.auth.models import User
+
 
 class Index(View):
 
@@ -41,8 +43,10 @@ class Trades(View):
         return JsonResponse({'user_purchases':user_purchases})
 
 class Account(View):
+<<<<<<< HEAD
+=======
+    form = PasswordChangeForm
+
+>>>>>>> 0c9cc642e8e159d67dc49140d1ee2f3753c2e4dc
     def get(self, request):
-        user = User.objects.get(id=request.session['user_id'])
-        data = {'name':user.name, 'email':user.email}
-        form = UpdateForm(initial=data)
-        return render(request, "flex/account.html", {'form':form})
+        return render(request, "flex/account.html", {'form':self.form(user=request.user)})

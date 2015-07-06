@@ -1,26 +1,21 @@
 from django.db import models
-from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.models import User
+from trancheur.models import Trade
 
-class User(models.Model):
-
-    @staticmethod
-    def create_hash(entered_password):
-        hashed_password = make_password(entered_password)
-        return hashed_password
-
-    @staticmethod
-    def check_hash(entered_password, hashed_password):
-        if check_password(entered_password, hashed_password):
-            return True
-        else:
-            return False
+class Investor(models.Model):
+    user = models.OneToOneField(User, related_name='investor')
 
     def __str__(self):
-        return self.name
+        return self.user.username
 
-    type_of = models.CharField(max_length=50, blank=False)
-    name = models.CharField(max_length=50, blank=False)
-    email = models.EmailField(unique=True, blank=False)
-    password = models.CharField(max_length=200, blank=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    def get_currently_owned_contracts(self):
+        purchases = self.purchases.all()
+        contracts = []
+        for purchase in purchases:
+            if purchase.contract.trades.latest('date') == purchase:
+                contracts.append(purchase.contract)
+        return contracts
+
+class Analyst(models.Model):
+    user = models.OneToOneField(User, related_name='analyst')
+

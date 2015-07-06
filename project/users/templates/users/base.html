@@ -27,27 +27,9 @@
         </div>
       </div>
     </nav>
-    <div class="jumbotron">
-      <div class="container">
-      <h3>Login</h3>
-      <form role="form-horizontal" name="login_form" action='/clients/login/' method="POST">
-        {% csrf_token %}
-          <div class="form-group col-offset-1 col-12">
-            {{ login_form }}
-          </div>
-        </div>
-        <div id="update-submit" class="form-group">
-        <button type="submit" class="btn btn-default" >Submit</button>
-        <a href = "/clients/registration/">Enroll today</a>
-        </div>
-      </form>
-      <p>      
-        {% if login_error %}
-          {{ login_error }}
-        {% endif %}
-      </p>
-      </div>
-    </div>
+
+    {% block content %}
+    {% endblock %}
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="{% static 'flex/main.js' %}"></script>

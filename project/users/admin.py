@@ -1,11 +1,27 @@
 from django.contrib import admin
+<<<<<<< HEAD
 from users.models import User
 from trancheur.models import Bond, Contract, MoneyMarket, Residual, Trade
 from cashflow.models import Cashflow
+=======
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User, Group
 
-# Register your models here.
+from .models import Investor
+from trancheur.models import Bond, MoneyMarket, Residual
+>>>>>>> 0c9cc642e8e159d67dc49140d1ee2f3753c2e4dc
 
-admin.site.register(User)
+class InvestorInline(admin.StackedInline):
+    model = Investor
+    can_delete = False
+    verbose_name_plural = 'investor'
+
+class UserAdmin(UserAdmin):
+    inlines = (InvestorInline, )
+
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
+admin.site.unregister(Group)
 admin.site.register(Bond)
 admin.site.register(Contract)
 admin.site.register(MoneyMarket)

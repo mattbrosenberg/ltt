@@ -1,32 +1,34 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from django.contrib.auth.models import User
-from users.forms import LoginForm, UpdateForm
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
-import bcrypt
 
 from django.contrib.auth import authenticate, login, logout
 
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
+from users.forms import UpdateForm
+
+from django.contrib.auth.models import User
+from .models import Investor
 
 class Login(View):
     template = 'users/login.html'
-    login_form = LoginForm()
+    form = AuthenticationForm
 
     def get(self, request):
-        return render(request, self.template, {'login_form':self.login_form})
+        return render(request, self.template, {'login_form':self.form()})
 
     def post(self, request):
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
         if user is not None:
             if user.is_active:
                 login(request, user)
+                print(request)
                 return redirect('/flex/')
             else:
-                return render(request, self.template, {'login_error':"Account no longer active.", 'login_form':self.login_form})
+                return render(request, self.template, {'login_error':"Account no longer active.", 'login_form':self.form()})
         else:
-            return render(request, self.template, {'login_error':"Invalid login information.", 'login_form':self.login_form})
+            return render(request, self.template, {'login_error':"Invalid login information.", 'login_form':self.form()})
 
 class Register(View):
     template = 'users/register.html'
@@ -43,15 +45,16 @@ class Register(View):
         except:
             if form.is_valid():
                 user = form.save()
+                Investor(user=user).save()
                 return redirect('/clients/login/')
             else:
                 return render(request, self.template, {'registration_error':'Invalid input - Please populate all fields on the form.', 'register_form':self.form()})
 
 class Update(View):
+    form = UserChangeForm
 
     def post(self, request):
-        user = User.objects.get(id=request.session['user_id'])
-        form = UpdateForm(request.POST, instance=user)
+        form = self.form(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             return redirect('/flex/account/')

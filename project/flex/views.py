@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.http import HttpResponse
-from users.forms import UpdateForm
 
-from users.models import User
 from django import forms
+from users.forms import UpdateForm
+from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm, PasswordResetForm
+
+
+from django.contrib.auth.models import User
 
 class Index(View):
 
@@ -24,9 +27,7 @@ class Portfolio(View):
         return render(request, "flex/base.html")
 
 class Account(View):
+    form = PasswordChangeForm
 
     def get(self, request):
-        user = User.objects.get(id=request.session['user_id'])
-        data = {'name':user.name, 'email':user.email}
-        form = UpdateForm(initial=data)
-        return render(request, "flex/account.html", {'form':form})
+        return render(request, "flex/account.html", {'form':self.form(user=request.user)})

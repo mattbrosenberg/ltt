@@ -27,7 +27,7 @@ function drawTable() {
     // Set cell widths to be the same for the header, content, and footer
     // $("#grid-container tbody td, #grid-container tfoot th, #grid-container thead th").width(100/$("#grid-container thead th").size() + "%");
 }
-
+$('.dropdown-toggle').dropdown()
 
 $(function() {
     drawTable();

@@ -158,6 +158,11 @@ body {
     float: left;
 }
 
+.rows-fixed > tbody > tr > td {
+    width: 20%;
+    float: left;
+}
+
 .investAmountInput {
   width: 8em;
   background-color: #eaeaea;
@@ -169,8 +174,10 @@ body {
   line-height: 16px;
 }
 
-.portfolio_items{
-  
+#portfolio_items{
+  border-collapse: separate;
+  border-spacing: 25px 0;
+  float: left;
 }
 
 .jumbotron {

@@ -15,8 +15,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Bond',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
-                ('cusip', models.CharField(unique=True, max_length=9)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
+                ('cusip', models.CharField(max_length=9, unique=True)),
                 ('face', models.DecimalField(decimal_places=2, max_digits=15)),
                 ('coupon', models.DecimalField(decimal_places=5, max_digits=15)),
                 ('initial_price', models.DecimalField(decimal_places=5, max_digits=6)),
@@ -32,10 +32,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BondPrice',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
                 ('price', models.DecimalField(decimal_places=5, max_digits=6)),
                 ('date', models.DateField()),
-                ('bond', models.ForeignKey(related_name='prices', to='trancheur.Bond')),
+                ('bond', models.ForeignKey(to='trancheur.Bond', related_name='prices')),
             ],
             options={
                 'get_latest_by': 'date',
@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Contract',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
                 ('face', models.DecimalField(decimal_places=2, max_digits=15)),
                 ('issuance_date', models.DateField()),
                 ('maturity', models.DateField()),
@@ -57,7 +57,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MoneyMarket',
             fields=[
-                ('contract_ptr', models.OneToOneField(serialize=False, parent_link=True, primary_key=True, to='trancheur.Contract', auto_created=True)),
+                ('contract_ptr', models.OneToOneField(to='trancheur.Contract', serialize=False, primary_key=True, auto_created=True, parent_link=True)),
                 ('coupon', models.DecimalField(decimal_places=5, max_digits=15)),
             ],
             options={
@@ -67,7 +67,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Residual',
             fields=[
-                ('contract_ptr', models.OneToOneField(serialize=False, parent_link=True, primary_key=True, to='trancheur.Contract', auto_created=True)),
+                ('contract_ptr', models.OneToOneField(to='trancheur.Contract', serialize=False, primary_key=True, auto_created=True, parent_link=True)),
                 ('payments_per_year', models.IntegerField()),
             ],
             options={
@@ -77,12 +77,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Trade',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
                 ('price', models.DecimalField(decimal_places=5, max_digits=6)),
                 ('time', models.DateTimeField()),
-                ('buyer', models.ForeignKey(related_name='purchases', to=settings.AUTH_USER_MODEL)),
-                ('contract', models.ForeignKey(related_name='trades', to='trancheur.Contract')),
-                ('seller', models.ForeignKey(related_name='sales', to=settings.AUTH_USER_MODEL)),
+                ('buyer', models.ForeignKey(to=settings.AUTH_USER_MODEL, related_name='purchases')),
+                ('contract', models.ForeignKey(to='trancheur.Contract', related_name='trades')),
+                ('seller', models.ForeignKey(to=settings.AUTH_USER_MODEL, related_name='sales')),
             ],
             options={
                 'get_latest_by': 'time',
@@ -92,7 +92,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='contract',
             name='bond',
-            field=models.ForeignKey(related_name='contracts', to='trancheur.Bond'),
+            field=models.ForeignKey(to='trancheur.Bond', related_name='contracts'),
             preserve_default=True,
         ),
     ]

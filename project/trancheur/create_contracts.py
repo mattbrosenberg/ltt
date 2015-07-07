@@ -5,8 +5,6 @@ from .models import Bond, Contract, Residual, MoneyMarket
 import datetime
 from libor.models import Libor
 
-# flex = User.objects.get(name = 'flex')
-# bond = Bond.objects.get(cusip = '64966JNF9')
 
 class Contract_originator():
 	def __init__(self,bond):

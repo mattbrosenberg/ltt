@@ -1,31 +1,31 @@
-from faker import Faker
 from .models import Bond, Contract, Residual, MoneyMarket, Trade 
-import datetime
-from django.contrib.auth.models import User
-from users.models import Investor
+from django.contrib.auth.models import User, Group
 
+from faker import Faker
+import datetime
+from django.utils import timezone
 fake = Faker()
 
-#create users
-
-class Seed_users():
+class Seed_users:
 	def __init__(self,bond):
 		self.bond = bond
 		self.contracts = Residual.objects.filter(bond = self.bond)
-		self.owner = Investor.objects.get(username = 'flex')
+		self.owner = User.objects.get(username = 'flex')
 
-	#the number of users is equal to a number of residual contracts in a bond 
+	#the number of users is equal to a number of residual contracts in a bond
 	def create_users_and_sell_contracts(self):
-
+		print("Creating users and selling each one contract...")
 		for contract in self.contracts:
-			new_user = User(
-				username = fake.first_name())
-			new_user.set_password(fake.password())
-			new_user.save()
-			investor = Investor(user = new_user)
-			investor.save()
-			today = datetime.datetime.today()
+			username = fake.user_name()
+			user = User(username=username)
+			user.set_password("password")
+			try:
+				user.save()
+			except:
+				user = User.objects.get(username=username)
+			group = Group.objects.get(name='Investor')
+			user.groups.add(group)
+			today = timezone.now()
 			dt = today.replace(year = contract.issuance_date.year, month = contract.issuance_date.month, day = contract.issuance_date.day)
-			contract_sale = Trade(buyer = investor, seller = self.owner.investor, contract = contract, price = 1, time = dt)
+			contract_sale = Trade(buyer = user, seller = self.owner, contract = contract, price = 1, time = dt)
 			contract_sale.save()
-

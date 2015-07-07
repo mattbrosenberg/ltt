@@ -14,10 +14,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Cashflow',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('amount', models.DecimalField(decimal_places=5, max_digits=6)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
+                ('amount', models.DecimalField(decimal_places=2, max_digits=15)),
                 ('date', models.DateField()),
-                ('contract', models.ForeignKey(to='trancheur.Contract', related_name='cashflows')),
+                ('contract', models.ForeignKey(related_name='cashflows', to='trancheur.Contract')),
             ],
             options={
             },

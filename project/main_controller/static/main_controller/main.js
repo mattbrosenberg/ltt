@@ -27,7 +27,7 @@ function drawTable() {
     // Set cell widths to be the same for the header, content, and footer
     // $("#grid-container tbody td, #grid-container tfoot th, #grid-container thead th").width(100/$("#grid-container thead th").size() + "%");
 }
-
+$('.dropdown-toggle').dropdown()
 
 $(function() {
     drawTable();
@@ -35,73 +35,4 @@ $(function() {
     $(window).resize(function(e) {
         drawTable();
     });
-});
-
-$(document).ready(function(){
-  console.log($('li').attr('id'))
-
-  $("#user_trades").on("click", function(event){
-    event.preventDefault();
-    $.ajax({
-      type: "GET",
-      url: '/flex/trades/',
-      success: function(json){
-        console.log(json['user_purchases'][0]['id']);
-        $('#portfolio_items').empty();
-        var data = eval(json);
-        for (var key in data) {
-        	var value = data[key];
-        	for (x in value) {
-        		$("#portfolio_items").append("<tr> <td>" + value[x]['id'] + "</td> <td>" + value[x]['buyer'] + "<td>" + value[x]['seller'] + "</td> <td> $" + value[x]['proceeds'] + "</td> <td>" + value[x]['time'] + +"</td> </tr>"  )
-        		console.log(value[x]['id'])
-        	}
-        }
-        // $('#portfolio_items').html(
-        // 	"<tr> <td>" + json['user_purchases']['id'] + "</td> </tr>")
-      } //close success json
-    }) //close ajax
-  }) //close on click
-
-    $("#all_deals").on("click", function(event){
-    event.preventDefault();
-    $.ajax({
-      type: "GET",
-      url: '/flex/investing/all',
-      success: function(json){
-        console.log(json['user_purchases'][0]['id']);
-        $('#portfolio_items').empty();
-        var data = eval(json);
-        for (var key in data) {
-        	var value = data[key];
-        	for (x in value) {
-        		$("#portfolio_items").append("<tr> <td>" + value[x]['id'] + "</td> <td>" + value[x]['buyer'] + "<td>" + value[x]['seller'] + "</td> <td> $" + value[x]['proceeds'] + "</td> <td>" + value[x]['time'] + +"</td> </tr>"  )
-        		console.log(value[x]['id'])
-        	}
-        }
-        // $('#portfolio_items').html(
-        // 	"<tr> <td>" + json['user_purchases']['id'] + "</td> </tr>")
-      } //close success json
-    }) //close ajax
-  }) //close on click
-
-  $("#residual_flows").on("click", function(event){
-    event.preventDefault();
-    $.ajax({
-      type: "GET",
-      url: '/cashflow/user_cashflows/',
-      success: function(json){
-        console.log(json['cashflows']);
-        $('.portfolio_items').empty();
-          var data = eval(json);
-          for (var key in data){
-            var value = data[key];
-            for (var x in value){
-              $('.portfolio_items').append('<p>' + value[x]['amount'] + value[x]['date'] + value[x]['contract_id'] + '</p>')
-            } //close for
-          } //close for
-
-      } //close success json
-    }) //close ajax
-  }) //close on click
-
 });

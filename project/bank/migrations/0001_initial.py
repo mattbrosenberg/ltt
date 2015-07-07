@@ -15,11 +15,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Account',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
                 ('balance', models.DecimalField(decimal_places=2, max_digits=15)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, related_name='accounts')),
+                ('user', models.ForeignKey(related_name='accounts', to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },

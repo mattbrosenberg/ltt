@@ -24,32 +24,37 @@ def seed_bond_prices_from_csv(bond, filename):
             bond_price.save()
 
 bonds = [
-    {'filename':'trancheur/seeds/64966JNF9.csv', 
+    {'filename':'trancheur/seeds/64966JNF9.csv',
      'instance': Bond(
             cusip='64966JNF9',
             face=5000000,
             coupon=.05,
-            issuance_date=datetime.date(2011, 8, 9),
+            dated_date=datetime.date(2011, 8, 9),
+            auction_date = datetime.date(2011, 8, 9) - datetime.timedelta(days=7),
             maturity=datetime.date(2032, 8, 1),
             payments_per_year=2,
+            initial_price = 1.04884,
             )
     },
-    {'filename':'trancheur/seeds/650035VB1.csv', 
+    {'filename':'trancheur/seeds/650035VB1.csv',
      'instance': Bond(
             cusip='650035VB1',
             face=10000000,
             coupon=.05838,
-            issuance_date=datetime.date(2010, 12, 8),
+            dated_date=datetime.date(2010, 12, 8),
+            auction_date = datetime.date(2010, 12, 8) - datetime.timedelta(days=7),
             maturity=datetime.date(2040, 3, 15),
             payments_per_year=2,
+            initial_price = 1,
             )
     },
 ]
 
 def seed():
     BondPrice.objects.all().delete()
-    Bond.objects.all().delete()
+    # Bond.objects.all().delete()
     for bond in bonds:
         bond['instance'].save()
         seed_bond_prices_from_csv(bond['instance'], bond['filename'])
 
+# seed()

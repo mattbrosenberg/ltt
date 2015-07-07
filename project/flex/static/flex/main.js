@@ -40,19 +40,19 @@ $(function() {
 $(document).ready(function(){
   console.log($('li').attr('id'))
 
-  $("#user_trades").on("click", function(event){
+  $("#investor_trades").on("click", function(event){
     event.preventDefault();
     $.ajax({
       type: "GET",
       url: '/flex/trades/',
       success: function(json){
-        console.log(json['user_purchases'][0]['id']);
+        console.log(json['investor_purchases'][0]['id']);
         $('#portfolio_items').empty();
         var data = eval(json);
         for (var key in data) {
         	var value = data[key];
         	for (x in value) {
-        		$("#portfolio_items").append("<tr> <td>" + value[x]['id'] + "</td> <td>" + value[x]['buyer'] + "<td>" + value[x]['seller'] + "</td> <td> $" + value[x]['proceeds'] + "</td> <td>" + value[x]['time'] + +"</td> </tr>"  )
+        		$("#portfolio_items").append("<tr> <td>" + value[x]['id'] + "</td> <td>" + value[x]['buyer'] + "<td>" + value[x]['seller'] + "</td> <td> $" + value[x]['proceeds'] + "</td> <td>" + value[x]['time'] + "</td> </tr>"  )
         		console.log(value[x]['id'])
         	}
         }
@@ -74,7 +74,7 @@ $(document).ready(function(){
         for (var key in data) {
         	var value = data[key];
         	for (x in value) {
-        		$("#portfolio_items").append("<tr> <td>" + value[x]['id'] + "</td> <td>" + value[x]['buyer'] + "<td>" + value[x]['seller'] + "</td> <td> $" + value[x]['proceeds'] + "</td> <td>" + value[x]['time'] + +"</td> </tr>"  )
+        		$("#portfolio_items").append("<tr> <td>" + value[x]['id'] + "</td> <td>" + value[x]['buyer'] + "<td>" + value[x]['seller'] + "</td> <td> $" + value[x]['proceeds'] + "</td> <td>" + value[x]['time'] + "</td> </tr>"  )
         		console.log(value[x]['id'])
         	}
         }

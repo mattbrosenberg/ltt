@@ -1,9 +1,8 @@
 {% load admin_static %}{% load firstof from future %}<!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
 <head>
-
 <title>{% block title %}{% endblock %}</title>
-<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/base.css" %}{% endblock %}" />
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" />
 {% block extrastyle %}{% endblock %}
 <!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="{% block stylesheet_ie %}{% static "admin/css/ie.css" %}{% endblock %}" /><![endif]-->
 {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}" />{% endif %}
@@ -18,15 +17,12 @@
 
 <!-- Container -->
 <div id="container">
-  <a href="/">
-    <div id='logo'><img src = "{% static "users/logo.png" %}"></div></a>
-	<link rel ="stylesheet" type= "text/css" href = "{%static 'users/css/main.css' %}">
-
     {% if not is_popup %}
     <!-- Header -->
     <div id="header">
         <div id="branding">
-        {% block branding %}{% endblock %}
+        <!-- {% block branding %}{% endblock %} --><a href="/admin/">
+        <img src={% static "users/icon_only_medium_logo.png" %}> <h1>Flex Admin</h1></a>
         </div>
         {% if user.is_active and user.is_staff %}
         <div id="user-tools">
@@ -84,3 +80,5 @@
 
 </body>
 </html>
+
+<link rel="stylesheet" type="text/css" href="{% static "admin/custom_admin.css" %}" />

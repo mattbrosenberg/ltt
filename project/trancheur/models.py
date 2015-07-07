@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Bond(models.Model):
     cusip = models.CharField(max_length=9, unique = True)
@@ -20,11 +21,14 @@ class Contract(models.Model):
     bond = models.ForeignKey('Bond', related_name='contracts')
 
 class Trade(models.Model):
-    buyer = models.ForeignKey('users.Investor', related_name='purchases')
-    seller = models.ForeignKey('users.Investor', related_name='sales')
+    buyer = models.ForeignKey(User, related_name='purchases')
+    seller = models.ForeignKey(User, related_name='sales')
     contract = models.ForeignKey('Contract', related_name='trades')
     price = models.DecimalField(max_digits=6, decimal_places=5)
     time = models.DateTimeField()
+
+    class Meta:
+        get_latest_by = "time"
 
 class MoneyMarket(Contract):
     coupon = models.DecimalField(max_digits=15, decimal_places=5)
@@ -36,3 +40,6 @@ class BondPrice(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=5)
     date = models.DateField()
     bond = models.ForeignKey('Bond', related_name='prices')
+
+    class Meta:
+        get_latest_by = "date"

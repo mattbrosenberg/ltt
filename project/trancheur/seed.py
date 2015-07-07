@@ -7,32 +7,6 @@ from django.contrib.auth.models import User, Group
 
 
 class Seed:
-    bonds = [
-        {'filename':'trancheur/seeds/64966JNF9.csv',
-         'instance': Bond(
-                cusip='64966JNF9',
-                face=5000000,
-                coupon=.05,
-                dated_date=datetime.date(2011, 8, 9),
-                auction_date = datetime.date(2011, 8, 9) - datetime.timedelta(days=7),
-                maturity=datetime.date(2032, 8, 1),
-                payments_per_year=2,
-                initial_price = 1.04884,
-                )
-        },
-        {'filename':'trancheur/seeds/650035VB1.csv',
-         'instance': Bond(
-                cusip='650035VB1',
-                face=10000000,
-                coupon=.05838,
-                dated_date=datetime.date(2010, 12, 8),
-                auction_date = datetime.date(2010, 12, 8) - datetime.timedelta(days=7),
-                maturity=datetime.date(2040, 3, 15),
-                payments_per_year=2,
-                initial_price = 1,
-                )
-        },
-    ]
 
     @classmethod
     def raw_date_to_date_object(cls, string):
@@ -66,9 +40,89 @@ class Seed:
 
     @classmethod
     def scenario1(cls):
+        bonds = [
+            {'filename':'trancheur/seeds/64966JNF9.csv',
+             'instance': Bond(
+                    cusip='64966JNF9',
+                    face=5000000,
+                    coupon=.05,
+                    dated_date=datetime.date(2011, 8, 9),
+                    auction_date = datetime.date(2011, 8, 9) - datetime.timedelta(days=7),
+                    maturity=datetime.date(2032, 8, 1),
+                    payments_per_year=2,
+                    initial_price = 1.04884,
+                    )
+            },
+            {'filename':'trancheur/seeds/650035VB1.csv',
+             'instance': Bond(
+                    cusip='650035VB1',
+                    face=10000000,
+                    coupon=.05838,
+                    dated_date=datetime.date(2010, 12, 8),
+                    auction_date = datetime.date(2010, 12, 8) - datetime.timedelta(days=7),
+                    maturity=datetime.date(2040, 3, 15),
+                    payments_per_year=2,
+                    initial_price = 1,
+                    )
+            },
+        ]
         "This creates bonds issued in the past. Seeds users, one for each contract created."
-        for bond in cls.bonds:
+        for bond in bonds:
             bond['instance'].save()
             cls.seed_bond_prices_from_csv(bond['instance'], bond['filename'])
             Contract_originator(bond['instance']).originate_contracts()
             Seed_users(bond['instance']).create_users_and_sell_contracts()
+
+
+    @classmethod
+    def scenario2(cls):
+        bond_data = [
+            {
+                'cusip' : 'FLEXBOND1',
+                'face' : 10000000,
+                'coupon' : 0.0325,
+                'initial_price' : 1.00,
+                'auction_date' : datetime.date.today() + datetime.timedelta(days=3),
+                'dated_date' : datetime.date.today() + datetime.timedelta(days=10),
+                'maturity' : datetime.date.today() + datetime.timedelta(days=10960),
+                'payments_per_year' : 2,
+            },
+            {
+                'cusip' : 'FLEXBOND2',
+                'face' : 5000000,
+                'coupon' : 0.05,
+                'initial_price' : 1.15,
+                'auction_date' : datetime.date.today() + datetime.timedelta(days=3),
+                'dated_date' : datetime.date.today() + datetime.timedelta(days=10),
+                'maturity' : datetime.date.today() + datetime.timedelta(days=7310),
+                'payments_per_year' : 2,
+            },
+            {
+                'cusip' : 'FLEXBOND3',
+                'face' : 230000,
+                'coupon' : 0.04,
+                'initial_price' : 1.09,
+                'auction_date' : datetime.datetime.today() + datetime.timedelta(days=1),
+                'dated_date' : datetime.date.today() + datetime.timedelta(days=8),
+                'maturity' : datetime.date.today() + datetime.timedelta(days=10958),
+                'payments_per_year' : 2,
+            },
+        ]
+        for data in bond_data:
+            bond = Bond(**data)
+            bond.save()
+            Contract_originator(bond).originate_contracts()
+
+
+
+
+
+
+
+
+
+
+
+
+
+

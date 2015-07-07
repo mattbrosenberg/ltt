@@ -16,17 +16,12 @@ class Investing(View):
     def get(self, request):
         return render(request, "flex/investing.html")
 
-class All_deals(View):
+class AllDeals(View):
     def get(self, request):
-        today = datetime.datetime.today()
-        bonds = Bond.objects.filter(auction_date__gte = today)
-        for bond in bonds:
-            funded = 0
-            residuals = Residual.objects.filter(bond = bond)
-            for contract in residuals:
-                if contract.trades.count == 0:
-                    funded += 1
-            percentage_funded = funded / residuals.count()
+        bonds = Bond.get_all_available_bonds()
+        data = {'percent_residuals_funded':bond.percent_residuals_funded() for bond in bonds}
+        # print(data)
+        return JsonResponse({'data':data})
 
 class Portfolio(View):
     def get(self, request):

@@ -28,7 +28,6 @@ function drawTable() {
     // $("#grid-container tbody td, #grid-container tfoot th, #grid-container thead th").width(100/$("#grid-container thead th").size() + "%");
 }
 
-
 $(function() {
     drawTable();
 
@@ -37,71 +36,111 @@ $(function() {
     });
 });
 
+// $(document).ready(function(){
+
+
+  // $("#investor_trades").on("click", function(event){
+  //   event.preventDefault();
+  //   $.ajax({
+  //     type: "GET",
+  //     url: '/flex/trades/',
+  //     success: function(json){
+  //       console.log(json['investor_purchases'][0]['id']);
+  //       $('#portfolio_items').empty();
+  //       var data = eval(json);
+  //       for (var key in data) {
+  //       	var value = data[key];
+  //       	for (x in value) {
+  //       		$("#portfolio_items").append("<tr> <td>" + value[x]['id'] + "</td> <td>" + value[x]['buyer'] + "<td>" + value[x]['seller'] + "</td> <td> $" + value[x]['proceeds'] + "</td> <td>" + value[x]['time'] + "</td> </tr>"  )
+  //       		console.log(value[x]['id'])
+  //       	}
+  //       }
+  //       // $('#portfolio_items').html(
+  //       // 	"<tr> <td>" + json['user_purchases']['id'] + "</td> </tr>")
+  //     } //close success json
+  //   }) //close ajax
+  // }) //close on click
+
+  //   $("#all_deals").on("click", function(event){
+  //   event.preventDefault();
+  //   $.ajax({
+  //     type: "GET",
+  //     url: '/flex/investing/all',
+  //     success: function(json){
+  //       console.log(json['user_purchases'][0]['id']);
+  //       $('#portfolio_items').empty();
+  //       var data = eval(json);
+  //       for (var key in data) {
+  //       	var value = data[key];
+  //       	for (x in value) {
+  //       		$("#portfolio_items").append("<tr> <td>" + value[x]['id'] + "</td> <td>" + value[x]['buyer'] + "<td>" + value[x]['seller'] + "</td> <td> $" + value[x]['proceeds'] + "</td> <td>" + value[x]['time'] + "</td> </tr>"  )
+  //       		console.log(value[x]['id'])
+  //       	}
+  //       }
+  //       // $('#portfolio_items').html(
+  //       // 	"<tr> <td>" + json['user_purchases']['id'] + "</td> </tr>")
+  //     } //close success json
+  //   }) //close ajax
+  // }) //close on click
+
+  // $("#residual_flows").on("click", function(event){
+  //   event.preventDefault();
+  //   $.ajax({
+  //     type: "GET",
+  //     url: '/cashflow/user_cashflows/',
+  //     success: function(json){
+  //       console.log(json['cashflows']);
+  //       $('.portfolio_items').empty();
+  //         var data = eval(json);
+  //         for (var key in data){
+  //           var value = data[key];
+  //           for (var x in value){
+  //             $('.portfolio_items').append('<p>' + value[x]['amount'] + value[x]['date'] + value[x]['contract_id'] + '</p>')
+  //           } //close for
+  //         } //close for
+
+  //     } //close success json
+  //   }) //close ajax
+  // }) //close on click
+
+
+
 $(document).ready(function(){
-  console.log($('li').attr('id'))
 
-  $("#investor_trades").on("click", function(event){
-    event.preventDefault();
-    $.ajax({
-      type: "GET",
-      url: '/flex/trades/',
-      success: function(json){
-        console.log(json['investor_purchases'][0]['id']);
-        $('#portfolio_items').empty();
-        var data = eval(json);
-        for (var key in data) {
-        	var value = data[key];
-        	for (x in value) {
-        		$("#portfolio_items").append("<tr> <td>" + value[x]['id'] + "</td> <td>" + value[x]['buyer'] + "<td>" + value[x]['seller'] + "</td> <td> $" + value[x]['proceeds'] + "</td> <td>" + value[x]['time'] + "</td> </tr>"  )
-        		console.log(value[x]['id'])
-        	}
-        }
-        // $('#portfolio_items').html(
-        // 	"<tr> <td>" + json['user_purchases']['id'] + "</td> </tr>")
-      } //close success json
-    }) //close ajax
-  }) //close on click
+  var format_auction_items = function(json) {
+    var formatted_json = "";
+    for (var item in json) {
+        formatted_json += 
+            // <tr>
+            //   <td>
+            //     <div class="investAmountInput">$0</div>
+            //   </td>
+            //   <td>18%</td>
+            //   <td>
+                "<div class='progress'><div class='progress-bar progress-bar-success progress-bar-striped active' role='progressbar' aria-valuenow='40' aria-valuemin='0' aria-valuemax='100' style='width: 80%'>"+
+                item['percent_residuals_funded'] + 
+                "  </div></div>";
+            //   </td>
+            //   <td>$12,500<br>3 days</td>
+            //   <td>$25,000<br>360 months</td>
+            // </tr>
+      }
+    return formatted_json;
+  };//end format_auction_items
 
-    $("#all_deals").on("click", function(event){
-    event.preventDefault();
-    $.ajax({
-      type: "GET",
-      url: '/flex/investing/all',
-      success: function(json){
-        console.log(json['user_purchases'][0]['id']);
-        $('#portfolio_items').empty();
-        var data = eval(json);
-        for (var key in data) {
-        	var value = data[key];
-        	for (x in value) {
-        		$("#portfolio_items").append("<tr> <td>" + value[x]['id'] + "</td> <td>" + value[x]['buyer'] + "<td>" + value[x]['seller'] + "</td> <td> $" + value[x]['proceeds'] + "</td> <td>" + value[x]['time'] + "</td> </tr>"  )
-        		console.log(value[x]['id'])
-        	}
-        }
-        // $('#portfolio_items').html(
-        // 	"<tr> <td>" + json['user_purchases']['id'] + "</td> </tr>")
-      } //close success json
-    }) //close ajax
-  }) //close on click
+  $.ajax({
+    type: "GET",
+    url: '/flex/investing/all_available_deals/',
+    success: function(json){
+      console.log(json);
+      $("#auction_items").html(format_auction_items(json['data']));
+      // $("#auction_items").html('hello');
 
-  $("#residual_flows").on("click", function(event){
-    event.preventDefault();
-    $.ajax({
-      type: "GET",
-      url: '/cashflow/user_cashflows/',
-      success: function(json){
-        console.log(json['cashflows']);
-        $('.portfolio_items').empty();
-          var data = eval(json);
-          for (var key in data){
-            var value = data[key];
-            for (var x in value){
-              $('.portfolio_items').append('<p>' + value[x]['amount'] + value[x]['date'] + value[x]['contract_id'] + '</p>')
-            } //close for
-          } //close for
+    } //close success json
+  }) //close ajax
 
-      } //close success json
-    }) //close ajax
-  }) //close on click
+});//end document
 
-});
+
+
+

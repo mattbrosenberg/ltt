@@ -1,11 +1,7 @@
 from django.db import models
 
 class Bond(models.Model):
-<<<<<<< HEAD
     cusip = models.CharField(max_length=9, unique = True)
-=======
-    cusip = models.CharField(max_length=9, unique=True)
->>>>>>> 0c9cc642e8e159d67dc49140d1ee2f3753c2e4dc
     face = models.DecimalField(max_digits=15, decimal_places=2)
     coupon = models.DecimalField(max_digits=15, decimal_places=5)
     initial_price = models.DecimalField(max_digits=6, decimal_places=5)

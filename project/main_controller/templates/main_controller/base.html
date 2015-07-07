@@ -9,53 +9,46 @@
 
 <body>
 <div class="navbar-wrapper">
+  <div class="navbar navbar-static-top" role="navigation">
 
-<nav class="navbar navbar-default navbar-inverse" role="navigation">
-<div class='row'>
+<div class="row hidden-xs utilNav">
+  <div class="col col10 colpush2">
     <a class="navbar-brand" href="#"><img src="{% static "main_controller/logo.png" %}" alt="Page Logo"></a>
     <ul class="nav navbar-nav navbar-right" id="login">
 
-        <!-- <li class="dropdown"> -->
           <a href="/clients" id = "login"><b>Client Login</b> </a>
-<!--         </li>
- -->      </ul>
+    </ul>
+  </div>
 </div>	
-	<!-- <div class="container-fluid">
-      <a class="navbar-brand" href="#"><img src="{% static "main_controller/logo.png" %}" alt=""/></a> -->
-    <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-controls="navbar">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <!-- <a class = "navbar-brand" href='/'> FLEX Invest</a> -->
     </div>
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+    <div class="navbar-collapse collapse" id="navbar">
       <ul class="nav navbar-nav">
         <li><a href="#">Money Markets Investing</a></li>
         <li><a href="#">Residual Investing</a></li>
         <li class="dropdown">
-		  <a href="#" class="dropdown-toggle" data-toggle="dropdown">How it works <b class="caret"></b></a>
-		  <ul class="dropdown-menu">
-		    <li><a href="#">Action</a></li>
-		    <li><a href="#">Another action</a></li>
-		    <li><a href="#">Something else here</a></li>
-		    <li class="divider"></li>
-		    <li class="nav-header">Nav header</li>
-		    <li><a href="#">Separated link</a></li>
-		    <li><a href="#">One more separated link</a></li>
-		  </ul>
-		</li>
+    		  <a href="#" class="dropdown-toggle" data-toggle="dropdown">How it works <b class="caret"></b></a>
+      		  <ul class="dropdown-menu">
+      		    <li><a href="#">Action</a></li>
+      		    <li><a href="#">Another action</a></li>
+      		    <li><a href="#">Something else here</a></li>
+      		    <li class="divider"></li>
+      		    <li class="nav-header">Nav header</li>
+      		    <li><a href="#">Separated link</a></li>
+      		    <li><a href="#">One more separated link</a></li>
+      		  </ul>
+    		</li>
         <li><a href="#">About Us</a></li>
-      </ul>
-      
-     
+      </ul> 
     </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>	
+</div>	
 </div>
 <div id = "content">
 	<div class = "first">
@@ -69,4 +62,7 @@
   </div>
 </div>
 </div>	
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{% static 'main_controller/main.js' %}"></script>
 </body>
+</html>

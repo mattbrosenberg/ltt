@@ -2,7 +2,6 @@
 
 from .trancheur_calculator import Trancheur
 from .models import Bond, Contract, Residual, MoneyMarket
-from users.models import User
 import datetime
 from libor.models import Libor
 

@@ -1,15 +1,9 @@
 from django.contrib import admin
-<<<<<<< HEAD
-from users.models import User
 from trancheur.models import Bond, Contract, MoneyMarket, Residual, Trade
 from cashflow.models import Cashflow
-=======
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User, Group
-
 from .models import Investor
-from trancheur.models import Bond, MoneyMarket, Residual
->>>>>>> 0c9cc642e8e159d67dc49140d1ee2f3753c2e4dc
 
 class InvestorInline(admin.StackedInline):
     model = Investor

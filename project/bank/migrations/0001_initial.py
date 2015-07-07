@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
                 ('balance', models.DecimalField(decimal_places=2, max_digits=15)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('user', models.ForeignKey(related_name='owner', to='users.User')),
+                ('user', models.ForeignKey(related_name='accounts', to='users.Investor')),
             ],
             options={
             },

@@ -1,0 +1,50 @@
+{% load staticfiles %}
+<html>
+
+<head>
+	<title>FLEX Invest</title>
+  <link rel="shortcut icon" href="{% static "main_controller/logo.png" %}">
+	<link rel ="stylesheet" type= "text/css" href = "{%static 'main_controller/main.css' %}">
+</head>
+<body>
+<div class="navbar-wrapper">
+	<div class="navbar navbar-static-top" role="navigation">
+		<div class="container">
+
+			<div class="row visible-xs-block mobileUtilNav">
+				<div id="mobilelogo">
+					<a class="navbar-brand" href="#"><img src="{% static "main_controller/mobilelogo.png" %}" alt="Page Logo"></a>
+				</div> <!-- close mobilelogo -->	
+			<div class="clientlogin">
+				<ul class="nav navbar-nav navbar-right" id="login">
+					          <a href="/clients" id = "login"><b>Client Login</b></a></ul>
+			</div> <!-- close client login-->	
+			</div> <!-- close visible row -->
+
+			<div id="navContainer" class="row mainNav">
+				<div id="uppernav" class="col col2 hidden-xs">
+					<div id="logo"> <a class="navbar-brand" href="#"><img src="{% static "main_controller/logo.png" %}" alt="Page Logo"></a>
+					</div>
+					<div class="col col10 colpush2">
+						<!-- <li><a href="/contactus" title="Contact FLEX Invest"><span>Contact Us</span></a></li> -->
+						    <ul class="nav navbar-nav navbar-right" id="login">
+					          <a href="/clients" id = "login"><b>Client Login</b></a></ul>
+				</div> <!-- close colpush2 -->
+				</div> <!-- close header -->
+				<div id="mainnav" class="col col10 colpush2 col-xs-12">
+					<ul id="nav" class="nav navbar-nav" role="menu">
+						<li><a href="#">Money Markets Investing</a></li>
+				        <li><a href="#">Residual Investing</a></li>
+				        <li><a href="#">How It Works</a></li>
+					    <li><a href="#">About Us</a></li>
+					</ul>	
+				</div> <!-- close col -->	
+			</div> <!-- close navContainer -->	
+		</div> <!-- close container -->
+	</div> <!-- close navbar-static-top -->	
+</div> <!-- close navbar wrapper-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{% static 'main_controller/main.js' %}"></script>
+</body>
+</html>

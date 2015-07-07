@@ -3,7 +3,6 @@ from django.views.generic import View
 from django.http import HttpResponse, JsonResponse
 from cashflow.models import Cashflow
 from trancheur.models import Bond, Contract, Trade, MoneyMarket, Residual
-from users.models import User
 import datetime
 
 # Create your views here.

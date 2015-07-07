@@ -4,6 +4,7 @@ from django.http import HttpResponse
 
 from django import forms
 from users.forms import UpdateForm
+
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm, PasswordResetForm
 
 
@@ -14,12 +15,10 @@ class Index(View):
     def get(self, request):
         return redirect("/flex/auctions/")
 
-
 class Auctions(View):
 
     def get(self, request):
         return render(request, "flex/auctions.html")
-
 
 class Portfolio(View):
 

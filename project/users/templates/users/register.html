@@ -4,7 +4,7 @@
 <div class="jumbotron">
   <div class="container">
     <h3>Register</h3>
-    <form role="form-horizontal" name="register_form" action='/clients/register/' method="POST">
+    <form role="form-horizontal" name="register_form" action='/register/' method="POST">
       {% csrf_token %}
         <div class="form-group col-offset-1 col-12">
           {{ register_form }}

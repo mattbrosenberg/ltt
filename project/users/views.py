@@ -8,8 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from users.forms import UpdateForm
 
-from django.contrib.auth.models import User
-from .models import Investor
+from django.contrib.auth.models import User, Group
 
 class Login(View):
     template = 'users/login.html'
@@ -23,7 +22,6 @@ class Login(View):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                print(request)
                 return redirect('/flex/')
             else:
                 return render(request, self.template, {'login_error':"Account no longer active.", 'login_form':self.form()})
@@ -45,8 +43,9 @@ class Register(View):
         except:
             if form.is_valid():
                 user = form.save()
-                Investor(user=user).save()
-                return redirect('/clients/login/')
+                group = Group.objects.get(name='Investor')
+                user.groups.add(group)
+                return redirect('/login/')
             else:
                 return render(request, self.template, {'registration_error':'Invalid input - Please populate all fields on the form.', 'register_form':self.form()})
 

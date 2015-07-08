@@ -51,8 +51,7 @@ class Bond(models.Model):
 
 class Contract(models.Model):
     face = models.DecimalField(max_digits=15, decimal_places=2)
-    issuance_date = models.DateField()
-    maturity = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
     bond = models.ForeignKey('Bond', related_name='contracts')
 
 class Trade(models.Model):
@@ -67,6 +66,8 @@ class Trade(models.Model):
 
 class MoneyMarket(Contract):
     coupon = models.DecimalField(max_digits=15, decimal_places=5)
+    issuance_date = models.DateField()
+    maturity = models.DateField()
 
 class Residual(Contract):
     payments_per_year = models.IntegerField()

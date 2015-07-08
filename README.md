@@ -10,8 +10,11 @@ Web Platform for Auctioning Restructured Assets
      $ python3 manage.py makemigrations
      $ python3 manage.py migrate
      $ python3 manage.py setupgroups
+     $ python3 manage.py createsuperuser
+     $ username: flex
+     $ password: password
      $ python3 manage.py seed scenario1
      $ python3 manage.py seed scenario2
-     $ python3 manage.py createsuperuser
+
      
      

@@ -4,6 +4,7 @@ from trancheur.seed_users import Seed_users
 import csv
 import datetime
 from django.contrib.auth.models import User, Group
+from trancheur.trancheur import Trancheur
 
 
 class Seed:
@@ -70,7 +71,7 @@ class Seed:
         for bond in bonds:
             bond['instance'].save()
             cls.seed_bond_prices_from_csv(bond['instance'], bond['filename'])
-            Contract_originator(bond['instance']).originate_contracts()
+            Trancheur(bond['instance']).originate_contracts()
             Seed_users(bond['instance']).create_users_and_sell_contracts()
 
 

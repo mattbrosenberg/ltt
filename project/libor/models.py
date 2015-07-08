@@ -1,6 +1,7 @@
 from django.db import models
 import datetime
 from .quandl import Quandl
+from django.core.exceptions import ObjectDoesNotExist
 
 class Libor(models.Model):
     date = models.DateField(unique=True)
@@ -57,3 +58,17 @@ class Libor(models.Model):
                 return float(libor.rate)
             except:
                 return None
+
+    def get_latest_rate(self, date_object): 
+        while True:
+            try:
+                libor = Libor.objects.get(date=date_object)
+                return float(libor.rate)
+            except ObjectDoesNotExist:
+                date_object = date_object - datetime.timedelta(days = 1)
+                continue
+            break
+
+
+
+

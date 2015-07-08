@@ -15,7 +15,7 @@ class Trancheur:
         return float(self.bond.face * self.bond.initial_price)
 
     def number_of_residual_contracts(self):
-        return int(self.total_cost * self.residual_allocation // self.residual_face)
+        return int(self.total_cost() * self.residual_allocation // self.residual_face)
 
     def residual_investment(self):
         return self.residual_face * self.number_of_residual_contracts()
@@ -31,11 +31,7 @@ class Trancheur:
         for i in range(self.number_of_residual_contracts()):
             residual_contract = Residual(
                     face = self.residual_face,
-                    
                     # why not just the auction date?
-                    issuance_date = self.bond.auction_date - datetime.timedelta(days = 14),
-
-                    maturity = self.bond.maturity,
                     bond = self.bond,
                     payments_per_year = 2)
             residual_contract.save()
@@ -45,7 +41,6 @@ class Trancheur:
 
             # why not just the auction date?
             issuance_date = self.bond.dated_date,
-
             maturity = self.bond.dated_date + datetime.timedelta(days = 30),
             bond = self.bond,
             coupon = self.money_market_coupon())

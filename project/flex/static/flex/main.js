@@ -100,9 +100,9 @@ $(document).ready(function(){
       var item = json[i];
       formatted_json += 
           "<tr>" +
-          //   <td>
-          //     <div class="investAmountInput">$0</div>
-          //   </td>
+          //   "<td>" +
+          //     "<div class='investAmountInput'>$0</div>" +
+          //   "</td>" +
               "<td>" +
                 "<div class='progress'>" + 
                   "<div class='progress-bar progress-bar-success progress-bar-striped active' role='progressbar' aria-valuenow='40' aria-valuemin='0' aria-valuemax='100' style='width:" + 
@@ -127,7 +127,52 @@ $(document).ready(function(){
       $("#tranche_items").html(format_tranche_items(json['data']));
     } //close success json
   }) //close ajax
+
+  // $(".sorting").click(function(event){
+  //   event.preventDefault();
+  //   $("#"+this.id).each(function() {
+  //     $(this).toggleClass("active");
+  //   });
+  // });
+
+
+  $(".sorting").click(function(event) {
+    event.preventDefault();
+    $(this).parent().find('.sorting').toggleClass("active")
+  });
+
+  $(".sorting_multi").click(function(event) {
+    event.preventDefault();
+    $(this).toggleClass("active")
+  });
+
+
+  // $("#by_most_funded").click(function(){
+  //   event.preventDefault();
+  //   $(this).addClass("active");
+  //   $.ajax({
+  //     type: "GET",
+  //     url: '/flex/api/investing/all_available_tranches/by_most_funded/',
+  //     success: function(json){
+  //       $("#tranche_items").html(format_tranche_items(json['data']));
+  //     } //close success json
+  //   }) //close ajax
+  // })//end #by_most_funded
+
+  // $("#by_least_funded").click(function(){
+  //   event.preventDefault();
+  //   $(this).addClass("active");
+  //   $.ajax({
+  //     type: "GET",
+  //     url: '/flex/api/investing/all_available_tranches/by_least_funded/',
+  //     success: function(json){
+  //       $("#tranche_items").html(format_tranche_items(json['data']));
+  //     } //close success json
+  //   }) //close ajax
+  // })//end #by_least_funded
   
+
+
 });//end document
 
 

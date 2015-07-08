@@ -4,28 +4,27 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-           <ul class="nav nav-sidebar">
-            <li class="active" id="all_deals"><a href="/flex/investing/all_available_deals/">All active deals</a></li>
+          <ul class="nav nav-sidebar">
+            <li class="li_label"><strong>Percent Funded</strong></li>
+            <li class="sorting" id="least_percent_funded"><a href="">Least</a></li>
+            <li class="sorting active" id="most_percent_funded"><a href="">Most</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li><a href="#">Most Funded</a></li>
-            <li><a href="#">Least Funded</a></li>
+            <li class="li_label"><strong>Yield</strong></li>
+            <li class="sorting" id="lowest_yield"><a href="">Lowest</a></li>
+            <li class="sorting active" id="highest_yield"><a href="">Highest</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li><a href="">Highest Yield</a></li>
-            <li><a href="">Lowest Yield</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">12-15% Yield</a></li>
-            <li><a href="">15-18% Yield</a></li>
-            <li><a href="">18-21% Yield</a></li>
+            <li class="li_label"><strong>Yield</strong></li>
+            <li class="sorting_multi"><a href="">10-13%</a></li>
+            <li class="sorting_multi"><a href="">14-17%</a></li>
+            <li class="sorting_multi"><a href="">18-21%</a></li>
           </ul>
         </div>
-
-
         </div>
       </div>
     </div>
+
     <div id="tranche_div" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
       <div class="table-responsive">
         <table id="tranche_table" class="table header-fixed">

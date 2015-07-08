@@ -20,6 +20,16 @@ class Bond(models.Model):
     def get_all_unauctioned_bonds(cls):
         return Bond.objects.filter(auction_date__gt=timezone.now())
 
+    @classmethod
+    def get_all_unauctioned_bonds_by_most_funded(cls):
+        bonds = cls.get_all_unauctioned_bonds()
+        return sorted(bonds, key=lambda bond: bond.percent_residuals_funded(), reverse=True)
+
+    @classmethod
+    def get_all_unauctioned_bonds_by_least_funded(cls):
+        bonds = cls.get_all_unauctioned_bonds()
+        return sorted(bonds, key=lambda bond: bond.percent_residuals_funded(), reverse=False)
+
     def get_all_residuals(self):
         residuals = []
         for contract in self.contracts.all():
@@ -44,7 +54,8 @@ class Bond(models.Model):
         return self.num_residuals() - self.num_funded_residuals()
 
     def percent_residuals_funded(self):
-        return ( self.num_funded_residuals() // self.num_residuals() ) * 100
+        percent_funded = self.num_funded_residuals() / self.num_residuals() * 100
+        return round(percent_funded, 1)
 
     def days_to_auction(self):
         timedelta = self.auction_date - timezone.now().replace(hour=0,minute=0,second=0,microsecond=0)
@@ -55,6 +66,19 @@ class Contract(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     bond = models.ForeignKey('Bond', related_name='contracts')
 
+    class Meta:
+        get_latest_by = "created_at"
+
+    def owner(self):
+        try:
+            return self.trades.latest().buyer.username
+        except:
+            return None
+
+    def __str__(self):
+        return self.bond.cusip + " | " + str(self.face) + " | " + str(self.owner())
+
+
 class Trade(models.Model):
     buyer = models.ForeignKey(User, related_name='purchases')
     seller = models.ForeignKey(User, related_name='sales')
@@ -64,6 +88,13 @@ class Trade(models.Model):
 
     class Meta:
         get_latest_by = "time"
+
+    def __str__(self):
+        if hasattr(self.contract, "residual"):
+            type_of = "Residual"
+        else:
+            type_of = "MoneyMarket"
+        return self.contract.bond.cusip + " | " + str(self.price) + " | " + type_of
 
 class MoneyMarket(Contract):
     coupon = models.DecimalField(max_digits=15, decimal_places=5)

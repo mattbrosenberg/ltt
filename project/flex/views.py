@@ -42,6 +42,20 @@ class AllAvailableTranches(View):
         data = format_tranches_for_json(bonds)
         return JsonResponse(data)
 
+class AllAvailableTranchesByMostFunded(View):
+
+    def get(self, request):
+        bonds = Bond.get_all_unauctioned_bonds_by_most_funded()
+        data = format_tranches_for_json(bonds)
+        return JsonResponse(data)
+
+class AllAvailableTranchesByLeastFunded(View):
+
+    def get(self, request):
+        bonds = Bond.get_all_unauctioned_bonds_by_least_funded()
+        data = format_tranches_for_json(bonds)
+        return JsonResponse(data)
+
 class Portfolio(View):
 
     def get(self, request):

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from cashflow.models import Cashflow
 import datetime
 
 class Bond(models.Model):

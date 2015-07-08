@@ -34,3 +34,9 @@ class CashflowCreator():
 			residual_cashflow = Cashflow(amount = residual_interest, date = date, type_of = "residual", bond = self.bond)
 			residual_cashflow.save()	
 
+	def residual_cashflows(self):
+		cashflows = []
+		num_residuals = self.bond.num_residuals()
+		for cashflow in self.bond.cashflows.filter(type_of="residual"):
+			cashflows.append({'amount':round(cashflow.amount / num_residuals,2) , 'date': cashflow.date})
+		return cashflows

@@ -14,11 +14,11 @@ class Trancheur:
     def total_cost(self):
         return float(self.bond.face * self.bond.initial_price)
 
-    def residual_investment(self):
-        return self.total_cost * self.residual_allocation
-
     def number_of_residual_contracts(self):
-        return int(self.residual_investment() // self.residual_face)
+        return int(self.total_cost * self.residual_allocation // self.residual_face)
+
+    def residual_investment(self):
+        return self.residual_face * self.number_of_residual_contracts()
 
     def money_market_investment(self):
         return self.total_cost() - self.number_of_residual_contracts() * self.residual_face
@@ -44,7 +44,7 @@ class Trancheur:
             face = self.money_market_investment(),
 
             # why not just the auction date?
-            issuance_date = self.bond.auction_date - datetime.timedelta(days = 14),
+            issuance_date = self.bond.dated_date,
 
             maturity = self.bond.dated_date + datetime.timedelta(days = 30),
             bond = self.bond,

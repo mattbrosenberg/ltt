@@ -16,7 +16,7 @@ class Bond(models.Model):
         return self.cusip
 
     @classmethod
-    def get_all_available_bonds(cls):
+    def get_all_unauctioned_bonds(cls):
         return Bond.objects.filter(auction_date__gte=datetime.datetime.today())
 
     def get_all_residuals(self):
@@ -31,17 +31,23 @@ class Bond(models.Model):
 
     def get_all_funded_residuals(self):
         funded_residuals = []
-        residuals = self.get_all_residuals()
-        for residual in residuals:
-            if hasattr(residual, 'buyer'):
+        for residual in self.get_all_residuals():
+            if residual.trades.all() != []:
                 funded_residuals.append(residual)
         return funded_residuals
 
     def num_funded_residuals(self):
         return len(self.get_all_funded_residuals())
 
+    def num_available_residuals(self):
+        return self.num_residuals - num_funded_residuals
+
     def percent_residuals_funded(self):
-        return self.num_funded_residuals() // self.num_residuals()
+        return ( self.num_funded_residuals() // self.num_residuals() ) * 100
+
+    def days_to_auction(self):
+        timedelta = self.auction_date - datetime.datetime.today().replace(hour=0,minute=0,second=0,microsecond=0)
+        return  timedelta.days
 
 class Contract(models.Model):
     face = models.DecimalField(max_digits=15, decimal_places=2)

@@ -8,29 +8,58 @@ import datetime
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm, PasswordResetForm
 from django.contrib.auth.models import User
 
+
+def format_tranches_for_json(bonds):
+    data = []
+    for bond in bonds:
+        print(bond.maturity)
+        print(bond.dated_date)
+        print(bond.days_to_auction())
+        print(Trancheur(bond).residual_investment())
+        print(bond.percent_residuals_funded())
+        print(bond.num_available_residuals())
+        data.append(
+            {
+            'maturity' : bond.maturity,
+            'dated_date' : bond.dated_date,
+            'days_to_auction' : bond.days_to_auction(),
+            'residual_investment' : Trancheur(bond).residual_investment(),
+            'percent_residuals_funded' : bond.percent_residuals_funded(),
+            'num_available_residuals' : bond.num_available_residuals(),
+            }
+        )
+    return {'data': data}
+
+
 class Index(View):
+
     def get(self, request):
         return redirect("/flex/investing/")
 
 class Investing(View):
+
     def get(self, request):
         return render(request, "flex/investing.html")
 
-class AllDeals(View):
+class AllAvailableTranches(View):
+
     def get(self, request):
-        bonds = Bond.get_all_available_bonds()
-        data = {'percent_residuals_funded':bond.percent_residuals_funded() for bond in bonds}
-        # print(data)
-        return JsonResponse({'data':data})
+        print('hello')
+        bonds = Bond.get_all_unauctioned_bonds()
+        print(bonds)
+        data = format_tranches_for_json(bonds)
+        print(data)
+        return JsonResponse(data)
 
 class Portfolio(View):
+
     def get(self, request):
         return render(request, "flex/portfolio.html")
 
 class Trades(View):
+
     def get(self, request):
         investor_purchases = request.user.purchases.all()
-        print(investor_purchases)
         investor_purchases = [{'id':purchase.contract.id, 'proceeds':round(purchase.price * purchase.contract.face, 2), 'time':purchase.time.strftime("%Y-%m-%d %H:%M:%S"), 'buyer':purchase.buyer.username, 'seller':purchase.seller.username} for purchase in investor_purchases]
         return JsonResponse({'investor_purchases':investor_purchases})
 

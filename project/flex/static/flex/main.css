@@ -110,7 +110,7 @@ body {
   border-radius: 50%;
 }
 
-#auction_div {
+#tranche_div {
   padding: 0;
 }
 
@@ -118,7 +118,7 @@ body {
   padding: 0;
 }
 
-#auction_head {
+#tranche_head {
   background-color: #ddd;
 }
 

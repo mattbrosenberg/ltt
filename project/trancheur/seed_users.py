@@ -26,6 +26,6 @@ class Seed_users:
 			group = Group.objects.get(name='Investor')
 			user.groups.add(group)
 			today = timezone.now()
-			dt = today.replace(year = contract.issuance_date.year, month = contract.issuance_date.month, day = contract.issuance_date.day)
+			dt = today.replace(year = contract.bond.dated_date.year, month = contract.bond.dated_date.month, day = contract.bond.dated_date.day)
 			contract_sale = Trade(buyer = user, seller = self.owner, contract = contract, price = 1, time = dt)
 			contract_sale.save()

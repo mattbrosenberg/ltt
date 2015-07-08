@@ -7,17 +7,11 @@ from django import forms
 import datetime
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm, PasswordResetForm
 from django.contrib.auth.models import User
-
+from trancheur.trancheur import Trancheur
 
 def format_tranches_for_json(bonds):
     data = []
     for bond in bonds:
-        print(bond.maturity)
-        print(bond.dated_date)
-        print(bond.days_to_auction())
-        print(Trancheur(bond).residual_investment())
-        print(bond.percent_residuals_funded())
-        print(bond.num_available_residuals())
         data.append(
             {
             'maturity' : bond.maturity,
@@ -44,11 +38,8 @@ class Investing(View):
 class AllAvailableTranches(View):
 
     def get(self, request):
-        print('hello')
         bonds = Bond.get_all_unauctioned_bonds()
-        print(bonds)
         data = format_tranches_for_json(bonds)
-        print(data)
         return JsonResponse(data)
 
 class Portfolio(View):

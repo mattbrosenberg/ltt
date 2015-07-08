@@ -127,7 +127,7 @@ body {
 }
 
 .header-fixed {
-    width: 100%
+    width: 100%;
 }
 
 .header-fixed > thead,
@@ -154,14 +154,14 @@ body {
 
 .header-fixed > tbody > tr > td,
 .header-fixed > thead > tr > th {
-    width: 20%;
+    width: 15%;
     float: left;
 }
 
-.rows-fixed > tbody > tr > td {
+/*.rows-fixed > tbody > tr > td {
     width: 20%;
     float: left;
-}
+}*/
 
 .investAmountInput {
   width: 8em;

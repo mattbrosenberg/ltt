@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import datetime
+from django.utils import timezone
 
 class Bond(models.Model):
     cusip = models.CharField(max_length=9, unique = True)
@@ -17,7 +18,7 @@ class Bond(models.Model):
 
     @classmethod
     def get_all_unauctioned_bonds(cls):
-        return Bond.objects.filter(auction_date__gte=datetime.datetime.today())
+        return Bond.objects.filter(auction_date__gt=timezone.now())
 
     def get_all_residuals(self):
         residuals = []
@@ -32,7 +33,7 @@ class Bond(models.Model):
     def get_all_funded_residuals(self):
         funded_residuals = []
         for residual in self.get_all_residuals():
-            if residual.trades.all() != []:
+            if residual.trades.all().count() > 0:
                 funded_residuals.append(residual)
         return funded_residuals
 
@@ -40,13 +41,13 @@ class Bond(models.Model):
         return len(self.get_all_funded_residuals())
 
     def num_available_residuals(self):
-        return self.num_residuals - num_funded_residuals
+        return self.num_residuals() - self.num_funded_residuals()
 
     def percent_residuals_funded(self):
         return ( self.num_funded_residuals() // self.num_residuals() ) * 100
 
     def days_to_auction(self):
-        timedelta = self.auction_date - datetime.datetime.today().replace(hour=0,minute=0,second=0,microsecond=0)
+        timedelta = self.auction_date - timezone.now().replace(hour=0,minute=0,second=0,microsecond=0)
         return  timedelta.days
 
 class Contract(models.Model):

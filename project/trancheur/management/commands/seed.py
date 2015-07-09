@@ -9,6 +9,7 @@ class Command(BaseCommand):
             'flex_investor_user': Seed.flex_investor_user,
             'scenario1': Seed.scenario1,
             'scenario2': Seed.scenario2,
+            'create_flex_user': Seed.flex_investor_user,
         }
         
         for arg in args:

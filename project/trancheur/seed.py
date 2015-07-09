@@ -4,6 +4,7 @@ from trancheur.seed_users import Seed_users
 import csv
 from django.utils import timezone
 from django.contrib.auth.models import User, Group
+from trancheur.trancheur import Trancheur
 
 
 class Seed:

@@ -13,9 +13,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Libor',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
+                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
                 ('date', models.DateField(unique=True)),
-                ('rate', models.DecimalField(max_digits=8, decimal_places=5)),
+                ('rate', models.DecimalField(decimal_places=5, max_digits=8)),
             ],
             options={
             },

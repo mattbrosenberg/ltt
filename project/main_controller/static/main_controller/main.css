@@ -54,3 +54,8 @@ body {
 	color: white;
 	padding-left: 1em;
 }
+
+#register_button {
+	background-color: white;
+	color:black;
+}

@@ -48,7 +48,6 @@ class InvestingApi(View):
         }
         for query in queries:
             bonds = sorted(bonds, **query_options[query])
-            print(bonds)
         data = format_tranches_for_json(bonds)
         return JsonResponse(data)
 

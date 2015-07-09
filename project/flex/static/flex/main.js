@@ -120,58 +120,32 @@ $(document).ready(function(){
     return formatted_json;
   };//end format_tranche_items
 
-  $.ajax({
-    type: "GET",
-    url: '/flex/api/investing/all_available_tranches/',
-    success: function(json){
-      $("#tranche_items").html(format_tranche_items(json['data']));
-    } //close success json
-  }) //close ajax
 
-  // $(".sorting").click(function(event){
-  //   event.preventDefault();
-  //   $("#"+this.id).each(function() {
-  //     $(this).toggleClass("active");
-  //   });
-  // });
-
-
-  $(".sorting").click(function(event) {
+  $(".sorting").click(function(event){
     event.preventDefault();
+  });
+  $(".sorting.uni").click(function(event) {
     $(this).parent().find('.sorting').toggleClass("active")
   });
-
-  $(".sorting_multi").click(function(event) {
-    event.preventDefault();
+  $(".sorting.multi").click(function(event) {
     $(this).toggleClass("active")
   });
 
-
-  // $("#by_most_funded").click(function(){
-  //   event.preventDefault();
-  //   $(this).addClass("active");
-  //   $.ajax({
-  //     type: "GET",
-  //     url: '/flex/api/investing/all_available_tranches/by_most_funded/',
-  //     success: function(json){
-  //       $("#tranche_items").html(format_tranche_items(json['data']));
-  //     } //close success json
-  //   }) //close ajax
-  // })//end #by_most_funded
-
-  // $("#by_least_funded").click(function(){
-  //   event.preventDefault();
-  //   $(this).addClass("active");
-  //   $.ajax({
-  //     type: "GET",
-  //     url: '/flex/api/investing/all_available_tranches/by_least_funded/',
-  //     success: function(json){
-  //       $("#tranche_items").html(format_tranche_items(json['data']));
-  //     } //close success json
-  //   }) //close ajax
-  // })//end #by_least_funded
-  
-
+  $(".sorting").click(function(){
+    var query = [];
+    $(".active.sorting").each(function(){
+      query.push(this.id);
+    });
+    query = query.join("+");
+    $.ajax({
+      type: "GET",
+      url: '/flex/api/investing/',
+      data: query,
+      success: function(json){
+        $("#tranche_items").html(format_tranche_items(json['data']));
+      } //close success json
+    }) //close ajax
+  });
 
 });//end document
 

@@ -35,10 +35,20 @@ class Investing(View):
     def get(self, request):
         return render(request, "flex/investing.html")
 
-class AllAvailableTranches(View):
+class InvestingApi(View):
 
     def get(self, request):
         bonds = Bond.get_all_unauctioned_bonds()
+        queries = request.META['QUERY_STRING'].split("+")
+        query_options = {
+            'least_percent_funded':{'key': lambda bond: bond.percent_residuals_funded(), 'reverse': False},
+            'most_percent_funded':{'key': lambda bond: bond.percent_residuals_funded(), 'reverse': True},
+            'least_days':{'key': lambda bond: bond.days_to_auction(), 'reverse': False},
+            'most_days':{'key': lambda bond: bond.days_to_auction(), 'reverse': True},
+        }
+        for query in queries:
+            bonds = sorted(bonds, **query_options[query])
+            print(bonds)
         data = format_tranches_for_json(bonds)
         return JsonResponse(data)
 

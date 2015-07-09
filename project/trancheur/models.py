@@ -61,6 +61,16 @@ class Bond(models.Model):
         timedelta = self.auction_date - timezone.now().replace(hour=0,minute=0,second=0,microsecond=0)
         return  timedelta.days
 
+    @classmethod
+    def get_all_unauctioned_bonds_by_least_days(cls):
+        bonds = cls.get_all_unauctioned_bonds()
+        return sorted(bonds, key=lambda bond: bond.days_to_auction(), reverse=False)
+
+    @classmethod
+    def get_all_unauctioned_bonds_by_most_days(cls):
+        bonds = cls.get_all_unauctioned_bonds()
+        return sorted(bonds, key=lambda bond: bond.days_to_auction(), reverse=True)
+
 class Contract(models.Model):
     face = models.DecimalField(max_digits=15, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)

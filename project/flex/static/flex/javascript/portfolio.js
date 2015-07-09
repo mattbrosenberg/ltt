@@ -12,8 +12,21 @@
       				$("#portfolio_items").append("<tr><td><a href ='#'>" + value[x]['contract'] +"</a></td><td> $" + value[x]['price'] + "</td><td>$" + value[x]['price'] + "</td><td>" + value[x]['purchase_date'] + "</td><td>" + value[x]['maturity'] + "</td>>/tr>")
       			}
       		}
-      		// $("#portfolio_items").html("<tr><td>" + )
       	}
+      })
+
+      $('.nav-sidebar li').click(function(event) {
+          $('.nav-sidebar li.active').removeClass('active');
+          var $this = $(this);
+          if (!$this.hasClass('active')) {
+              $this.addClass('active');
+          }
+          event.preventDefault();
+      });
+
+      $("#portfolio").on("click", function(event){
+        event.preventDefault();
+        window.location.href="/flex/portfolio"
       })
 
       $("#trade_history").on("click", function(event){

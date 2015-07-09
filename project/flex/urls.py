@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from .views import Index, Investing, Portfolio, Account, Trades, AllAvailableTranches, Investments, InvestingApi
+from .views import Index, Investing, Portfolio, Account, Trades, Investments, InvestingApi
 
 
 urlpatterns = patterns('',

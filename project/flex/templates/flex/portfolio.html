@@ -2,15 +2,15 @@
 {% load staticfiles %}
 
 {% block content %}
-<script type ="text/javascript" src="{% static 'flex/portfolio.js' %}">
-</script>
+<script type ="text/javascript" src="{% static 'flex/javascript/portfolio.js' %}"></script>
+<link href="{% static 'flex/css/portfolio.css' %}" rel="stylesheet">
 
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-              <li class="active" ><a id="portfolio" href="/flex/portfolio">My Portfolio</a></li>
-              <li class="inactive" ><a id="trade_history" href="/flex/portfolio">Trade History</a></li>
+              <li class="active" ><a id="portfolio" href="/flex/portfolio/investments">My Portfolio</a></li>
+              <li><a id="trade_history" href="/flex/portfolio">Trade History</a></li>
             </ul>
         </div>
       </div>

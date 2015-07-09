@@ -9,29 +9,29 @@ The application includes a custom administration portal primarily for
 managing user access and permissions.
 
 Further functionality coming soon:
--portfolio management,
--reporting and analysis.
+- Portfolio management
+- Reporting & analysis
 
 ## Technical Features, Languages & Libraries
 
 #### Features
-Password encryption
-User sessions 
-User permissions
-Quandl Api
-Manage.py commands
-Mobile & Desktop optimized GUI
+- Password encryption
+- User sessions 
+- User permissions
+- Quandl API
+- Manage.py commands
+- Mobile & Desktop optimized GUI
 
 #### Languages
-Python
-HTML
-CSS
-JavaScript
+- Python
+- HTML
+- CSS
+- JavaScript
 
 #### Libraries
-JQuery
-Requests
-Django Auth, Timezone
+- JQuery
+- Requests
+- Django Auth, Timezone
 
 ## Setup
 

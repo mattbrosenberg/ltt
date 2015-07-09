@@ -1,7 +1,39 @@
-# ltt
-Web Platform for Auctioning Restructured Assets
+# Flex Invest
+#### Web Platform for Restructuring and Selling Assets
 
-### Setup:
+This prototype, built through the Django framework on top of PostgreSQL,
+restructures fixed-rate assets and provides a GUI for purchasing the
+residual tranches.
+
+The application includes a custom administration portal primarily for
+managing user access and permissions.
+
+Further functionality coming soon:
+- Portfolio management
+- Reporting & analysis
+
+## Technical Features, Languages & Libraries
+
+#### Features
+- Password encryption
+- User sessions 
+- User permissions
+- Quandl API
+- Manage.py commands
+- Mobile & Desktop optimized GUI
+
+#### Languages
+- Python
+- HTML
+- CSS
+- JavaScript
+
+#### Libraries
+- JQuery
+- Requests
+- Django Auth, Timezone
+
+## Setup
 
      $ virtualenv venv
      $ source venv/bin/activate

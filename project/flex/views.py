@@ -7,17 +7,11 @@ from django import forms
 import datetime
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm, PasswordResetForm
 from django.contrib.auth.models import User
-
+from trancheur.trancheur import Trancheur
 
 def format_tranches_for_json(bonds):
     data = []
     for bond in bonds:
-        print(bond.maturity)
-        print(bond.dated_date)
-        print(bond.days_to_auction())
-        print(Trancheur(bond).residual_investment())
-        print(bond.percent_residuals_funded())
-        print(bond.num_available_residuals())
         data.append(
             {
             'maturity' : bond.maturity,
@@ -41,14 +35,34 @@ class Investing(View):
     def get(self, request):
         return render(request, "flex/investing.html")
 
-class AllAvailableTranches(View):
+class InvestingApi(View):
 
     def get(self, request):
-        print('hello')
         bonds = Bond.get_all_unauctioned_bonds()
-        print(bonds)
+        queries = request.META['QUERY_STRING'].split("+")
+        query_options = {
+            'least_percent_funded':{'key': lambda bond: bond.percent_residuals_funded(), 'reverse': False},
+            'most_percent_funded':{'key': lambda bond: bond.percent_residuals_funded(), 'reverse': True},
+            'least_days':{'key': lambda bond: bond.days_to_auction(), 'reverse': False},
+            'most_days':{'key': lambda bond: bond.days_to_auction(), 'reverse': True},
+        }
+        for query in queries:
+            bonds = sorted(bonds, **query_options[query])
         data = format_tranches_for_json(bonds)
-        print(data)
+        return JsonResponse(data)
+
+class AllAvailableTranchesByMostFunded(View):
+
+    def get(self, request):
+        bonds = Bond.get_all_unauctioned_bonds_by_most_funded()
+        data = format_tranches_for_json(bonds)
+        return JsonResponse(data)
+
+class AllAvailableTranchesByLeastFunded(View):
+
+    def get(self, request):
+        bonds = Bond.get_all_unauctioned_bonds_by_least_funded()
+        data = format_tranches_for_json(bonds)
         return JsonResponse(data)
 
 class Portfolio(View):

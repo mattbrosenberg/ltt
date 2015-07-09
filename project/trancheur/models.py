@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from cashflow.models import Cashflow
 import datetime
+from django.utils import timezone
 
 class Bond(models.Model):
     cusip = models.CharField(max_length=9, unique = True)
@@ -18,7 +19,17 @@ class Bond(models.Model):
 
     @classmethod
     def get_all_unauctioned_bonds(cls):
-        return Bond.objects.filter(auction_date__gte=datetime.datetime.today())
+        return Bond.objects.filter(auction_date__gt=timezone.now())
+
+    @classmethod
+    def get_all_unauctioned_bonds_by_most_funded(cls):
+        bonds = cls.get_all_unauctioned_bonds()
+        return sorted(bonds, key=lambda bond: bond.percent_residuals_funded(), reverse=True)
+
+    @classmethod
+    def get_all_unauctioned_bonds_by_least_funded(cls):
+        bonds = cls.get_all_unauctioned_bonds()
+        return sorted(bonds, key=lambda bond: bond.percent_residuals_funded(), reverse=False)
 
     def get_all_residuals(self):
         residuals = []
@@ -33,7 +44,7 @@ class Bond(models.Model):
     def get_all_funded_residuals(self):
         funded_residuals = []
         for residual in self.get_all_residuals():
-            if residual.trades.all() != []:
+            if residual.trades.all().count() > 0:
                 funded_residuals.append(residual)
         return funded_residuals
 
@@ -41,19 +52,43 @@ class Bond(models.Model):
         return len(self.get_all_funded_residuals())
 
     def num_available_residuals(self):
-        return self.num_residuals - num_funded_residuals
+        return self.num_residuals() - self.num_funded_residuals()
 
     def percent_residuals_funded(self):
-        return ( self.num_funded_residuals() // self.num_residuals() ) * 100
+        percent_funded = self.num_funded_residuals() / self.num_residuals() * 100
+        return round(percent_funded, 1)
 
     def days_to_auction(self):
-        timedelta = self.auction_date - datetime.datetime.today().replace(hour=0,minute=0,second=0,microsecond=0)
+        timedelta = self.auction_date - timezone.now().replace(hour=0,minute=0,second=0,microsecond=0)
         return  timedelta.days
+
+    @classmethod
+    def get_all_unauctioned_bonds_by_least_days(cls):
+        bonds = cls.get_all_unauctioned_bonds()
+        return sorted(bonds, key=lambda bond: bond.days_to_auction(), reverse=False)
+
+    @classmethod
+    def get_all_unauctioned_bonds_by_most_days(cls):
+        bonds = cls.get_all_unauctioned_bonds()
+        return sorted(bonds, key=lambda bond: bond.days_to_auction(), reverse=True)
 
 class Contract(models.Model):
     face = models.DecimalField(max_digits=15, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     bond = models.ForeignKey('Bond', related_name='contracts')
+
+    class Meta:
+        get_latest_by = "created_at"
+
+    def owner(self):
+        try:
+            return self.trades.latest().buyer.username
+        except:
+            return None
+
+    def __str__(self):
+        return self.bond.cusip + " | " + str(self.face) + " | " + str(self.owner())
+
 
 class Trade(models.Model):
     buyer = models.ForeignKey(User, related_name='purchases')
@@ -64,6 +99,13 @@ class Trade(models.Model):
 
     class Meta:
         get_latest_by = "time"
+
+    def __str__(self):
+        if hasattr(self.contract, "residual"):
+            type_of = "Residual"
+        else:
+            type_of = "MoneyMarket"
+        return self.contract.bond.cusip + " | " + str(self.price) + " | " + type_of
 
 class MoneyMarket(Contract):
     coupon = models.DecimalField(max_digits=15, decimal_places=5)

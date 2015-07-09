@@ -59,11 +59,27 @@ body {
   margin-right: -21px; /* 20px padding + 1px border */
   margin-bottom: 20px;
   margin-left: -20px;
+  padding: 3px;
 }
+
+.nav-sidebar > li {
+  width: 50%;
+  float: left;
+}
+
+.nav-sidebar > .li_label {
+  width: 100%;
+  text-align: center;
+}
+
 .nav-sidebar > li > a {
   padding-right: 20px;
   padding-left: 20px;
+  padding-top: 2px;
+  padding-bottom: 2px;
   color: #00295A;
+  border-radius: 3px;
+  border: 1px solid white;
 }
 .nav-sidebar > .active > a,
 .nav-sidebar > .active > a:hover,
@@ -90,26 +106,6 @@ body {
   margin-top: 0;
 }
 
-
-/*
- * Placeholder dashboard ideas
- */
-
-.placeholders {
-  margin-bottom: 30px;
-  text-align: center;
-}
-.placeholders h4 {
-  margin-bottom: 0;
-}
-.placeholder {
-  margin-bottom: 20px;
-}
-.placeholder img {
-  display: inline-block;
-  border-radius: 50%;
-}
-
 #tranche_div {
   padding: 0;
 }
@@ -127,7 +123,7 @@ body {
 }
 
 .header-fixed {
-    width: 100%
+    width: 100%;
 }
 
 .header-fixed > thead,
@@ -147,6 +143,7 @@ body {
     clear: both;
 }
 
+.header_fixed > thead,
 .header-fixed > tbody {
     overflow-y: auto;
     height: 150px;
@@ -154,11 +151,6 @@ body {
 
 .header-fixed > tbody > tr > td,
 .header-fixed > thead > tr > th {
-    width: 20%;
-    float: left;
-}
-
-.rows-fixed > tbody > tr > td {
     width: 20%;
     float: left;
 }

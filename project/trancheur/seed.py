@@ -1,8 +1,8 @@
 from .models import Bond, BondPrice
-from trancheur.create_contracts import Contract_originator
+from trancheur.trancheur import Trancheur
 from trancheur.seed_users import Seed_users
 import csv
-import datetime
+from django.utils import timezone
 from django.contrib.auth.models import User, Group
 from trancheur.trancheur import Trancheur
 
@@ -15,7 +15,7 @@ class Seed:
         month = int(parsed_date[0].zfill(2))
         day = int(parsed_date[1].zfill(2))
         year = int('20' + parsed_date[2])
-        return datetime.date(year, month, day)
+        return timezone.now().replace(year=year, month=month, day=day)
 
     @classmethod
     def seed_bond_prices_from_csv(cls, bond, filename):
@@ -47,9 +47,9 @@ class Seed:
                     cusip='64966JNF9',
                     face=5000000,
                     coupon=.05,
-                    dated_date=datetime.date(2011, 8, 9),
-                    auction_date = datetime.date(2011, 8, 9) - datetime.timedelta(days=7),
-                    maturity=datetime.date(2032, 8, 1),
+                    dated_date=timezone.now().replace(year=2011, month=8, day=9),
+                    auction_date = timezone.now().replace(year=2011, month=8, day=9) - timezone.timedelta(days=7),
+                    maturity=timezone.now().replace(year=2032, month=8, day=1),
                     payments_per_year=2,
                     initial_price = 1.04884,
                     )
@@ -59,9 +59,9 @@ class Seed:
                     cusip='650035VB1',
                     face=10000000,
                     coupon=.05838,
-                    dated_date=datetime.date(2010, 12, 8),
-                    auction_date = datetime.date(2010, 12, 8) - datetime.timedelta(days=7),
-                    maturity=datetime.date(2040, 3, 15),
+                    dated_date=timezone.now().replace(year=2010, month=12, day=8),
+                    auction_date = timezone.now().replace(year=2010, month=12, day=8) - timezone.timedelta(days=7),
+                    maturity=timezone.now().replace(year=2040, month=3, day=15),
                     payments_per_year=2,
                     initial_price = 1,
                     )
@@ -83,9 +83,9 @@ class Seed:
                 'face' : 10000000,
                 'coupon' : 0.0325,
                 'initial_price' : 1.00,
-                'auction_date' : datetime.date.today() + datetime.timedelta(days=3),
-                'dated_date' : datetime.date.today() + datetime.timedelta(days=10),
-                'maturity' : datetime.date.today() + datetime.timedelta(days=10960),
+                'auction_date' : timezone.now() + timezone.timedelta(days=3),
+                'dated_date' : timezone.now() + timezone.timedelta(days=10),
+                'maturity' : timezone.now() + timezone.timedelta(days=10960),
                 'payments_per_year' : 2,
             },
             {
@@ -93,9 +93,9 @@ class Seed:
                 'face' : 5000000,
                 'coupon' : 0.05,
                 'initial_price' : 1.15,
-                'auction_date' : datetime.date.today() + datetime.timedelta(days=3),
-                'dated_date' : datetime.date.today() + datetime.timedelta(days=10),
-                'maturity' : datetime.date.today() + datetime.timedelta(days=7310),
+                'auction_date' : timezone.now() + timezone.timedelta(days=3),
+                'dated_date' : timezone.now() + timezone.timedelta(days=10),
+                'maturity' : timezone.now() + timezone.timedelta(days=7310),
                 'payments_per_year' : 2,
             },
             {
@@ -103,16 +103,16 @@ class Seed:
                 'face' : 230000,
                 'coupon' : 0.04,
                 'initial_price' : 1.09,
-                'auction_date' : datetime.datetime.today() + datetime.timedelta(days=1),
-                'dated_date' : datetime.date.today() + datetime.timedelta(days=8),
-                'maturity' : datetime.date.today() + datetime.timedelta(days=10958),
+                'auction_date' : timezone.now() + timezone.timedelta(days=1),
+                'dated_date' : timezone.now() + timezone.timedelta(days=8),
+                'maturity' : timezone.now() + timezone.timedelta(days=10958),
                 'payments_per_year' : 2,
             },
         ]
         for data in bond_data:
             bond = Bond(**data)
             bond.save()
-            Contract_originator(bond).originate_contracts()
+            Trancheur(bond).originate_contracts()
 
 
 

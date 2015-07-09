@@ -12,6 +12,8 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="{% static 'flex/logo.png' %}">
     <title>FLEX Dashboard</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{% static 'flex/main.js' %}"></script>
     <link href="{% static 'flex/main.css' %}" rel="stylesheet">
   </head>
 
@@ -49,7 +51,7 @@
           {% else %}
             <ul class="nav navbar-nav navbar-right">
             <li><a href="/register/">Register</a></li>
-            <li><a href="/register/">Login</a></li>
+            <li><a href="/login/">Login</a></li>
           </ul>
           {% endif %}
         </div>

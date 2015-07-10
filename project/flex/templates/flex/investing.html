@@ -3,21 +3,22 @@
 
 {% block content %}
 <script type ="text/javascript" src="{% static 'flex/investing.js' %}"></script>
+<link href="{% static 'flex/main.css' %}" rel="stylesheet">
 
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li class="li_label"><strong>Percent Funded</strong></li>
-            <li class="sorting uni" id="least_percent_funded"><a href="">Least</a></li>
-            <li class="sorting uni active" id="most_percent_funded"><a href="">Most</a></li>
+            <li class="filtering uni" id="least_percent_funded"><a href="">Least</a></li>
+            <li class="filtering uni active" id="most_percent_funded"><a href="">Most</a></li>
             <!-- <li class="sorting uni" id="none"><a href="">None</a></li> -->
             
           </ul>
           <ul class="nav nav-sidebar">
             <li class="li_label"><strong>Days Remaining</strong></li>
-            <li class="sorting uni" id="least_days"><a href="">Least</a></li>
-            <li class="sorting uni active" id="most_days"><a href="">Most</a></li>
+            <li class="filtering uni" id="least_days"><a href="">Least</a></li>
+            <li class="filtering uni active" id="most_days"><a href="">Most</a></li>
           </ul>
 <!--           <ul class="nav nav-sidebar">
             <li class="li_label"><strong>Yield</strong></li>
@@ -39,11 +40,12 @@
         <table id="tranche_table" class="table header-fixed">
           <thead id="tranche_head">
             <tr>
-              <th>Funded</th>
-              <th>Remaining</th>
-              <th>Total</th>
-              <th>Dated Date</th>
-              <th>Maturity</th>
+              <th><a class="sorting" href="#">Funded <span class="glyphicon glyphicon-sort"></span></a></th>
+              <th><a class="sorting" href="#">Est. Yield <span class="glyphicon glyphicon-sort"></span></a></th>
+              <th><a class="sorting" href="#">Term <span class="glyphicon glyphicon-sort"></span></a></th>
+              <th><a class="sorting" href="#">Tranche <span class="glyphicon glyphicon-sort"></span></a></th>
+              <th><a class="sorting" href="#">Amount Left <span class="glyphicon glyphicon-sort"></span></a></th>
+              <th><a class="sorting" href="#">Time Left <span class="glyphicon glyphicon-sort"></span></a></th>
             </tr>
           </thead>
           <tbody id="tranche_items">

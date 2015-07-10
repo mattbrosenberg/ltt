@@ -21,16 +21,6 @@ class Bond(models.Model):
     def get_all_unauctioned_bonds(cls):
         return Bond.objects.filter(auction_date__gt=timezone.now())
 
-    @classmethod
-    def get_all_unauctioned_bonds_by_most_funded(cls):
-        bonds = cls.get_all_unauctioned_bonds()
-        return sorted(bonds, key=lambda bond: bond.percent_residuals_funded(), reverse=True)
-
-    @classmethod
-    def get_all_unauctioned_bonds_by_least_funded(cls):
-        bonds = cls.get_all_unauctioned_bonds()
-        return sorted(bonds, key=lambda bond: bond.percent_residuals_funded(), reverse=False)
-
     def get_all_residuals(self):
         residuals = []
         for contract in self.contracts.all():
@@ -61,16 +51,6 @@ class Bond(models.Model):
     def days_to_auction(self):
         timedelta = self.auction_date - timezone.now().replace(hour=0,minute=0,second=0,microsecond=0)
         return  timedelta.days
-
-    @classmethod
-    def get_all_unauctioned_bonds_by_least_days(cls):
-        bonds = cls.get_all_unauctioned_bonds()
-        return sorted(bonds, key=lambda bond: bond.days_to_auction(), reverse=False)
-
-    @classmethod
-    def get_all_unauctioned_bonds_by_most_days(cls):
-        bonds = cls.get_all_unauctioned_bonds()
-        return sorted(bonds, key=lambda bond: bond.days_to_auction(), reverse=True)
 
 class Contract(models.Model):
     face = models.DecimalField(max_digits=15, decimal_places=2)

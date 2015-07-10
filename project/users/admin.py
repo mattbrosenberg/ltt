@@ -4,6 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User, Group, Permission
 
 from trancheur.models import Bond, MoneyMarket, Residual, Trade
+from cashflow.models import Cashflow
 
 class AdminSite(AdminSite):
     site_title = 'FlexInvest Admin'
@@ -32,3 +33,4 @@ admin_site.register(Bond)
 admin_site.register(MoneyMarket)
 admin_site.register(Residual)
 admin_site.register(Trade)
+admin_site.register(Cashflow)

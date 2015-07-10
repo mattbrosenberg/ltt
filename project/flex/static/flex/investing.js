@@ -10,10 +10,10 @@ $(document).ready(function(){
           if (reverse==true) {
               c = a, a = b, b = c; 
           }
-          if (a[key] > b[key]) {
+          if (a[key] < b[key]) {
               return -1
           }
-          else if (a[key] < b[key]) {
+          else if (a[key] > b[key]) {
               return 1
           }
           else {
@@ -21,7 +21,6 @@ $(document).ready(function(){
           }
       });
   }
-
 
   var format_tranche_items = function(json) {
     var formatted_json = "";
@@ -32,20 +31,20 @@ $(document).ready(function(){
               "<td>" +
                 "<div class='progress'>" + 
                   "<div class='progress-bar progress-bar-success progress-bar-striped active' role='progressbar' aria-valuenow='40' aria-valuemin='0' aria-valuemax='100' style='width:" + 
-                    item['percent_residuals_funded'] + "%'>" +
-                    item['percent_residuals_funded'] + "%" +
+                    item['funded'] + "%'>" +
+                    item['funded'] + "%" +
                   "</div>" + 
                 "</div>" + 
               "</td>" +
-              "<td>" + item['days_to_auction'] + " days </td>" +
-              "<td> $" + item['residual_investment'] + "</td>" +
-              "<td> " + item['dated_date'] + "</td>" +
-              "<td> " + item['maturity'] + "</td>" +
+              "<td>" + item['est_yield'] * 100 + "% </td>" +
+              "<td> " + item['term'] + "/mo </td>" +
+              "<td> $" + item['tranche'] + "</td>" +
+              "<td> $" + item['amount_left'] + "</td>" +
+              "<td> " + item['time_left'] + " days </td>" +
           "</tr>"
       }
     return formatted_json;
   };//end format_tranche_items
-
 
   $(".filtering").click(function(event){
     event.preventDefault();
@@ -56,7 +55,10 @@ $(document).ready(function(){
   $(".filtering.multi").click(function(event) {
     $(this).toggleClass("active")
   });
-  $(".filtering").click(function(){
+
+
+  var tranches = undefined;
+  var ajax_tranches = function(callback){
     var query = [];
     $(".active.filtering").each(function(){
       query.push(this.id);
@@ -68,23 +70,38 @@ $(document).ready(function(){
       data: query,
       success: function(json){
         $("#tranche_items").html(format_tranche_items(json['data']));
+        tranches = json['data'];
+        callback(tranches)
       } //close success json
     }) //close ajax
+  };
+  ajax_tranches(function(tranches){
   });
-
+  $(".filtering").click(function(){
+    ajax_tranches(function(tranches){
+    });
+  });
 
   //table header sorting
   $(document).on("click", ".sorting", function(event){
     event.preventDefault();
+    key = this.id;
+    console.log(key);
     $(this).find(".glyphicon").each(function(){
       if ( $(this).hasClass("glyphicon-sort") ) {
         $(this).removeClass("glyphicon-sort").addClass("glyphicon-sort-by-attributes");
+        tranches = sorted(tranches, key)
+        $("#tranche_items").html(format_tranche_items(tranches));
       }
       else if ( $(this).hasClass("glyphicon-sort-by-attributes") ) {
         $(this).removeClass("glyphicon-sort-by-attributes").addClass("glyphicon-sort-by-attributes-alt");
+        tranches = sorted(tranches, key, true)
+        $("#tranche_items").html(format_tranche_items(tranches));
       }
       else if ( $(this).hasClass("glyphicon-sort-by-attributes-alt") ) {
-        $(this).removeClass("glyphicon-sort-by-attributes-alt").addClass("glyphicon-sort");
+        $(this).removeClass("glyphicon-sort-by-attributes-alt").addClass("glyphicon-sort-by-attributes");
+        tranches = sorted(tranches, key)
+        $("#tranche_items").html(format_tranche_items(tranches));
       }
     })
   })

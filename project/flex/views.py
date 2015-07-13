@@ -37,6 +37,13 @@ class Portfolio(View):
     def get(self, request):
         return render(request, "flex/portfolio.html")
 
+class Investments(View):
+
+    def get(self, request):
+        user = self.request.user
+        context_dict = [{'contract':purchase.contract.id, 'price':round(purchase.price * purchase.contract.face, 2), 'maturity': purchase.contract.bond.maturity, 'purchase_date': purchase.time.strftime("%Y-%m-%d %H:%M:%S")} for purchase in user.purchases.all() if purchase.contract.trades.latest().buyer == user]
+        return JsonResponse({'investments':context_dict})        
+
 class Trades(View):
 
     def get(self, request):

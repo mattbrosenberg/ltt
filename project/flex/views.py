@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.http import HttpResponse, JsonResponse
-from trancheur.models import Bond, Contract, Trade
+from trancheur.models import Bond, Contract, Trade, Residual
 from users.forms import UpdateForm
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm, PasswordResetForm
 from users.models import User
@@ -42,7 +42,9 @@ class Activity(View):
     def get(self, request):
         transactions = request.user.transactions.all()
         context_dict = [{'date':transaction.time.strftime("%Y-%m-%d %H:%M:%S"), 'category': transaction.category, 'description':transaction.description, 'amount': transaction.amount} for transaction in transactions]    
-        return JsonResponse({'transactions':context_dict})
+        balance = User.objects.get(username = request.user.username).get_balance()
+        print (balance)
+        return JsonResponse({'transactions':context_dict, 'balance': balance})
 
 class Investments(View):
 

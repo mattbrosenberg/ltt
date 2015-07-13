@@ -3,38 +3,36 @@
 
 {% block content %}
 <script type ="text/javascript" src="{% static 'flex/investing.js' %}"></script>
-<link href="{% static 'flex/main.css' %}" rel="stylesheet">
-
+<link href="{% static 'flex/investing.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="http://css-spinners.com/css/spinner/spinner.css" type="text/css">
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
+<!--           <ul class="nav nav-sidebar">
             <li class="li_label"><strong>Percent Funded</strong></li>
             <li class="filtering uni" id="least_percent_funded"><a href="">Least</a></li>
             <li class="filtering uni active" id="most_percent_funded"><a href="">Most</a></li>
-            <!-- <li class="sorting uni" id="none"><a href="">None</a></li> -->
+            <li class="sorting uni" id="none"><a href="">None</a></li>
             
           </ul>
           <ul class="nav nav-sidebar">
             <li class="li_label"><strong>Days Remaining</strong></li>
             <li class="filtering uni" id="least_days"><a href="">Least</a></li>
             <li class="filtering uni active" id="most_days"><a href="">Most</a></li>
-          </ul>
-<!--           <ul class="nav nav-sidebar">
-            <li class="li_label"><strong>Yield</strong></li>
-            <li class="sorting uni" id="lowest_yield"><a href="">Lowest</a></li>
-            <li class="sorting uni active" id="highest_yield"><a href="">Highest</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li class="sorting multi" id="10_to_13"><a href="">10-13%</a></li>
-            <li class="sorting multi" id="14_to_17"><a href="">14-17%</a></li>
-            <li class="sorting multi" id="18_to_21"><a href="">18-21%</a></li>
           </ul> -->
+          <ul class="nav nav-sidebar">
+            <li class="li_label"><strong>Est. Yield</strong></li>
+            <li class="filtering multi active" id="11_15"><a href="">11-15%</a></li>
+            <li class="filtering multi active" id="15_19"><a href="">15-19%</a></li>
+            <li class="filtering multi active" id="19_23"><a href="">19-23%</a></li>
+            <li class="filtering multi active" id="23_27"><a href="">23-27%</a></li>
+          </ul>
         </div>
         </div>
       </div>
     </div>
 
+    <div id="tranche_loading" class="spinner-loader"></div>
     <div id="tranche_div" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
       <div class="table-responsive">
         <table id="tranche_table" class="table header-fixed">
@@ -52,4 +50,6 @@
           </tbody>
         </table>
       </div>
+
+    </div>
 {% endblock %}

@@ -1,36 +1,40 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.http import HttpResponse, JsonResponse
+from trancheur.models import Bond, Contract, Trade
+
 from users.forms import UpdateForm
-from trancheur.models import Bond, Contract, Trade, MoneyMarket, Residual
-from django import forms
-import datetime
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm, PasswordResetForm
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from users.models import User
 from trancheur.trancheur import Trancheur
+from .helper import QueryTranches
 
 def format_tranches_for_json(bonds):
     data = []
     for bond in bonds:
         data.append(
-            {
-            'funded' : bond.percent_residuals_funded(),
-            'est_yield' : round(Trancheur(bond).est_yield(),3),
-            'term' : bond.term(),
-            'tranche' : format(Trancheur(bond).residual_investment(), ","),
-            'amount_left' : format(int(bond.amount_left_of_residuals()), ","),
-            'time_left' : bond.days_to_auction(),
-            }
-        )
-        dict(
-            funded=bond.percent_residuals_funded(),
+            dict(
+                funded =  bond.percent_residuals_funded(),
+                est_yield = Trancheur(bond).est_yield(),
+                term = bond.term(),
+                tranche = Trancheur(bond).residual_investment(),
+                amount_left = bond.amount_left_of_residuals(),
+                time_left = bond.days_to_auction(),
             )
-    return {'data': data}
+        )
+    return dict(data = data)
 
 class InvestingApi(View):
 
     def get(self, request):
-        bonds = Bond.get_all_unauctioned_bonds()
+        queries = request.META['QUERY_STRING'].split("+")
+        print(queries)
+        if queries:
+            print("queries")
+            bonds = QueryTranches().get_all_unauctioned_bonds_by_query(queries)
+        else:
+            bonds = Bond.get_all_unauctioned_bonds()
         data = format_tranches_for_json(bonds)
         return JsonResponse(data)
 
@@ -55,19 +59,6 @@ class Investing(View):
         # for query in queries:
         #     bonds = sorted(bonds, **query_options[query])
 
-class AllAvailableTranchesByMostFunded(View):
-
-    def get(self, request):
-        bonds = Bond.get_all_unauctioned_bonds_by_most_funded()
-        data = format_tranches_for_json(bonds)
-        return JsonResponse(data)
-
-class AllAvailableTranchesByLeastFunded(View):
-
-    def get(self, request):
-        bonds = Bond.get_all_unauctioned_bonds_by_least_funded()
-        data = format_tranches_for_json(bonds)
-        return JsonResponse(data)
 
 class Portfolio(View):
 

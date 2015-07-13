@@ -25,15 +25,16 @@
 
 /* Sidebar navigation */
 .nav-sidebar {
-  margin-right: -21px; /* 20px padding + 1px border */
+  margin-right: -10px; /* 20px padding + 1px border */
   margin-bottom: 20px;
-  margin-left: -20px;
+  margin-left: -10px;
   padding: 3px;
 }
 
 .nav-sidebar > li {
-  width: 50%;
+  padding: 2px;
   float: left;
+  text-align: center;
 }
 
 .nav-sidebar > .li_label {
@@ -42,13 +43,14 @@
 }
 
 .nav-sidebar > li > a {
-  padding-right: 20px;
-  padding-left: 20px;
+  padding-right: 2px;
+  padding-left: 2px;
   padding-top: 2px;
   padding-bottom: 2px;
   color: #00295A;
   border-radius: 3px;
   border: 1px solid white;
+  margin: auto;
 }
 .nav-sidebar > .active > a,
 .nav-sidebar > .active > a:hover,
@@ -77,6 +79,12 @@
 
 #tranche_div {
   padding: 0;
+}
+
+#tranche_loading {
+  margin-left: 50%;
+  margin-top: 20%;
+  position: absolute;
 }
 
 #portfolio_div {
@@ -112,6 +120,7 @@
     clear: both;
 }
 
+
 .header_fixed > thead,
 .header-fixed > tbody {
     overflow-y: auto;
@@ -120,7 +129,7 @@
 
 .header-fixed > tbody > tr > td,
 .header-fixed > thead > tr > th {
-    width: 20%;
+    width: 16.5;
     float: left;
 }
 

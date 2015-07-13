@@ -21,22 +21,17 @@ class Bond(models.Model):
     def get_all_unauctioned_bonds(cls):
         return Bond.objects.filter(auction_date__gt=timezone.now())
 
-    @classmethod
-    def get_all_unauctioned_bonds_by_most_funded(cls):
-        bonds = cls.get_all_unauctioned_bonds()
-        return sorted(bonds, key=lambda bond: bond.percent_residuals_funded(), reverse=True)
-
-    @classmethod
-    def get_all_unauctioned_bonds_by_least_funded(cls):
-        bonds = cls.get_all_unauctioned_bonds()
-        return sorted(bonds, key=lambda bond: bond.percent_residuals_funded(), reverse=False)
-
     def get_all_residuals(self):
         residuals = []
         for contract in self.contracts.all():
             if hasattr(contract, 'residual'):
                 residuals.append(contract)
         return residuals
+
+    def residual_face(self):
+        for contract in self.contracts.all():
+            if hasattr(contract, 'residual'):
+                return contract.face
 
     def num_residuals(self):
         return len(self.get_all_residuals())
@@ -54,6 +49,9 @@ class Bond(models.Model):
     def num_available_residuals(self):
         return self.num_residuals() - self.num_funded_residuals()
 
+    def amount_left_of_residuals(self):
+        return self.num_available_residuals() * self.residual_face()
+
     def percent_residuals_funded(self):
         percent_funded = self.num_funded_residuals() / self.num_residuals() * 100
         return round(percent_funded, 1)
@@ -62,15 +60,11 @@ class Bond(models.Model):
         timedelta = self.auction_date - timezone.now().replace(hour=0,minute=0,second=0,microsecond=0)
         return  timedelta.days
 
-    @classmethod
-    def get_all_unauctioned_bonds_by_least_days(cls):
-        bonds = cls.get_all_unauctioned_bonds()
-        return sorted(bonds, key=lambda bond: bond.days_to_auction(), reverse=False)
+    def term(self):
+        years = self.maturity.year - self.dated_date.year
+        months = self.maturity.month - self.dated_date.month
+        return months + (years * 12)
 
-    @classmethod
-    def get_all_unauctioned_bonds_by_most_days(cls):
-        bonds = cls.get_all_unauctioned_bonds()
-        return sorted(bonds, key=lambda bond: bond.days_to_auction(), reverse=True)
 
 class Contract(models.Model):
     face = models.DecimalField(max_digits=15, decimal_places=2)

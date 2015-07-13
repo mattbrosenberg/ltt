@@ -6,6 +6,7 @@ import datetime
 from django.utils import timezone
 from cashflow.models import Cashflow
 from cashflow.cashflow_calculator import CashflowCreator
+
 fake = Faker()
 
 class Seed_users:
@@ -23,6 +24,8 @@ class Seed_users:
 			user.set_password("password")
 			try:
 				user.save()
+				group = Group.objects.get(name='Investor')
+				user.groups.add(group)
 			except:
 				user = User.objects.get(username=username)
 			group = Group.objects.get(name='Investor')

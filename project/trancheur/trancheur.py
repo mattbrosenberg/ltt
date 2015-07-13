@@ -26,6 +26,14 @@ class Trancheur:
     def money_market_coupon(self):
         return round(Libor().most_recent_libor_rate() + self.money_market_spread, 4)
 
+    def est_yield(self):
+        money_market_annual_revenue = float(self.money_market_coupon()) * float(self.money_market_investment())
+        bond_annual_revenue = float(self.bond.coupon) * float(self.bond.face)
+        residual_annual_revenue = bond_annual_revenue - money_market_annual_revenue
+        est_yield = float(residual_annual_revenue / self.residual_investment())
+        return round(est_yield, 3)
+
+
     def originate_contracts(self):
         for i in range(self.number_of_residual_contracts()):
             residual_contract = Residual(

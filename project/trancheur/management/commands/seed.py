@@ -4,15 +4,21 @@ from trancheur.seed import Seed
 class Command(BaseCommand):
     help = "seeds the database with bonds, contracts and users"
 
-    def handle(self, *args, **options):
-        scenario = {
+    def handle(self, *args, **kwargs):
+        seeds = {
             'flex_investor_user': Seed.flex_investor_user,
             'scenario1': Seed.scenario1,
             'scenario2': Seed.scenario2,
-            'create_flex_user': Seed.flex_investor_user,
         }
-        
-        for arg in args:
-            scenario[arg]()
-            self.stdout.write('{} seeded'.format(scenario[arg]))
+        if args:
+            for arg in args:
+                self.stdout.write('starting {}'.format(seeds[arg]))
+                seeds[arg]()
+                self.stdout.write('{} complete'.format(seeds[arg]))
+        else:
+            self.stdout.write('starting full seed')
+            Seed.flex_investor_user()
+            Seed.scenario1()
+            Seed.scenario2()
+            self.stdout.write('full seed complete')
 

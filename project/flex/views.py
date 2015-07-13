@@ -8,6 +8,7 @@ import datetime
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm, PasswordResetForm
 from django.contrib.auth.models import User
 from trancheur.trancheur import Trancheur
+from cashflow.cashflow_calculator import CashflowCreator
 
 def format_tranches_for_json(bonds):
     data = []
@@ -75,7 +76,21 @@ class Investments(View):
     def get(self, request):
         user = self.request.user
         context_dict = [{'contract':purchase.contract.id, 'price':round(purchase.price * purchase.contract.face, 2), 'maturity': purchase.contract.bond.maturity, 'purchase_date': purchase.time.strftime("%Y-%m-%d %H:%M:%S")} for purchase in user.purchases.all() if purchase.contract.trades.latest().buyer == user]
-        return JsonResponse({'investments':context_dict})        
+        return JsonResponse({'investments':context_dict})    
+
+class Contract(View):
+
+    def average_return(self,list_of_cashflows,contract):
+        annualized_returns = [(1 + i['amount'] / contract.face) ** 2 - 1  for i in list_of_cashflows]
+        average_return = sum(annualized_returns)/len(annualized_returns)
+        return round(average_return*100,3)  
+
+    def get(self, request) :
+        contract = Residual.objects.get(id = request.GET['contract'])
+        cashflows = CashflowCreator(contract.bond).residual_cashflows()
+        cashflows_since_purchase = [cashflow for cashflow in cashflows if cashflow['date'] > contract.trades.latest().time.date()]
+        total = (sum(item['amount'] for item in cashflows_since_purchase))
+        return JsonResponse({'data':{'cashflows':cashflows_since_purchase,'total':total, 'average_return': self.average_return(cashflows_since_purchase,contract)}})   
 
 class Trades(View):
 

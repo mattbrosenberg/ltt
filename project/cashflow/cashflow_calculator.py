@@ -25,10 +25,10 @@ class CashflowCreator():
 			accumulated_money_market_cashflows = 0
 			while n < 6:
 				coupon = round(self.monthly_money_market_cashflow(date),2)
-				date = date + datetime.timedelta(days = 30)	
 				accumulated_money_market_cashflows += coupon
 				money_market_cashflow = Cashflow(amount = coupon, date = date, type_of = "money_market", bond = self.bond)
 				money_market_cashflow.save()
+				date = date + datetime.timedelta(days = 30)	
 				n += 1
 			residual_interest = float(self.bond.face * self.bond.coupon/2) - accumulated_money_market_cashflows
 			residual_cashflow = Cashflow(amount = residual_interest, date = date, type_of = "residual", bond = self.bond)

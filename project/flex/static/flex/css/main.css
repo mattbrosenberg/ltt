@@ -124,6 +124,7 @@ body {
 
 .header-fixed {
     width: 100%;
+    position: fixed;
 }
 
 .header-fixed > thead,

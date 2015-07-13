@@ -7,17 +7,15 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('trancheur', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='BondCache',
+            name='Libor',
             fields=[
                 ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
-                ('is_available', models.BooleanField(default=True)),
-                ('data', models.TextField()),
-                ('bond', models.OneToOneField(to='trancheur.Bond')),
+                ('date', models.DateField(unique=True)),
+                ('rate', models.DecimalField(max_digits=8, decimal_places=5)),
             ],
             options={
             },

@@ -1,5 +1,5 @@
-#potfolio_head {
-	position: fixed;
+#portfolio_table {
+	height: 80%;
 }
 
 .details {
@@ -23,4 +23,11 @@
 }
 #info {
 	width:99%;
+}
+#balance_row {
+	border-top:2px solid black;
+	font-weight: bold;
+}
+#balance_row td {
+	font-weight: bold;
 }

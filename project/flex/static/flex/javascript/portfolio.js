@@ -99,8 +99,8 @@
 
     var formatted_transactions = function(json) {
       var formatted_json = "";
-          for (var key in json) {
-            var value = json[key];
+          for (var key in json['transactions']) {
+            var value = json['transactions'][key];
             formatted_json +=
                   "<tr>" + 
                   "<td>" + value['date']+ "</td>"+
@@ -109,9 +109,9 @@
                   "<td>" + value['amount'] + "</td>" +"</tr>"
           }
           formatted_json +=
-                "<tr>" +
-                "<td colspan='4'> Available Balance </td>" +
-                "<td></td></tr>"
+                "<tr id = 'balance_row'>" +
+                "<td colspan='3' style='width:72%'> Available Balance </td>" +
+                "<td>" + json['balance'] + "</td></tr>"
     return formatted_json;
     }
 
@@ -122,7 +122,7 @@
         url: '/flex/portfolio/activity',
         success: function(json){
           $("#portfolio_head").html("<tr><th>Date</th><th>Category</th><th colspan='2' style='width:40%'>Description</th><th>Amount ($)</th></tr>");
-          $("#portfolio_items").html(formatted_transactions(json['transactions']));
+          $("#portfolio_items").html(formatted_transactions(json));
           console.log(json)
         }
       });

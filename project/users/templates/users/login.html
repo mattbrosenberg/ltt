@@ -6,8 +6,8 @@
       <h3>Login</h3>
       <form role="form-horizontal" name="login_form" action='/login/' method="POST">
         {% csrf_token %}
-          <div class="form-group col-offset-1 col-12">
-            {{ login_form }}
+          <div class="form-group col-offset-1 col-8">
+            {{ login_form.as_p }}
           </div>
         </div>
         <div id="update-submit" class="form-group">

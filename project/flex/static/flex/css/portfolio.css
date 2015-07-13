@@ -1,0 +1,26 @@
+#potfolio_head {
+	position: fixed;
+}
+
+.details {
+	height: fit-content;
+	background-color: #C0C0C0;
+	padding: 1em;
+}
+
+#cashflow_table th{
+	background-color: #8AC557;
+}
+#cashflow_table {
+	width: 40%;
+}
+#cashflow_table tr:last-child {
+	font-weight:bold;
+	border-top: 2px solid black;
+}
+#portfolio_items {
+	height:100%;
+}
+#info {
+	width:99%;
+}

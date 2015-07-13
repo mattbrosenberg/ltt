@@ -5,6 +5,7 @@ import csv
 from django.utils import timezone
 from django.contrib.auth.models import User, Group
 from trancheur.trancheur import Trancheur
+import random
 
 
 class Seed:
@@ -77,42 +78,20 @@ class Seed:
 
     @classmethod
     def scenario2(cls):
-        bond_data = [
-            {
-                'cusip' : 'FLEXBOND1',
-                'face' : 10000000,
-                'coupon' : 0.0325,
-                'initial_price' : 1.00,
-                'auction_date' : timezone.now() + timezone.timedelta(days=3),
-                'dated_date' : timezone.now() + timezone.timedelta(days=10),
-                'maturity' : timezone.now() + timezone.timedelta(days=10960),
-                'payments_per_year' : 2,
-            },
-            {
-                'cusip' : 'FLEXBOND2',
-                'face' : 5000000,
-                'coupon' : 0.05,
-                'initial_price' : 1.15,
-                'auction_date' : timezone.now() + timezone.timedelta(days=3),
-                'dated_date' : timezone.now() + timezone.timedelta(days=10),
-                'maturity' : timezone.now() + timezone.timedelta(days=7310),
-                'payments_per_year' : 2,
-            },
-            {
-                'cusip' : 'FLEXBOND3',
-                'face' : 230000,
-                'coupon' : 0.04,
-                'initial_price' : 1.09,
-                'auction_date' : timezone.now() + timezone.timedelta(days=1),
-                'dated_date' : timezone.now() + timezone.timedelta(days=8),
-                'maturity' : timezone.now() + timezone.timedelta(days=10958),
-                'payments_per_year' : 2,
-            },
-        ]
-        for data in bond_data:
-            bond = Bond(**data)
-            bond.save()
-            Trancheur(bond).originate_contracts()
+        num_bonds = 20
+        for count in range(num_bonds):
+        bond = Bond(
+            cusip = "FLXBOND" + str(count).zfill(2)
+            face = random.randrange(50000,2000000,10000)
+            coupon = 3.75 + (random.randint(0, 6) * .25)
+            initial_price = random.randint(98, 119) / 100
+            auction_date = timezone.now() + timezone.timedelta(days=random.randint(1,14))
+            dated_date = auction_date + timezone.timedelta(days=10)
+            maturity = dated_date + timezone.timedelta(days=random.randint(20,30)*365)
+            payments_per_year = 2
+        )
+        bond.save()
+        Trancheur(bond).originate_contracts()
 
 
 

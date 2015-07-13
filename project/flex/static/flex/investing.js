@@ -10,7 +10,7 @@ $(document).ready(function(){
 
   var formatPercent = function(number) {
     number = Number(number);
-    return parseFloat(number.toFixed(2) * 100)
+    return parseFloat(number.toFixed(3) * 100)
   }
 
   // Takes in a list of objects, and a key to sort by.

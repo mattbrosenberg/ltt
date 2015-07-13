@@ -5,7 +5,6 @@ from trancheur.models import Bond, Contract, Trade
 
 from users.forms import UpdateForm
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm, PasswordResetForm
-# from django.contrib.auth.models import User
 from users.models import User
 from trancheur.trancheur import Trancheur
 from .helper import QueryTranches
@@ -29,9 +28,7 @@ class InvestingApi(View):
 
     def get(self, request):
         queries = request.META['QUERY_STRING'].split("+")
-        print(queries)
         if queries:
-            print("queries")
             bonds = QueryTranches().get_all_unauctioned_bonds_by_query(queries)
         else:
             bonds = Bond.get_all_unauctioned_bonds()
@@ -48,17 +45,6 @@ class Investing(View):
 
     def get(self, request):
         return render(request, "flex/investing.html")
-
-        # queries = request.META['QUERY_STRING'].split("+")
-        # query_options = {
-        #     'least_percent_funded':{'key': lambda bond: bond.percent_residuals_funded(), 'reverse': False},
-        #     'most_percent_funded':{'key': lambda bond: bond.percent_residuals_funded(), 'reverse': True},
-        #     'least_days':{'key': lambda bond: bond.days_to_auction(), 'reverse': False},
-        #     'most_days':{'key': lambda bond: bond.days_to_auction(), 'reverse': True},
-        # }
-        # for query in queries:
-        #     bonds = sorted(bonds, **query_options[query])
-
 
 class Portfolio(View):
 

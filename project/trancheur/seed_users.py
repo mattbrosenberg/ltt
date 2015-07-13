@@ -21,10 +21,10 @@ class Seed_users:
 			user.set_password("password")
 			try:
 				user.save()
+				group = Group.objects.get(name='Investor')
+				user.groups.add(group)
 			except:
 				user = User.objects.get(username=username)
-			group = Group.objects.get(name='Investor')
-			user.groups.add(group)
 			time = timezone.now().replace(year = contract.bond.dated_date.year, month = contract.bond.dated_date.month, day = contract.bond.dated_date.day)
 			contract_sale = Trade(buyer = user, seller = self.owner, contract = contract, price = 1, time = time)
 			contract_sale.save()

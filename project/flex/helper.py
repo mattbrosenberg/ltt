@@ -14,7 +14,6 @@ class QueryTranches:
         filtered_bonds = []
         for bond in Bond.get_all_unauctioned_bonds():
             for query in query_list:
-                print(self.query_dict[query]["minimum"], Trancheur(bond).est_yield(), self.query_dict[query]["maximum"])
                 if self.query_dict[query]["minimum"] < Trancheur(bond).est_yield() < self.query_dict[query]["maximum"]:
                     filtered_bonds.append(bond)
                     break

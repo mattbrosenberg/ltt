@@ -79,3 +79,8 @@ width: 100%;
 .button:hover {
 	background-color: #33FF33;
 	text-decoration:none;
+}
+
+body {
+  font-family: 'Source Serif Pro', serif;
+}

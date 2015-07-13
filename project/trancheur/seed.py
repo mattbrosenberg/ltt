@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User, Group
 from trancheur.trancheur import Trancheur
 import random
+from flex.models import BondCache
 
 
 class Seed:
@@ -74,13 +75,15 @@ class Seed:
             cls.seed_bond_prices_from_csv(bond['instance'], bond['filename'])
             Trancheur(bond['instance']).originate_contracts()
             Seed_users(bond['instance']).create_users_and_sell_contracts()
+            bond['instance'].bondcache = BondCache(is_available=False)
+            bond['instance'].bondcache.save()
+
 
 
     @classmethod
     def scenario2(cls):
         num_bonds = 20
         for count in range(num_bonds):
-        bond = Bond(
             cusip = "FLXBOND" + str(count).zfill(2)
             face = random.randrange(50000,2000000,10000)
             coupon = 3.75 + (random.randint(0, 6) * .25)
@@ -89,9 +92,22 @@ class Seed:
             dated_date = auction_date + timezone.timedelta(days=10)
             maturity = dated_date + timezone.timedelta(days=random.randint(20,30)*365)
             payments_per_year = 2
-        )
-        bond.save()
-        Trancheur(bond).originate_contracts()
+
+            bond = Bond(
+                cusip = cusip,
+                face = face,
+                coupon = coupon,
+                initial_price = initial_price,
+                auction_date = auction_date,
+                dated_date = dated_date,
+                maturity = maturity,
+                payments_per_year = payments_per_year,
+            )
+            bond.save()
+            Trancheur(bond).originate_contracts()
+            bond.bondcache = BondCache()
+            bond.save()
+            bond.bondcache.save()
 
 
 

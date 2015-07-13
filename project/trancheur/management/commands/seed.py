@@ -20,6 +20,5 @@ class Command(BaseCommand):
             Seed.flex_investor_user()
             Seed.scenario1()
             Seed.scenario2()
-            value()
             self.stdout.write('full seed complete')
 

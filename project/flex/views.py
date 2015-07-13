@@ -8,32 +8,18 @@ from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm, Passwo
 from users.models import User
 from trancheur.trancheur import Trancheur
 from .helper import QueryTranches
-
-def format_tranches_for_json(bonds):
-    data = []
-    for bond in bonds:
-        data.append(
-            dict(
-                funded =  bond.percent_residuals_funded(),
-                est_yield = Trancheur(bond).est_yield(),
-                term = bond.term(),
-                tranche = Trancheur(bond).residual_investment(),
-                amount_left = bond.amount_left_of_residuals(),
-                time_left = bond.days_to_auction(),
-            )
-        )
-    return dict(data = data)
+from .models import BondCache
 
 class InvestingApi(View):
 
     def get(self, request):
-        queries = request.META['QUERY_STRING'].split("+")
-        if queries:
-            bonds = QueryTranches().get_all_unauctioned_bonds_by_query(queries)
-        else:
-            bonds = Bond.get_all_unauctioned_bonds()
-        data = format_tranches_for_json(bonds)
-        return JsonResponse(data)
+        # queries = request.META['QUERY_STRING'].split("+")
+        # if queries:
+        #     bonds = QueryTranches().get_all_unauctioned_bonds_by_query(queries)
+        # else:
+        #     bonds = Bond.get_all_unauctioned_bonds()
+        # data = format_tranches_for_json(bonds)
+        return JsonResponse(BondCache.get_all_unauctioned_bonds_as_json())
 
 class Index(View):
 

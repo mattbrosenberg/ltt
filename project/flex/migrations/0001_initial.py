@@ -7,14 +7,17 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('trancheur', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Cashflow',
+            name='BondCache',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
-                ('amount', models.DecimalField(decimal_places=2, max_digits=15)),
+                ('is_available', models.BooleanField(default=True)),
+                ('data', models.TextField()),
+                ('bond', models.OneToOneField(to='trancheur.Bond')),
             ],
             options={
             },

@@ -30,7 +30,8 @@ class Trancheur:
         money_market_annual_revenue = float(self.money_market_coupon()) * float(self.money_market_investment())
         bond_annual_revenue = float(self.bond.coupon) * float(self.bond.face)
         residual_annual_revenue = bond_annual_revenue - money_market_annual_revenue
-        return round(residual_annual_revenue / self.residual_investment(), 3)
+        est_yield = float(residual_annual_revenue / self.residual_investment())
+        return round(est_yield, 3)
 
 
     def originate_contracts(self):

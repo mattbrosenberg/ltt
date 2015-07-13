@@ -13,13 +13,14 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Account',
+            name='Transaction',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
-                ('balance', models.DecimalField(decimal_places=2, max_digits=15)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('user', models.ForeignKey(related_name='accounts', to=settings.AUTH_USER_MODEL)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
+                ('amount', models.DecimalField(max_digits=15, decimal_places=2)),
+                ('time', models.DateTimeField(auto_now_add=True)),
+                ('category', models.CharField(max_length=20, choices=[('DEPOSIT', 'Deposit'), ('WITHDRAWAL', 'Withdrawal'), ('INT', 'Interest Revenue'), ('PURCHASE', 'Purchase'), ('SALE', 'Sale')])),
+                ('description', models.CharField(max_length=100)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, related_name='transactions')),
             ],
             options={
             },

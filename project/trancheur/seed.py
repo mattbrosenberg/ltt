@@ -2,10 +2,11 @@ from .models import Bond, BondPrice
 from trancheur.trancheur import Trancheur
 from trancheur.seed_users import Seed_users
 import csv
+import datetime
 from django.utils import timezone
 from django.contrib.auth.models import User, Group
 from trancheur.trancheur import Trancheur
-
+from cashflow.cashflow_calculator import CashflowCreator
 
 class Seed:
 
@@ -72,6 +73,7 @@ class Seed:
             bond['instance'].save()
             cls.seed_bond_prices_from_csv(bond['instance'], bond['filename'])
             Trancheur(bond['instance']).originate_contracts()
+            CashflowCreator(bond['instance']).create_cashflows()
             Seed_users(bond['instance']).create_users_and_sell_contracts()
 
 

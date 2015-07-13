@@ -71,6 +71,13 @@ class Portfolio(View):
     def get(self, request):
         return render(request, "flex/portfolio.html")
 
+class Activity(View):
+
+    def get(self, request):
+        transactions = request.user.transactions.all()
+        context_dict = [{'date':transaction.time.strftime("%Y-%m-%d %H:%M:%S"), 'category': transaction.category, 'description':transaction.description, 'amount': transaction.amount} for transaction in transactions]    
+        return JsonResponse({'transactions':context_dict})
+
 class Investments(View):
 
     def get(self, request):
@@ -82,8 +89,11 @@ class Contract(View):
 
     def average_return(self,list_of_cashflows,contract):
         annualized_returns = [(1 + i['amount'] / contract.face) ** 2 - 1  for i in list_of_cashflows]
-        average_return = sum(annualized_returns)/len(annualized_returns)
-        return round(average_return*100,3)  
+        if len(annualized_returns) == 0:
+            return 0
+        else:    
+            average_return = sum(annualized_returns)/len(annualized_returns)
+            return round(average_return*100,3)  
 
     def get(self, request) :
         contract = Residual.objects.get(id = request.GET['contract'])

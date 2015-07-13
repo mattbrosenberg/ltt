@@ -78,25 +78,55 @@
         window.location.href="/flex/portfolio"
       })
 
-      $("#trade_history").on("click", function(event){
-    event.preventDefault();
-    $.ajax({
-      type: "GET",
-      url: '/flex/portfolio/history',
-      success: function(json){
-      	$("#portfolio_head").html("<tr><th>Contract</th><th>Buyer</th><th>Seller</th><th>Sale Proceeds</th><th>Sale Time</th></tr>");
-        $('#potfolio_head').empty();
-        $('#portfolio_items').empty();
-        var data = eval(json);
-        for (var key in data) {
-        	var value = data[key];
-        	for (x in value) {
-        		$("#portfolio_items").append("<tr> <td>" + value[x]['id'] + "</td> <td>" + value[x]['buyer'] + "<td>" + value[x]['seller'] + "</td> <td> $" + value[x]['proceeds'] + "</td> <td>" + value[x]['time'] + "</td> </tr>"  )
-        	}
-        }
+    //   $("#trade_history").on("click", function(event){
+    // event.preventDefault();
+    // $.ajax({
+    //   type: "GET",
+    //   url: '/flex/portfolio/history',
+    //   success: function(json){
+    //   	$("#portfolio_head").html("<tr><th>Date</th><th>Category</th><th>Description</th><th>Debit</th><th>Credit</th></tr>");
+    //     $('#portfolio_items').empty();
+    //     var data = eval(json);
+    //     for (var key in data) {
+    //     	var value = data[key];
+    //     	for (x in value) {
+    //     		$("#portfolio_items").append("<tr> <td>" + value[x]['id'] + "</td> <td>" + value[x]['buyer'] + "<td>" + value[x]['seller'] + "</td> <td> $" + value[x]['proceeds'] + "</td> <td>" + value[x]['time'] + "</td> </tr>"  )
+    //     	}
+    //     }
+    // }
+    // });
+    // });    
+
+    var formatted_transactions = function(json) {
+      var formatted_json = "";
+          for (var key in json) {
+            var value = json[key];
+            formatted_json +=
+                  "<tr>" + 
+                  "<td>" + value['date']+ "</td>"+
+                  "<td>" + value['category'] + "</td>" + 
+                  "<td colspan='2' style='width:40%'>" + value['description'] + "</td>"+
+                  "<td>" + value['amount'] + "</td>" +"</tr>"
+          }
+          formatted_json +=
+                "<tr>" +
+                "<td colspan='4'> Available Balance </td>" +
+                "<td></td></tr>"
+    return formatted_json;
     }
-    });
-    });    
+
+      $("#trade_history").on("click", function(event){
+        event.preventDefault();
+        $.ajax({
+        type: "GET",
+        url: '/flex/portfolio/activity',
+        success: function(json){
+          $("#portfolio_head").html("<tr><th>Date</th><th>Category</th><th colspan='2' style='width:40%'>Description</th><th>Amount ($)</th></tr>");
+          $("#portfolio_items").html(formatted_transactions(json['transactions']));
+          console.log(json)
+        }
+      });
+    }); 
 
 
 

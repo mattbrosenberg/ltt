@@ -80,6 +80,11 @@
     display: block;
 }
 
+.header-fixed > tbody > tr { 
+    cursor: pointer; 
+    cursor: hand; 
+}
+
 .header-fixed > tbody > tr:after,
 .header-fixed > thead > tr:after {
     content: ' ';
@@ -123,4 +128,12 @@
 
 #update-submit {
   text-align: center;
+}
+
+
+#footer {
+  /*height: 10px;*/
+  width: 100%;
+  border-top: 10px #00295A solid;
+  position: fixed;
 }

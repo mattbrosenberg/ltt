@@ -140,21 +140,29 @@ $(document).ready(function(){
 
   var format_footer = function(data) {
     formatted_footer = 
-    "<div id='footer_minimize'><span class='glyphicon glyphicon-menu-down'</span></div>"
+    // "<div id='footer_minimize'><span class='glyphicon glyphicon-menu-down'</span></div>" + 
+    "<div id='footer_data'>" +
+
+    "</div>"
     return formatted_footer
   }
 
   //TRANCHE DETAILS
+  $("#footer_minimize").hide()
+  $("#footer_data").hide()
   $(document).on("click", ".tranche", function(event){
     var footer_height = ($(window).outerHeight() / 2);
     $("#footer").height(footer_height);
     $("#footer").css({"border-top":"0px"});
-    $("#footer").html(format_footer());
+    $("#footer_minimize").show()
+    $("#footer_data").show()
+    // $("#footer").html(format_footer());
   })
   $(document).on("click", "#footer_minimize", function(event){
+    $("#footer_minimize").hide()
+    $("#footer_data").hide()
     $("#footer").height(0);
     $("#footer").css({"border-top":"10px #00295A solid"});
-
   })
 
 

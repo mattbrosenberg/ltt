@@ -53,7 +53,16 @@
         </table>
       </div>
       <div id="footer">
-        
+        <div id="footer_minimize"><span class='glyphicon glyphicon-menu-down'</span></div>
+        {% if perms.trancheur.can_own_contracts %}
+        <div id="footer_data">
+            Logged in.
+        </div>
+        {% else %}
+        <div id="footer_data">
+            <a href="/register/">Register</a> or <a href="/login/">Login</a> to see more.
+        </div>
+        {% endif %}
       </div>
     </div>
 

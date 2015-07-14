@@ -16,6 +16,11 @@ class BondCache(models.Model):
             tranche = float(Trancheur(self.bond).residual_investment()),
             amount_left = int(self.bond.amount_left_of_residuals()),
             time_left = int(self.bond.days_to_auction()),
+            tranche_id = self.id,
+            maturity_day = self.bond.maturity.day,
+            maturity_month = self.bond.maturity.month,
+            maturity_year = self.bond.maturity.year, 
+            payments_per_year = self.bond.payments_per_year,
         )
         self.data = json.dumps(data)
         super(BondCache, self).save(*args, **kwargs)

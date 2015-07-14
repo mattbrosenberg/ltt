@@ -1,6 +1,5 @@
 
 $(document).ready(function(){
-
   // HELPER FUNCTIONS
 
   var formatMoney = function(number) {
@@ -39,7 +38,7 @@ $(document).ready(function(){
     for (var i in json) {
       var item = json[i];
       formatted_json += 
-          "<tr>" +
+          "<tr class='tranche' id='"+ item['id'] +"'>" +
               "<td>" +
                 "<div class='progress'>" + 
                   "<div class='progress-bar progress-bar-success progress-bar-striped active' role='progressbar' aria-valuenow='40' aria-valuemin='0' aria-valuemax='100' style='width:" + 
@@ -138,5 +137,14 @@ $(document).ready(function(){
       }
     })
   })
+
+  //TRANCHE DETAILS
+  $(document).on("click", ".tranche", function(event){
+    var footer_height = ($(window).outerHeight() / 2);
+// ....
+    $("#footer").html("you just clicked on " + this.id + "tranche");
+  })
+
+
 
 });//end document

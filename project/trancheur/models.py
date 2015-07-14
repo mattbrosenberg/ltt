@@ -22,32 +22,22 @@ class Bond(models.Model):
         return Bond.objects.filter(auction_date__gt=timezone.now())
 
     def get_all_residuals(self):
-        residuals = []
-        for contract in self.contracts.all():
-            if hasattr(contract, 'residual'):
-                residuals.append(contract)
-        return residuals
+        return self.contracts.filter(type_of="residual")
 
     def residual_face(self):
-        for contract in self.contracts.all():
-            if hasattr(contract, 'residual'):
-                return contract.face
+        return self.contracts.filter(type_of="residual")[0].face
 
     def num_residuals(self):
-        return len(self.get_all_residuals())
+        return self.contracts.filter(type_of="residual").count()
 
     def get_all_funded_residuals(self):
-        funded_residuals = []
-        for residual in self.get_all_residuals():
-            if residual.trades.all().count() > 0:
-                funded_residuals.append(residual)
-        return funded_residuals
+        return self.contracts.filter(is_sold=True)
 
     def num_funded_residuals(self):
-        return len(self.get_all_funded_residuals())
+        return self.contracts.filter(is_sold=True).count()
 
     def num_available_residuals(self):
-        return self.num_residuals() - self.num_funded_residuals()
+        return self.contracts.filter(is_sold=False).count()
 
     def amount_left_of_residuals(self):
         return self.num_available_residuals() * self.residual_face()
@@ -70,6 +60,8 @@ class Contract(models.Model):
     face = models.DecimalField(max_digits=15, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     bond = models.ForeignKey('Bond', related_name='contracts')
+    type_of = models.CharField(max_length=20)
+    is_sold = models.BooleanField(default=False)
 
     class Meta:
         get_latest_by = "created_at"
@@ -82,7 +74,6 @@ class Contract(models.Model):
 
     def __str__(self):
         return self.bond.cusip + " | " + str(self.face) + " | " + str(self.owner())
-
 
 class Trade(models.Model):
     buyer = models.ForeignKey(User, related_name='purchases')
@@ -106,8 +97,20 @@ class MoneyMarket(Contract):
     issuance_date = models.DateField()
     maturity = models.DateField()
 
+    def save(self, *args, **kwargs):
+        self.type_of = "moneymarket"
+        if self.trades.all().count() > 0:
+            self.is_sold = True
+        super(MoneyMarket, self).save(*args, **kwargs)
+
 class Residual(Contract):
     payments_per_year = models.IntegerField()
+
+    def save(self, *args, **kwargs):
+        self.type_of = "residual"
+        if self.trades.all().count() > 0:
+            self.is_sold = True
+        super(Residual, self).save(*args, **kwargs)
 
 class BondPrice(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=5)

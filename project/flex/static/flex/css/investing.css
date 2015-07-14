@@ -101,7 +101,7 @@
 
 .header-fixed > tbody > tr > td,
 .header-fixed > thead > tr > th {
-    width: 16.5%;
+    width: 14%;
     float: left;
 }
 
@@ -136,4 +136,7 @@
   width: 100%;
   border-top: 10px #00295A solid;
   position: fixed;
+  bottom: 0px;
+  height: 10px;
+
 }

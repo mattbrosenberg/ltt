@@ -25,7 +25,7 @@ class Bond(models.Model):
         return self.contracts.filter(type_of="residual")
 
     def residual_face(self):
-        return self.contracts.filter(type_of="residual")[0].face
+        return float(self.contracts.filter(type_of="residual")[0].face)
 
     def num_residuals(self):
         return self.contracts.filter(type_of="residual").count()
@@ -75,6 +75,11 @@ class Contract(models.Model):
     def __str__(self):
         return self.bond.cusip + " | " + str(self.face) + " | " + str(self.owner())
 
+    def save(self, *args, **kwargs):
+        if self.trades.all().count() > 0:
+            self.is_sold = True
+        super(Contract, self).save(*args, **kwargs)
+
 class Trade(models.Model):
     buyer = models.ForeignKey(User, related_name='purchases')
     seller = models.ForeignKey(User, related_name='sales')
@@ -99,8 +104,6 @@ class MoneyMarket(Contract):
 
     def save(self, *args, **kwargs):
         self.type_of = "moneymarket"
-        if self.trades.all().count() > 0:
-            self.is_sold = True
         super(MoneyMarket, self).save(*args, **kwargs)
 
 class Residual(Contract):
@@ -108,8 +111,6 @@ class Residual(Contract):
 
     def save(self, *args, **kwargs):
         self.type_of = "residual"
-        if self.trades.all().count() > 0:
-            self.is_sold = True
         super(Residual, self).save(*args, **kwargs)
 
 class BondPrice(models.Model):

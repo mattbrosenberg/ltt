@@ -138,11 +138,23 @@ $(document).ready(function(){
     })
   })
 
+  var format_footer = function(data) {
+    formatted_footer = 
+    "<div id='footer_minimize'><span class='glyphicon glyphicon-menu-down'</span></div>"
+    return formatted_footer
+  }
+
   //TRANCHE DETAILS
   $(document).on("click", ".tranche", function(event){
     var footer_height = ($(window).outerHeight() / 2);
-// ....
-    $("#footer").html("you just clicked on " + this.id + "tranche");
+    $("#footer").height(footer_height);
+    $("#footer").css({"border-top":"0px"});
+    $("#footer").html(format_footer());
+  })
+  $(document).on("click", "#footer_minimize", function(event){
+    $("#footer").height(0);
+    $("#footer").css({"border-top":"10px #00295A solid"});
+
   })
 
 

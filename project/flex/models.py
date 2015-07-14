@@ -23,6 +23,7 @@ class BondCache(models.Model):
             payments_per_year = self.bond.payments_per_year,
         )
         self.data = json.dumps(data)
+        print("data set")
         super(BondCache, self).save(*args, **kwargs)
 
     @classmethod

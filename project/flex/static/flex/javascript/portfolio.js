@@ -5,9 +5,9 @@
           for (var key in json) {
             var value = json[key];
             formatted_json +=
-                  "<tr data-id='" + value['contract'] +"'><td><button type='button' class='btn btn-primary' id=button"+value['contract'] + ">"+ value['contract']+"</button> </td>" + 
+                  "<tr data-id='" + value['contract'] +"'><td><button type='button' class='btn btn-primary' id=button"+value['contract'] + ">"+ value['contract']+"</button> </td>" +
                   "<td> $" + value['price']+ "</td>"+
-                  "<td>$" + value['price'] + "</td>" + 
+                  "<td>$" + value['price'] + "</td>" +
                   "<td>" + value['purchase_date'] + "</td>"+
                   "<td>" + value['maturity'] + "</td>" +"</tr>"+
                   "<tr><td colspan='5' id='info'><div class='collapse details' data-id='" + value['contract'] +"'>stuff here</div></td></tr>"
@@ -16,10 +16,10 @@
   };
 
     var formatted_cashflows = function(json) {
-      var formatted_json = 
+      var formatted_json =
 
       "<h2>Details</h2>" +
-      "<h3> Average annualized return on investment: </h3>" + 
+      "<h3> Average annualized return on investment: </h3>" +
       "<p>" + json['average_return'] + "%</p>" +
       "<h3>Cashflows received since contract's purchase: </h3>" +
               "<table class='table table-hover table-condensed' id='cashflow_table'>" +
@@ -35,7 +35,7 @@
                   }
         formatted_json += "<tr>" +
         "<td> Total </td>" +
-        "<td>" + json['total'] + "</td>" + 
+        "<td>" + json['total'] + "</td>" +
         "</table>"
       return formatted_json;
     };
@@ -95,16 +95,16 @@
     //     }
     // }
     // });
-    // });    
+    // });
 
     var formatted_transactions = function(json) {
       var formatted_json = "";
           for (var key in json) {
             var value = json[key];
             formatted_json +=
-                  "<tr>" + 
+                  "<tr>" +
                   "<td>" + value['date']+ "</td>"+
-                  "<td>" + value['category'] + "</td>" + 
+                  "<td>" + value['category'] + "</td>" +
                   "<td colspan='2' style='width:40%'>" + value['description'] + "</td>"+
                   "<td>" + value['amount'] + "</td>" +"</tr>"
           }
@@ -126,8 +126,8 @@
           console.log(json)
         }
       });
-    }); 
+    });
 
 
 
-});  
+});

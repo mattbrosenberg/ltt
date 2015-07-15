@@ -83,7 +83,6 @@ class Contract(models.Model):
     def __str__(self):
         return self.bond.cusip + " | " + str(self.face) + " | " + str(self.owner())
 
-
 class Trade(models.Model):
     buyer = models.ForeignKey(User, related_name='purchases')
     seller = models.ForeignKey(User, related_name='sales')

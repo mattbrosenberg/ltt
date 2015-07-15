@@ -1,6 +1,5 @@
-from .models import Bond, Contract, Residual, MoneyMarket
+from trancheur.models import Bond, Contract, Residual, MoneyMarket
 from libor.models import Libor
-
 import datetime
 
 class Trancheur:

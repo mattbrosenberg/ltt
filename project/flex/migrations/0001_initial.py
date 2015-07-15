@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BondCache',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('id', models.AutoField(auto_created=True, serialize=False, primary_key=True, verbose_name='ID')),
                 ('is_available', models.BooleanField(default=True)),
                 ('data', models.TextField()),
                 ('bond', models.OneToOneField(to='trancheur.Bond')),

@@ -12,6 +12,15 @@ $(document).ready(function(){
     return parseFloat(number.toFixed(2))
   }
 
+  var getTranche = function(list, tranche_id) {
+    for (i in list) {
+      var tranche = list[i];
+      if (tranche["tranche_id"] == tranche_id) {
+        return tranche
+      }
+    }
+  }
+
   // Takes in a list of objects, and a key to sort by.
   // Key param can represent a string or number.
   // Has an optional param [reverse], if true, will return reversed sort.
@@ -38,7 +47,7 @@ $(document).ready(function(){
     for (var i in json) {
       var item = json[i];
       formatted_json += 
-          "<tr class='tranche' id='"+ item['id'] +"'>" +
+          "<tr class='tranche' id='"+ item['tranche_id'] +"'>" +
               "<td>" +
                 "<div class='progress'>" + 
                   "<div class='progress-bar progress-bar-success progress-bar-striped active' role='progressbar' aria-valuenow='40' aria-valuemin='0' aria-valuemax='100' style='width:" + 
@@ -90,7 +99,6 @@ $(document).ready(function(){
       query.push(this.id);
     });
     query = query.join("+");
-    console.log(query);
     $.ajax({
       type: "GET",
       url: '/flex/api/investing/',
@@ -106,7 +114,6 @@ $(document).ready(function(){
 
 
   ajax_tranches(function(tranches){
-    console.log(tranches)
   });
 
   $(".filtering").click(function(){
@@ -118,11 +125,15 @@ $(document).ready(function(){
   $(document).on("click", ".sorting", function(event){
     event.preventDefault();
     key = this.id;
-    console.log(key);
     $(this).find(".glyphicon").each(function(){
       if ( $(this).hasClass("glyphicon-sort") ) {
-        $(this).removeClass("glyphicon-sort").addClass("glyphicon-sort-by-attributes");
-        tranches = sortBy(tranches, key)
+        $(this).removeClass("glyphicon-sort").addClass("glyphicon-sort-by-attributes-alt");
+        tranches = sortBy(tranches, key, true)
+        $("#tranche_items").html(formatTranche(tranches));
+      }
+      else if ( $(this).hasClass("glyphicon-sort-by-attributes-alt") ) {
+        $(this).removeClass("glyphicon-sort-by-attributes-alt").addClass("glyphicon-sort-by-attributes");
+        tranches = sortBy(tranches, key, false)
         $("#tranche_items").html(formatTranche(tranches));
       }
       else if ( $(this).hasClass("glyphicon-sort-by-attributes") ) {
@@ -130,41 +141,48 @@ $(document).ready(function(){
         tranches = sortBy(tranches, key, true)
         $("#tranche_items").html(formatTranche(tranches));
       }
-      else if ( $(this).hasClass("glyphicon-sort-by-attributes-alt") ) {
-        $(this).removeClass("glyphicon-sort-by-attributes-alt").addClass("glyphicon-sort-by-attributes");
-        tranches = sortBy(tranches, key)
-        $("#tranche_items").html(formatTranche(tranches));
-      }
     })
   })
 
-  var format_footer = function(data) {
-    formatted_footer = 
-    // "<div id='footer_minimize'><span class='glyphicon glyphicon-menu-down'</span></div>" + 
-    "<div id='footer_data'>" +
-
-    "</div>"
-    return formatted_footer
+  //TRANCHE DETAILS
+  var populate_footer_data = function(tranche) {
+    $("#footer_data").find('#face').html(formatMoney(tranche["face"]));
+    $("#footer_data").find("#dated_date").html(tranche["dated_date_year"] + "-" + tranche["dated_date_month"] + "-" + tranche["dated_date_day"]);
+    $("#footer_data").find("#maturity").html(tranche["maturity_year"] + "-" + tranche["maturity_month"] + "-" + tranche["maturity_day"]);
+    $("#footer_data").find("#payments_per_year").html(tranche["payments_per_year"]);
+    $("#footer_data").find("#available").html(formatMoney(tranche["amount_left"]));
+    $("#footer_data").find("#est_yield").html(formatPercent(tranche["est_yield"]));
+    $("#footer_data").find("#tranche_id").attr({
+      "value": tranche["tranche_id"],
+    });
+    $("#footer_data").find("#num_contracts").attr({
+      "max": tranche["num_available"],
+    });
   }
 
-  //TRANCHE DETAILS
+  var tranche = null;
   $("#footer_minimize").hide()
   $("#footer_data").hide()
   $(document).on("click", ".tranche", function(event){
-    var footer_height = ($(window).outerHeight() / 2);
-    $("#footer").height(footer_height);
+    var footer_height = ($(window).height() - $(".navbar").height());
+    $("#footer").animate({"height":footer_height});
     $("#footer").css({"border-top":"0px"});
-    $("#footer_minimize").show()
-    $("#footer_data").show()
-    // $("#footer").html(format_footer());
+    $("#footer_minimize").show();
+    $("#footer_data").show();
+    tranche = getTranche(tranches, this.id);
+    populate_footer_data(tranche);
   })
+
   $(document).on("click", "#footer_minimize", function(event){
     $("#footer_minimize").hide()
     $("#footer_data").hide()
-    $("#footer").height(0);
+    $("#footer").animate({"height":0});
     $("#footer").css({"border-top":"10px #00295A solid"});
   })
 
-
+  $(document).on("click, change", "#num_contracts", function(event){
+    var num_contracts = $(this).val();
+    $("#purchase_order_amount").html(formatMoney(num_contracts * tranche["face"]));
+  })
 
 });//end document

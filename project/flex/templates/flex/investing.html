@@ -56,7 +56,23 @@
         <div id="footer_minimize"><span class='glyphicon glyphicon-menu-down'</span></div>
         {% if perms.trancheur.can_own_contracts %}
         <div id="footer_data">
-            Logged in.
+          <p> Face: $<span id='face'><span></p>
+          <p> Dated date: <span id='dated_date'><span></p>
+          <p> Maturity: <span id='maturity'></span></p>
+          <p> Interest payments: <span id='payments_per_year'></span>/year</p>
+          <p> Available:  $<span id='available'></span></p>
+          <p> Estimated Current Yield: <span id='est_yield'></span>%</p>
+          <br>
+          <p> Order amount: <b>$<span id='purchase_order_amount'>0.00</span></b></p>
+            <div class='input-group'>
+              <form id='purchase_order_form' action='/flex/purchase/' method='POST'>
+                {% csrf_token %}
+                <input name="num_contracts" id='num_contracts' class='form-control' type="number" value="0" min="0" max="0"></input>
+                <input type="hidden" name="tranche_id" id="tranche_id" value=""></input>
+                <input id="purchase_order_submit" class='btn btn-sm' type="submit" value='Submit Order'>
+              </form>
+            </div>
+          </p>
         </div>
         {% else %}
         <div id="footer_data">

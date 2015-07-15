@@ -9,9 +9,9 @@ d.trigger("activate.bs.scrollspy")},b.prototype.clear=function(){a(this.selector
 
 function drawTable() {
     // Heights for calculating content area;
-    var window_height = $(window).outerHeight();
-    var toolbars = $("#navbar").outerHeight();
-    var tranche_head = $("#tranche_head").outerHeight();
+    var window_height = $(window).height();
+    var toolbars = $("#navbar").height();
+    var tranche_head = $("#tranche_head").height();
     $("#tranche_items").height(window_height - toolbars - (tranche_head * 1.5));
 }
 

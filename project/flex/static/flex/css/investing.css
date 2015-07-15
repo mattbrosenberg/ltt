@@ -148,8 +148,33 @@
   padding-left: 40%;
   cursor: pointer; 
   cursor: hand; 
+  border-top: white 2px dotted;
 }
 
 #footer_data {
-  
+ margin-left: .5em;
+ margin-top: 2em;
+}
+
+#purchase_order_form > input {
+  margin: 0;
+}
+
+#purchase_order_submit:hover {
+  background-color: lightgray;
+}
+
+#purchase_order_submit:focus {
+  background-color: black;
+  color: white;
+}
+
+#num_contracts {
+  width: auto;
+  border-radius: 0;
+  margin: 0;
+}
+
+#purchase_order_submit {
+  margin-bottom: 0;
 }

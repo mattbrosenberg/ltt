@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from .views import Index, Investing, Portfolio, Account, Trades, Investments, InvestingApi, Contract, Activity
+from .views import Index, Investing, Portfolio, Account, Trades, Investments, InvestingApi, Contract, Activity, Purchase
 
 
 urlpatterns = patterns('',
@@ -13,5 +13,6 @@ urlpatterns = patterns('',
     url(r'^portfolio/contract', Contract.as_view()),
     url(r'^account/$', Account.as_view()),
     url(r'^trades/$', Trades.as_view()),
+    url(r'^purchase/$', Purchase.as_view()),
     url(r'^api/investing/', InvestingApi.as_view()),
 )

@@ -31,13 +31,13 @@ class Bond(models.Model):
         return self.contracts.filter(type_of="residual").count()
 
     def get_all_funded_residuals(self):
-        return self.contracts.filter(is_sold=True)
+        return self.contracts.filter(is_sold=True, type_of="residual")
 
     def num_funded_residuals(self):
-        return self.contracts.filter(is_sold=True).count()
+        return self.contracts.filter(is_sold=True, type_of="residual").count()
 
     def num_available_residuals(self):
-        return self.contracts.filter(is_sold=False).count()
+        return self.contracts.filter(is_sold=False, type_of="residual").count()
 
     def amount_left_of_residuals(self):
         return self.num_available_residuals() * self.residual_face()

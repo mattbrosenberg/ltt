@@ -17,13 +17,17 @@ class BondCache(models.Model):
             amount_left = int(self.bond.amount_left_of_residuals()),
             time_left = int(self.bond.days_to_auction()),
             tranche_id = self.id,
-            maturity_day = self.bond.maturity.day,
-            maturity_month = self.bond.maturity.month,
-            maturity_year = self.bond.maturity.year, 
+            maturity_day = str(self.bond.maturity.day).zfill(2),
+            maturity_month = str(self.bond.maturity.month).zfill(2),
+            maturity_year = str(self.bond.maturity.year), 
             payments_per_year = self.bond.payments_per_year,
+            face = self.bond.residual_face(),
+            dated_date_day = str(self.bond.dated_date.day).zfill(2),
+            dated_date_month = str(self.bond.dated_date.month).zfill(2),
+            dated_date_year = str(self.bond.dated_date.year),
+            num_available = self.bond.num_available_residuals(),
         )
         self.data = json.dumps(data)
-        print("data set")
         super(BondCache, self).save(*args, **kwargs)
 
     @classmethod

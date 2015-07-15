@@ -45,8 +45,9 @@ Further functionality coming soon:
      $ python3 manage.py createsuperuser
      $ username: flex
      $ password: password
-     $ python3 manage.py seed scenario1
-     $ python3 manage.py seed scenario2
+     
+     # seed alone will run all options by default
+     $ python3 manage.py seed [flex_investor_user] [scenario1] [scenario2]
 
      
      

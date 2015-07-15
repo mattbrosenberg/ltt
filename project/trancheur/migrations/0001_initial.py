@@ -48,6 +48,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, serialize=False, primary_key=True, verbose_name='ID')),
                 ('face', models.DecimalField(max_digits=15, decimal_places=2)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('type_of', models.CharField(max_length=20)),
+                ('is_sold', models.BooleanField(default=False)),
             ],
             options={
                 'get_latest_by': 'created_at',

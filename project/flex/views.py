@@ -9,6 +9,7 @@ from trancheur.trancheur import Trancheur
 from cashflow.cashflow_calculator import CashflowCreator
 from .helper import QueryTranches
 from .models import BondCache
+from .services.trader import Trader
 
 class InvestingApi(View):
 
@@ -90,3 +91,14 @@ class Account(View):
 
     def get(self, request):
         return render(request, "flex/account.html", {'form':self.form(user=request.user)})
+
+class Purchase(View):
+
+    def post(self, request):
+        bond = Bond.objects.get(id=request.POST['tranche_id'])
+        for count in range(int(request.POST['num_contracts'])):
+            Trader.make_first_trade(request.user, bond)
+        return redirect("/flex/investing/")
+
+    def get(self, request):
+        pass

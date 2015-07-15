@@ -80,6 +80,11 @@
     display: block;
 }
 
+.header-fixed > tbody > tr { 
+    cursor: pointer; 
+    cursor: hand; 
+}
+
 .header-fixed > tbody > tr:after,
 .header-fixed > thead > tr:after {
     content: ' ';
@@ -96,7 +101,7 @@
 
 .header-fixed > tbody > tr > td,
 .header-fixed > thead > tr > th {
-    width: 16.5%;
+    width: 14%;
     float: left;
 }
 
@@ -123,4 +128,53 @@
 
 #update-submit {
   text-align: center;
+}
+
+
+#footer {
+  width: 100%;
+  border-top: 10px #00295A solid;
+  position: fixed;
+  bottom: 0px;
+  background-color: white;
+}
+
+#footer_minimize {
+  background-color: #00295A;
+  color: white;
+  width: inherit;
+  top: 0px;
+  float: left;
+  padding-left: 40%;
+  cursor: pointer; 
+  cursor: hand; 
+  border-top: white 2px dotted;
+}
+
+#footer_data {
+ margin-left: .5em;
+ margin-top: 2em;
+}
+
+#purchase_order_form > input {
+  margin: 0;
+}
+
+#purchase_order_submit:hover {
+  background-color: lightgray;
+}
+
+#purchase_order_submit:focus {
+  background-color: black;
+  color: white;
+}
+
+#num_contracts {
+  width: auto;
+  border-radius: 0;
+  margin: 0;
+}
+
+#purchase_order_submit {
+  margin-bottom: 0;
 }

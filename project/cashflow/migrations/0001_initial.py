@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Cashflow',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('id', models.AutoField(auto_created=True, serialize=False, primary_key=True, verbose_name='ID')),
                 ('amount', models.DecimalField(max_digits=15, decimal_places=2)),
                 ('date', models.DateField()),
                 ('type_of', models.CharField(max_length=20)),

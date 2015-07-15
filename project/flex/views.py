@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.http import HttpResponse, JsonResponse
-from trancheur.models import Bond, Contract, Trade, Residual
+from trancheur.models import Bond, Contract, Trade, Residual, BondPrice
 from users.forms import UpdateForm
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm, PasswordResetForm
 from users.models import User
@@ -49,9 +49,17 @@ class Activity(View):
 
 class Investments(View):
 
+    def current_value(self, contract):
+        return (round((float(contract.bond.prices.latest().price * contract.bond.face) - Trancheur(contract.bond).money_market_investment()) / Trancheur(contract.bond).number_of_residual_contracts(),2))
+
+    def change_in_value(self, purchase):
+        p1 = float(purchase.price * purchase.contract.face)
+        p2 = self.current_value(purchase.contract)
+        return ((p2-p1)/p1 * 100)
+
     def get(self, request):
         user = self.request.user
-        context_dict = [{'contract':purchase.contract.id, 'price':round(purchase.price * purchase.contract.face, 2), 'maturity': purchase.contract.bond.maturity, 'purchase_date': purchase.time.strftime("%Y-%m-%d %H:%M:%S")} for purchase in user.purchases.all() if purchase.contract.trades.latest().buyer == user]
+        context_dict = [{'contract':purchase.contract.id, 'price':round(purchase.price * purchase.contract.face, 2), 'current_value': self.current_value(purchase.contract), 'maturity': purchase.contract.bond.maturity, 'purchase_date': purchase.time.strftime("%Y-%m-%d %H:%M:%S"), 'change_in_value': self.change_in_value(purchase)} for purchase in user.purchases.all() if purchase.contract.trades.latest().buyer == user]
         return JsonResponse({'investments':context_dict})    
 
 class Contract(View):
@@ -64,12 +72,12 @@ class Contract(View):
             average_return = sum(annualized_returns)/len(annualized_returns)
             return round(average_return*100,3)  
 
-    def get(self, request) :
+    def get(self, request):
         contract = Residual.objects.get(id = request.GET['contract'])
         cashflows = CashflowCreator(contract.bond).residual_cashflows()
         cashflows_since_purchase = [cashflow for cashflow in cashflows if cashflow['date'] > contract.trades.latest().time.date()]
         total = (sum(item['amount'] for item in cashflows_since_purchase))
-        return JsonResponse({'data':{'cashflows':cashflows_since_purchase,'total':total, 'average_return': self.average_return(cashflows_since_purchase,contract)}})   
+        return JsonResponse({'data':{'cashflows':cashflows_since_purchase,'total':total, 'average_return': self.average_return(cashflows_since_purchase,contract), 'current_value':Investments().current_value(contract)}})   
 
 class Trades(View):
 

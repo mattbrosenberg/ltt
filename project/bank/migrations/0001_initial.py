@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Transaction',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('id', models.AutoField(auto_created=True, serialize=False, primary_key=True, verbose_name='ID')),
                 ('amount', models.DecimalField(max_digits=15, decimal_places=2)),
                 ('time', models.DateTimeField(auto_now_add=True)),
                 ('category', models.CharField(max_length=20)),

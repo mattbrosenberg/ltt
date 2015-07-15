@@ -24,3 +24,12 @@ $(function() {
 });
 
 
+  var formatMoney = function(number) {
+    number = Number(number);
+    return number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+  }
+
+  var formatPercent = function(number) {
+    number = Number(number);
+    return parseFloat(number.toFixed(2))
+  }

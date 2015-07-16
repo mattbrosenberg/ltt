@@ -1,4 +1,5 @@
 from django.test import TestCase, Client
+from django.contrib.auth.models import User
 from trancheur.models import Bond, Contract, Trade, MoneyMarket, Residual
 from trancheur.trancheur import Trancheur
 from django.utils import timezone
@@ -14,23 +15,25 @@ kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
 class FlexTest(TestCase):
     def setUp(self):
         self.client = Client()
+        # self.user = User()
         self.username = 'adickens'
         self.password = 'password'
-        self.old_password = 'old'
-        self.new_password = 'new'
 
         print ("=====SETTING UP=====")
 
     def test_investing_view(self):
         response = self.client.get('/flex/investing/')
+        self.assertEqual(response.request['REQUEST_METHOD'],'GET')
         self.assertEqual(response.status_code, 200)
 
     def test_portfolio_view(self):
         response = self.client.get('/flex/portfolio/')
+        self.assertEqual(response.request['REQUEST_METHOD'],'GET')
         self.assertEqual(response.status_code, 200)
 
     def test_account_view(self):
         response = self.client.get('/flex/account/')
+        self.assertEqual(response.request['REQUEST_METHOD'],'GET')
         self.assertEqual(response.status_code, 200)
 
     def test_client_registration(self):
@@ -46,16 +49,8 @@ class FlexTest(TestCase):
         self.assertEqual(response.request['PATH_INFO'], '/login/')
         self.assertEqual(response.status_code, 200)
 
-    # def test_update_account(self):
-    #     response = self.client.post('/flex/account/', {'username':self.username, 'password':self.password}, **kwargs)
-    #     self.assertEqual(response.request['REQUEST_METHOD'],'POST')
-    #     self.assertEqual(response.request['PATH_INFO'], '/register/')
+    # def test_get_activity(self):
+    #     data = {'amount':50000.00, 'date':timezone.now, 'description':'Deposit to account', 'category':'DEPOSIT'}
+    #     response = self.client.get('/flex/portfolio/activity', data=data, **kwargs)
+    #     # pp.pprint(response.request)
     #     self.assertEqual(response.status_code, 200)
-
-
-    # def test_client_login(self, **kwargs):
-    #     response = self.client.post('/login/', {'username':'adickens', 'password':'password'}, **kwargs)
-    #     response_content = response.content
-    #     pp.pprint(response_content)
-    #     response_content = json.loads(response_content.decode())
-        # pp.pprint(response_content['item'])

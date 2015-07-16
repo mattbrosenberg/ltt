@@ -99,7 +99,8 @@ class Purchase(View):
         trade_ids = []
         for count in range(int(request.POST['num_contracts'])):
             trade = Trader.make_first_trade(request.user, bond)
-            trade_ids.append(trade.id)
+            if trade:
+                trade_ids.append(trade.id)
         request.session['trade_ids'] = trade_ids
         return redirect("/flex/purchase/")
 

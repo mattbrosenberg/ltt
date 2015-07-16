@@ -6,10 +6,18 @@ from bank.models import Transaction
 class Trader:
 
     @staticmethod
+    def get_available_residual(bond):
+        contracts = Contract.objects.filter(bond=bond, is_sold=False)
+        for contract in contracts:
+            if hasattr(contract, "residual"):
+                print(contract)
+                return contract
+
+    @staticmethod
     def make_first_trade(buyer, bond, price=1):
         seller = User.objects.get(username="flex")
         try:
-            contract = Contract.objects.filter(bond=bond, is_sold=False)[0]
+            contract = get_available_residual(bond)
             trade = Trade(
                 buyer=buyer,
                 seller=User.objects.get(username="flex"),

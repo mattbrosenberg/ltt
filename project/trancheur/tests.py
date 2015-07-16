@@ -1,5 +1,6 @@
 from django.test import TestCase, Client
-from trancheur.models import Bond, Contract, Trade, MoneyMarket, Residual, BondPrice
+from trancheur.models import Bond, Contract, Trade, MoneyMarket, Residual
+from trancheur.trancheur import Trancheur
 from django.utils import timezone
 from trancheur.fixtures import BondFactory, ContractFactory, TradeFactory, MoneyMarketFactory, ResidualFactory, BondPriceFactory
 
@@ -9,7 +10,7 @@ class Trancheur_app_tests(TestCase):
     def setUp(self):
         self.bond = BondFactory(
             cusip='FLEXBOND0',
-            face = 10000.00,
+            face = 10000000.00,
             coupon = 0.035,
             initial_price = 1.02,
             auction_date = timezone.now() + timezone.timedelta(days=3),
@@ -52,6 +53,15 @@ class Trancheur_app_tests(TestCase):
     def test_payments_per_year(self):
         self.assertEqual(self.bond.payments_per_year, 2)
         self.assertEqual(self.residual.payments_per_year, 2)
+
+    def test_num_residuals(self):
+        self.assertEqual(self.bond.num_residuals(), 1)
+
+    def test_days_to_auction(self):
+        self.assertEqual(self.bond.days_to_auction(), 3)
+
+    def test_term(self):
+        self.assertEqual(self.bond.term(), 360)
 
     def test_get_request(self):
         response = self.client.get('/')

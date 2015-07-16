@@ -12,7 +12,7 @@
 #   - dist/**/*.js
 #
 src_files:
-  -flex/static/flex/javascript/portfolio.js
+  - flex/static/flex/javascript/portfolio.js
 
 # stylesheets
 #

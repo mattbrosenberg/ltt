@@ -57,7 +57,7 @@ $(document).ready(function(){
                 "</div>" + 
               "</td>" +
               "<td>" + formatPercent(item['est_yield']) + "% </td>" +
-              "<td> " + item['term'] + "/mo </td>" +
+              "<td> " + item['term'] + " mo. </td>" +
               "<td> $" + formatMoney(item['tranche']) + "</td>" +
               "<td> $" + formatMoney(item['amount_left']) + "</td>" +
               "<td> " + item['time_left'] + " days </td>" +

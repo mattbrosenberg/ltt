@@ -14,13 +14,12 @@ from .services.trader import Trader
 class InvestingApi(View):
 
     def get(self, request):
-        # queries = request.META['QUERY_STRING'].split("+")
-        # if queries:
-        #     bonds = QueryTranches().get_all_unauctioned_bonds_by_query(queries)
-        # else:
-        #     bonds = Bond.get_all_unauctioned_bonds()
-        # data = format_tranches_for_json(bonds)
-        return JsonResponse(BondCache.get_all_unauctioned_bonds_as_json())
+        queries = request.META['QUERY_STRING'].split("+")
+        if queries[0]:
+            data = BondCache.get_all_unauctioned_bonds_by_query_as_json(queries)
+        else:
+            data = BondCache.get_all_unauctioned_bonds_as_json()
+        return JsonResponse(data)
 
 class Index(View):
 

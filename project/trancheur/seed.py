@@ -44,6 +44,14 @@ class Seed:
         user.groups.add(group)
 
     @classmethod
+    def flex_analyst_user(cls):
+        user = User(username="flex.analyst")
+        user.set_password("password")
+        user.save()
+        group = Group.objects.get(name='Analyst')
+        user.groups.add(group)
+
+    @classmethod
     def scenario1(cls):
         bonds = [
             {'filename':'trancheur/seeds/64966JNF9.csv',

@@ -10,6 +10,7 @@ from cashflow.cashflow_calculator import CashflowCreator
 from .helper import QueryTranches
 from .models import BondCache
 from .services.trader import Trader
+from trancheur.forms import BondForm
 
 class InvestingApi(View):
 
@@ -109,3 +110,8 @@ class Purchase(View):
         del request.session['trade_ids']
         return render(request, "flex/investingconfirmation.html", context_dict)
 
+class TrancheurView(View):
+    form = BondForm
+
+    def get(self, request):
+        return render(request, "flex/trancheur.html", {'form': self.form()})

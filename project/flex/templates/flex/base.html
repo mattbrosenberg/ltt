@@ -43,6 +43,9 @@
             {% if perms.trancheur.can_own_contracts %}
             <li><a href="/flex/portfolio/"><b>Porfolio</b></a></li>
             {% endif %}
+            {% if perms.trancheur.can_tranche %}
+            <li><a href="/flex/trancheur/"><b>Trancheur</b></a></li>
+            {% endif %}
             {% if user.is_authenticated %}
             <li><a href="/flex/account/"><b>Account</b></a></li>
             {% endif %}

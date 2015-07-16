@@ -7,6 +7,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         seeds = {
             'flex_investor_user': Seed.flex_investor_user,
+            'flex_analyst_user': Seed.flex_analyst_user,
             'scenario1': Seed.scenario1,
             'scenario2': Seed.scenario2,
         }
@@ -18,6 +19,7 @@ class Command(BaseCommand):
         else:
             self.stdout.write('starting full seed')
             Seed.flex_investor_user()
+            Seed.flex_analyst_user()
             Seed.scenario1()
             Seed.scenario2()
             self.stdout.write('full seed complete')

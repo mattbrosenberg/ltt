@@ -1,7 +1,6 @@
 from django.conf.urls import patterns, include, url
 from .views import Index, Investing, Portfolio, Account, Trades, Investments, InvestingApi, Contract, Activity, Purchase
 
-
 urlpatterns = patterns('',
 
     url(r'^$', Index.as_view()),

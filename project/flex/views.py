@@ -95,9 +95,17 @@ class Purchase(View):
 
     def post(self, request):
         bond = Bond.objects.get(id=request.POST['tranche_id'])
+        trade_ids = []
         for count in range(int(request.POST['num_contracts'])):
-            Trader.make_first_trade(request.user, bond)
-        return redirect("/flex/investing/")
+            trade = Trader.make_first_trade(request.user, bond)
+            trade_ids.append(trade.id)
+        request.session['trade_ids'] = trade_ids
+        return redirect("/flex/purchase/")
 
     def get(self, request):
-        pass
+        context_dict = dict(trades=[])
+        for trade_id in request.session['trade_ids']:
+            context_dict['trades'].append(Trade.objects.get(id=trade_id))
+        del request.session['trade_ids']
+        return render(request, "flex/investingconfirmation.html", context_dict)
+

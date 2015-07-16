@@ -29,6 +29,7 @@ class UserAdmin(UserAdmin):
 
 admin_site.register(User, UserAdmin)
 admin_site.register(Permission)
+admin_site.register(Group)
 admin_site.register(Bond)
 admin_site.register(MoneyMarket)
 admin_site.register(Residual)

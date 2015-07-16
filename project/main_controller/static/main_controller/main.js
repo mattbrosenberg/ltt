@@ -13,8 +13,7 @@ function drawTable() {
     var window_height = $(window).outerHeight();
     var toolbars = $("#navbar").outerHeight();
     var auction_head = $("#auction_head").outerHeight();
-    console.log(window_height)
-    console.log(toolbars)
+
     // var filters = $("#filters").outerHeight();
 
     // Total height of the table header and footer

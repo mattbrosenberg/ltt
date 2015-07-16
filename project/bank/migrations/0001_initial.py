@@ -15,12 +15,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Transaction',
             fields=[
-                ('id', models.AutoField(auto_created=True, serialize=False, primary_key=True, verbose_name='ID')),
-                ('amount', models.DecimalField(max_digits=15, decimal_places=2)),
+                ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
+                ('amount', models.DecimalField(decimal_places=2, max_digits=15)),
                 ('time', models.DateTimeField(auto_now_add=True)),
                 ('category', models.CharField(max_length=20)),
                 ('description', models.CharField(max_length=100)),
-                ('user', models.ForeignKey(related_name='transactions', to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, related_name='transactions')),
             ],
             options={
             },

@@ -10,7 +10,7 @@ from .helper import QueryTranches
 from .models import BondCache
 from .services.trader import Trader
 import datetime
-from .quantifier import Quantifier
+from .quantifier import Quantifierfrom trancheur.forms import BondForm
 
 class InvestingApi(View):
 
@@ -40,16 +40,6 @@ class Portfolio(View):
 
 class Investments(View):
 
-    def current_value(self, contract):
-        muni_value = float(contract.bond.prices.latest().price * contract.bond.face)
-        residual_value = muni_value - Trancheur(contract.bond).money_market_investment()
-        return round(residual_value / Trancheur(contract.bond).number_of_residual_contracts(),2)
-
-    def change_in_value(self, purchase):
-        p1 = float(purchase.price * purchase.contract.face)
-        p2 = self.current_value(purchase.contract)
-        return ((p2-p1)/p1 * 100)
-
     def get(self, request):
         user = self.request.user
         last_purchases = [purchase for purchase in user.purchases.all() if purchase.contract.trades.latest().buyer == user]
@@ -57,14 +47,6 @@ class Investments(View):
         return JsonResponse({'investments':context_dict})    
 
 class Contract(View):
-
-    def average_return(self,list_of_cashflows,contract):
-        annualized_returns = [(1 + i['amount'] / contract.face) ** 2 - 1  for i in list_of_cashflows]
-        if len(annualized_returns) == 0:
-            return 0
-        else:    
-            average_return = sum(annualized_returns)/len(annualized_returns)
-            return round(average_return*100,3)  
 
     def get(self, request):
         contract = Residual.objects.get(id = request.GET['contract'])
@@ -97,7 +79,8 @@ class Purchase(View):
         trade_ids = []
         for count in range(int(request.POST['num_contracts'])):
             trade = Trader.make_first_trade(request.user, bond)
-            trade_ids.append(trade.id)
+            if trade:
+                trade_ids.append(trade.id)
         request.session['trade_ids'] = trade_ids
         return redirect("/flex/purchase/")
 
@@ -108,3 +91,8 @@ class Purchase(View):
         del request.session['trade_ids']
         return render(request, "flex/investingconfirmation.html", context_dict)
 
+class TrancheurView(View):
+    form = BondForm
+
+    def get(self, request):
+        return render(request, "flex/trancheur.html", {'form': self.form()})

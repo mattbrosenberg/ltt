@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
-from .views import Index, Investing, Portfolio, Account, Investments, InvestingApi, Contract, Activity, Purchase
+from .views import Index, Investing, Portfolio, Account, Investments, InvestingApi, Contract, Activity, Purchase, TrancheurView
+
 
 urlpatterns = patterns('',
 
@@ -12,4 +13,6 @@ urlpatterns = patterns('',
     url(r'^account/$', Account.as_view()),
     url(r'^purchase/$', Purchase.as_view()),
     url(r'^api/investing/', InvestingApi.as_view()),
+    url(r'^trancheur/$', TrancheurView.as_view()),
+
 )

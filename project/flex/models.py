@@ -42,55 +42,31 @@ class BondCache(models.Model):
 
     @classmethod
     def get_all_unauctioned_bonds_by_query_as_json(cls, queries):
-        filtered_data = []
-        print(queries)
-        est_yield_query_reference = {
-            "est_yield_11_15": dict(minimum=11.0, maximum=15.0),
-            "est_yield_15_19": dict(minimum=15.0, maximum=19.0),
-            "est_yield_19_23": dict(minimum=19.0, maximum=23.0),
-            "est_yield_23_27": dict(minimum=23.0, maximum=27.0),
-            }
-        funded_query_reference = {
-            "funded_0_25": dict(minimum=0.0, maximum=25.0),            
-            "funded_25_50": dict(minimum=25.0, maximum=50.0),            
-            "funded_50_75": dict(minimum=50.0, maximum=75.0),            
-            "funded_75_100": dict(minimum=75.0, maximum=100.0),            
-        }
-        term_query_reference = {
-            "term_200_250": dict(minimum=200, maximum=250),            
-            "term_250_300": dict(minimum=250, maximum=300),            
-            "term_300_350": dict(minimum=300, maximum=350),            
-            "term_350_400": dict(minimum=350, maximum=400),            
-        }
-        time_left_query_reference = {
-            "time_left_0_4": dict(minimum=0, maximum=4),            
-            "time_left_4_8": dict(minimum=4, maximum=8),            
-            "time_left_8_12": dict(minimum=8, maximum=12),            
-            "time_left_12_16": dict(minimum=12, maximum=16),            
-        }
 
+        query_reference = dict()
+        for query in queries:
+            parsed_query = query.split("_")
+            query_type = "_".join(parsed_query[0:-2])
+            if not query_reference.get(query_type):
+                query_reference[query_type] = list()
+            min_max_tuple = (float(parsed_query[-2]), float(parsed_query[-1]))
+            query_reference[query_type].append(min_max_tuple)
 
-        for bond_cache in cls.objects.filter(is_available=True):
-            data = json.loads(bond_cache.data)
-            for query in queries:
-                if est_yield_query_reference.get(query):
-                    if est_yield_query_reference[query]["minimum"] <= data["est_yield"] <= est_yield_query_reference[query]["maximum"]:
-                        filtered_data.append(data)
-                        break
-                elif funded_query_reference.get(query):
-                    if funded_query_reference[query]["minimum"] <= data["funded"] <= funded_query_reference[query]["maximum"]:
-                        filtered_data.append(data)
-                        break
-                elif term_query_reference.get(query):
-                    if term_query_reference[query]["minimum"] <= data["term"] <= term_query_reference[query]["maximum"]:
-                        filtered_data.append(data)
-                        break
-                elif time_left_query_reference.get(query):
-                    if time_left_query_reference[query]["minimum"] <= data["time_left"] <= time_left_query_reference[query]["maximum"]:
-                        filtered_data.append(data)
-                        break
-
-
-        return dict(data=filtered_data)
+        filtered_data = [[],]
+        for count, query_type in enumerate(query_reference):
+            if count == 0:
+                for bond_cache in cls.objects.filter(is_available=True):
+                    data = json.loads(bond_cache.data)
+                    for query_range in query_reference[query_type]:
+                        if query_range[0] <= data[query_type] <= query_range[1]:
+                            filtered_data[0].append(data)
+            else:
+                filtered_data_per_query = list()
+                for data in filtered_data[-1]:
+                    for query_range in query_reference[query_type]:
+                        if query_range[0] <= data[query_type] <= query_range[1]:
+                            filtered_data_per_query.append(data)
+                filtered_data.append(filtered_data_per_query)
+        return dict(data=filtered_data[-1])
             
 

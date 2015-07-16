@@ -1,8 +1,12 @@
-
+.navbar-inverse .navbar-nav>li>a {
+ color: #B0B0B0;
+}
 .navbar-brand {
   padding: 0;
 }
-
+#logo{
+  width:;
+}
 body {
   padding-top: 50px;
 }
@@ -75,6 +79,11 @@ body {
   border-radius: 3px;
   border: 1px solid white;
 }
+
+.nav-sidebar > li > a:hover {
+  background-color: #D8D8D8;
+}
+
 .nav-sidebar > .active > a,
 .nav-sidebar > .active > a:hover,
 .nav-sidebar > .active > a:focus {

@@ -2,16 +2,6 @@
 $(document).ready(function(){
   // HELPER FUNCTIONS
 
-  var formatMoney = function(number) {
-    number = Number(number);
-    return number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
-  }
-
-  var formatPercent = function(number) {
-    number = Number(number);
-    return parseFloat(number.toFixed(2))
-  }
-
   var getTranche = function(list, tranche_id) {
     for (i in list) {
       var tranche = list[i];

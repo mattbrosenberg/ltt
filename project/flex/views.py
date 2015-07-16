@@ -5,11 +5,12 @@ from trancheur.models import Bond, Contract, Trade, Residual, BondPrice
 from users.forms import UpdateForm
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm, PasswordResetForm
 from users.models import User
-from trancheur.trancheur import Trancheur
 from cashflow.cashflow_calculator import CashflowCreator
 from .helper import QueryTranches
 from .models import BondCache
 from .services.trader import Trader
+import datetime
+from .quantifier import Quantifier
 
 class InvestingApi(View):
 
@@ -37,19 +38,12 @@ class Portfolio(View):
     def get(self, request):
         return render(request, "flex/portfolio.html")
 
-class Activity(View):
-
-    def get(self, request):
-        transactions = request.user.transactions.all()
-        context_dict = [{'date':transaction.time.strftime("%Y-%m-%d %H:%M:%S"), 'category': transaction.category, 'description':transaction.description, 'amount': transaction.amount} for transaction in transactions]    
-        balance = User.objects.get(username = request.user.username).get_balance()
-        print (balance)
-        return JsonResponse({'transactions':context_dict, 'balance': balance})
-
 class Investments(View):
 
     def current_value(self, contract):
-        return (round((float(contract.bond.prices.latest().price * contract.bond.face) - Trancheur(contract.bond).money_market_investment()) / Trancheur(contract.bond).number_of_residual_contracts(),2))
+        muni_value = float(contract.bond.prices.latest().price * contract.bond.face)
+        residual_value = muni_value - Trancheur(contract.bond).money_market_investment()
+        return round(residual_value / Trancheur(contract.bond).number_of_residual_contracts(),2)
 
     def change_in_value(self, purchase):
         p1 = float(purchase.price * purchase.contract.face)
@@ -58,7 +52,8 @@ class Investments(View):
 
     def get(self, request):
         user = self.request.user
-        context_dict = [{'contract':purchase.contract.id, 'price':round(purchase.price * purchase.contract.face, 2), 'current_value': self.current_value(purchase.contract), 'maturity': purchase.contract.bond.maturity, 'purchase_date': purchase.time.strftime("%Y-%m-%d %H:%M:%S"), 'change_in_value': self.change_in_value(purchase)} for purchase in user.purchases.all() if purchase.contract.trades.latest().buyer == user]
+        last_purchases = [purchase for purchase in user.purchases.all() if purchase.contract.trades.latest().buyer == user]
+        context_dict = [{'contract':purchase.contract.id, 'price':round(purchase.price * purchase.contract.face, 2), 'current_value': Quantifier().contract_current_value(purchase.contract), 'maturity': purchase.contract.bond.maturity, 'purchase_date': purchase.time.strftime("%Y-%m-%d %H:%M:%S"), 'change_in_value': Quantifier().contract_value_change(purchase)} if purchase.contract.bond.dated_date < datetime.date.today() else {'contract':purchase.contract.id, 'price':round(purchase.price * purchase.contract.face, 2), 'current_value': round(purchase.price * purchase.contract.face, 2), 'maturity': purchase.contract.bond.maturity, 'purchase_date': purchase.time.strftime("%Y-%m-%d %H:%M:%S"), 'change_in_value': 0} for purchase in last_purchases]
         return JsonResponse({'investments':context_dict})    
 
 class Contract(View):
@@ -76,14 +71,18 @@ class Contract(View):
         cashflows = CashflowCreator(contract.bond).residual_cashflows()
         cashflows_since_purchase = [cashflow for cashflow in cashflows if cashflow['date'] > contract.trades.latest().time.date()]
         total = (sum(item['amount'] for item in cashflows_since_purchase))
-        return JsonResponse({'data':{'cashflows':cashflows_since_purchase,'total':total, 'average_return': self.average_return(cashflows_since_purchase,contract), 'current_value':Investments().current_value(contract)}})   
+        if len(cashflows_since_purchase) > 0:
+            return JsonResponse({'data':{'cashflows':cashflows_since_purchase,'total':total, 'average_return': Quantifier().average_annualized_cashflow_yield(cashflows_since_purchase,contract), 'current_value':Quantifier().contract_current_value(contract)}})   
+        else:
+            return JsonResponse({'data': {'message': 'no cashflows'}})
 
-class Trades(View):
+class Activity(View):
 
     def get(self, request):
-        investor_purchases = request.user.purchases.all()
-        investor_purchases = [{'id':purchase.contract.id, 'proceeds':round(purchase.price * purchase.contract.face, 2), 'time':purchase.time.strftime("%Y-%m-%d %H:%M:%S"), 'buyer':purchase.buyer.username, 'seller':purchase.seller.username} for purchase in investor_purchases]
-        return JsonResponse({'investor_purchases':investor_purchases})
+        transactions = request.user.transactions.all()
+        context_dict = [{'date':transaction.time.strftime("%Y-%m-%d %H:%M:%S"), 'category': transaction.category, 'description':transaction.description, 'amount': transaction.amount} for transaction in transactions]    
+        balance = User.objects.get(username = request.user.username).get_balance()
+        return JsonResponse({'transactions':context_dict, 'balance': balance})
 
 class Account(View):
     form = PasswordChangeForm

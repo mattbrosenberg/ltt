@@ -43,11 +43,12 @@ Further functionality coming soon:
      $ python3 manage.py migrate
      $ python3 manage.py setupgroups
      $ python3 manage.py createsuperuser
-     $ username: flex
+     $ username: admin
      $ password: password
      
+     $ python3 manage.py seed [flex_investor_user] [flex_analyst_user] [scenario1] [scenario2]
      # seed alone will run all options by default
-     $ python3 manage.py seed [flex_investor_user] [scenario1] [scenario2]
+
 
      
      

@@ -8,9 +8,10 @@ from users.models import User
 from cashflow.cashflow_calculator import CashflowCreator
 from .helper import QueryTranches
 from .models import BondCache
-from .services.trader import Trader
 import datetime
-from .quantifier import Quantifierfrom trancheur.forms import BondForm
+from trancheur.forms import BondForm
+from .services.trader import Trader
+from .services.quantifier import Quantifier
 
 class InvestingApi(View):
 
@@ -25,7 +26,6 @@ class InvestingApi(View):
 class Index(View):
 
     def get(self, request):
-        # namespace the redirect.....
         return redirect("/flex/investing/")
 
 class Investing(View):
@@ -68,21 +68,36 @@ class Activity(View):
 
 class Account(View):
     form = PasswordChangeForm
+    # form = UserChangeForm
 
     def get(self, request):
         return render(request, "flex/account.html", {'form':self.form(user=request.user)})
+
+    def post(self, request):
+        form = self.form(user=request.user, data=request.POST)
+        print(form)
+        if form.is_valid():
+            form.save()
+            return render(request, 'flex/account.html', {'updated': 'Account updated.', 'form':self.form(user=request.user)})
+        else:
+            return render(request, 'flex/account.html', {'error': 'Invalid password combination.', 'form':self.form(user=request.user)})
 
 class Purchase(View):
 
     def post(self, request):
         bond = Bond.objects.get(id=request.POST['tranche_id'])
-        trade_ids = []
-        for count in range(int(request.POST['num_contracts'])):
-            trade = Trader.make_first_trade(request.user, bond)
-            if trade:
-                trade_ids.append(trade.id)
-        request.session['trade_ids'] = trade_ids
-        return redirect("/flex/purchase/")
+        num_contracts = int(request.POST['num_contracts'])
+        user = User.objects.get(id=request.user.id)
+        total_trade_amount = Trader.total_trade_amount(bond, num_contracts)
+        if user.has_sufficient_funds(total_trade_amount):
+            if Trader.has_valid_num_available_contracts(bond, num_contracts):
+                trade_ids = Trader.make_first_trades(request.user, bond, num_contracts)
+                request.session['trade_ids'] = trade_ids
+                return redirect("/flex/purchase/")
+            else:
+                return render(request, "flex/investingconfirmation.html", {'error':'Trade error.'})
+        else:
+            return render(request, "flex/investingconfirmation.html", {'error':'Insufficient funds.'})
 
     def get(self, request):
         context_dict = dict(trades=[])

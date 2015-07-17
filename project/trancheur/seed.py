@@ -120,7 +120,11 @@ class Seed:
             bond.save()
             bond.bondcache.save()
 
-
+    @classmethod
+    def update_cache(cls):
+        for bond_cache in BondCache.objects.all():
+            bond_cache.save()
+        
 
 
 

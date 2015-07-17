@@ -49,18 +49,6 @@ class Register(View):
             else:
                 return render(request, self.template, {'registration_error':'Invalid input - Please populate all fields on the form.', 'register_form':self.form()})
 
-class Update(View):
-    form = UserChangeForm
-
-    def post(self, request):
-        form = self.form(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect('/flex/account/')
-        else:
-            return redirect('/flex/account/')
-
-
 class Logout(View):
 
     def get(self, request):

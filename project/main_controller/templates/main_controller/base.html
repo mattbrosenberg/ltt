@@ -1,74 +1,58 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html>
-
 <head>
   <link href='http://fonts.googleapis.com/css?family=Maven+Pro' rel='stylesheet' type='text/css'>
   <title>FLEX Invest</title>
   <link rel="shortcut icon" href="{% static "main_controller/logo.png" %}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="{% static 'main_controller/main.js' %}"></script> 
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
   <link rel ="stylesheet" type= "text/css" href = "{% static 'main_controller/css/main.css' %}">
 </head>
 
 <body>
-<div class="navbar-wrapper" >
-
-<nav class="navbar navbar-default navbar-inverse" role="navigation">
-<div class='row'>
-    <a class="navbar-brand" href="#"><img src="{% static "main_controller/logo.png" %}" alt="Page Logo"></a>
-    <ul class="nav navbar-nav navbar-right" id="login">
-
-        <!-- <li class="dropdown"> -->
-          <a href="{% url 'login' %}" id = "login"><b>Client Login</b> </a>
-<!--         </li>
- -->      </ul>
-</div>  
-  <!-- <div class="container-fluid">
-      <a class="navbar-brand" href="#"><img src="{% static "main_controller/logo.png" %}" alt=""/></a> -->
-    <!-- Brand and toggle get grouped for better mobile display -->
+<div class="navbar-wrapper">
+        <div class="container">
+  
+<nav id = "navbar" class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div id="visible_block" class="row visible-xs-block">
+      <div id="mobilelogo">
+        <img href="/" id="mobile_image" alt="Brand" src="{% static "main_controller/flex.png" %}">
+    
+      </div>  
+    </div>  
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar_row" aria-expanded="false">
         <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
       </button>
-      <!-- <a class = "navbar-brand" href='/'> FLEX Invest</a> -->
+
+    </div>  
+    <div class="row">
+      <div id= "login" class="col"><a href= "{% url 'login' %}">Log In</a></div>
     </div>
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <div class="navbar navbar-collapse collapse navbar-responsive-collapse">
+      <a class = "navbar-brand" href="/"><img id="brand_image" alt="Brand" src="{% static "main_controller/logo.png" %}"></a>
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="navbar_row">
       <ul class="nav navbar-nav">
-        <li><a href="#">About Us</a></li>
-        <li class="dropdown">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown">How it works <b class="caret"></b></a>
-      <ul class="dropdown-menu pull-down">
-        <li><a href="#">Muni bond tranching</a></li>
-        <li><a href="#">Money Market Investing</a></li>
-        <li><a href="#">Residual Investing</a></li>
-        <li class="divider"></li>
-     
-      </ul>
-        </li>
+        <li><a href="/howitworks/">How it Works</a></li>
+
         <li><a href="/flex">Current Auctions</a></li>
+        <li><a href="/#about_us">About Us</a></li>
       </ul>
-      
-     
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>  
-</div>
-<div id = "content">
-  <div class = "first">
-  <a href='/' class="first col6 x1 y0">
-    <img class="bg" src="{% static "main_controller/trading.jpg" %}" alt="">
-  </a>  
-  <div class="first post-content">
-  <h1>Invest in AAA grade securities at the market's most competitive rates</h1>
-      <a class="button" id="register" href='/register'>Enroll Today ></a>
-  </div>
-  </div>
-  </div>
-</div>
+    </div>  
+  </div>  
+</nav>
 </div>  
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="{% static 'main_controller/main.js' %}"></script>
-</body>
+</div>
+<div class="container-fluid" id="content">
+{% block content %}
+{% endblock %}
+</div> <!-- content -->
+</body> 
+
+</html>

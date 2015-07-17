@@ -10,6 +10,7 @@ class Command(BaseCommand):
             'flex_analyst_user': Seed.flex_analyst_user,
             'scenario1': Seed.scenario1,
             'scenario2': Seed.scenario2,
+            'update_cache': Seed.update_cache,
         }
         if args:
             for arg in args:
@@ -22,5 +23,6 @@ class Command(BaseCommand):
             Seed.flex_analyst_user()
             Seed.scenario1()
             Seed.scenario2()
+            Seed.update_cache()
             self.stdout.write('full seed complete')
 

@@ -67,9 +67,7 @@ body {
 .carousel-inner>.item>a>img, .carousel-inner>.item>img {
 	height: 100%;
 }
-/*.panel {
-	background-color: red;
-}*/
+
 #get_started_button {
 	float: right;
 	margin-right: 4%;
@@ -82,3 +80,13 @@ img.grid {
 
 }
 
+#howitworks {
+  margin: 2em;
+  margin-bottom: 5%;
+}
+#menu_grid {
+  margin-bottom: 5%;
+}
+#cashflows {
+  width: 50%;
+}

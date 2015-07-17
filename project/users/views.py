@@ -10,6 +10,8 @@ from users.forms import UpdateForm
 
 from django.contrib.auth.models import User, Group
 
+from bank.models import Transaction
+
 class Login(View):
     template = 'users/login.html'
     form = AuthenticationForm
@@ -45,6 +47,8 @@ class Register(View):
                 user = form.save()
                 group = Group.objects.get(name='Investor')
                 user.groups.add(group)
+                transaction = Transaction(user=user, amount=100000, category='DEPOSIT', description='Welcome gift from Flex.')
+                transaction.save()
                 return redirect('/login/')
             else:
                 return render(request, self.template, {'registration_error':'Invalid input - Please populate all fields on the form.', 'register_form':self.form()})

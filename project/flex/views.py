@@ -68,7 +68,6 @@ class Activity(View):
 
 class Account(View):
     form = PasswordChangeForm
-    # form = UserChangeForm
 
     def get(self, request):
         return render(request, "flex/account.html", {'form':self.form(user=request.user)})

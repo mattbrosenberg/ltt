@@ -1,23 +1,20 @@
 from django.db import models
-from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.models import User
 
-class User(models.Model):
+class User(User):
+    class Meta:
+        proxy = True
 
-    @staticmethod
-    def create_hash(entered_password):
-        hashed_password = make_password(entered_password)
-        return hashed_password
+    def get_all_money_spent(self):
+        amount_spent = sum([float(trade.price) * float(trade.contract.face) for trade in self.purchases.all()])    
+        return round(amount_spent, 2)
 
-    @staticmethod
-    def check_hash(entered_password, hashed_password):
-        if check_password(entered_password, hashed_password):
+    def get_balance(self):
+        balance = sum([float(transaction.amount) for transaction in self.transactions.all()])
+        return round(balance, 2)
+
+    def has_sufficient_funds(self, amount):
+        if self.get_balance() >= amount:
             return True
         else:
             return False
-
-    type_of = models.CharField(max_length=50, blank=False)
-    name = models.CharField(max_length=50, blank=False)
-    email = models.EmailField(unique=True, blank=False)
-    password = models.CharField(max_length=200, blank=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)

@@ -1,19 +1,13 @@
 from django import forms
 from django.forms import ModelForm
-from users.models import User
+from django.contrib.auth.models import User
 
-class LoginForm(ModelForm):
+class UpdateForm(ModelForm):
     class Meta:
         model = User
-        fields = ['email', 'password']
+        fields = ('username', 'email', 'password',)
         widgets = {
-            'password': forms.PasswordInput(),
-        }
-
-class RegisterForm(ModelForm):
-    class Meta:
-        model = User
-        fields = ['type_of', 'name', 'email', 'password']
-        widgets = {
-            'password': forms.PasswordInput(),
+            'username': forms.TextInput({'class':'form-control'}),
+            'email': forms.TextInput({'class':'form-control'}),
+            'password': forms.PasswordInput({'class':'form-control'}),
         }

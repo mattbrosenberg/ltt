@@ -1,29 +1,36 @@
 from django.db import models
 import datetime
 from .quandl import Quandl
+from django.core.exceptions import ObjectDoesNotExist
 
 class Libor(models.Model):
     date = models.DateField(unique=True)
     rate = models.DecimalField(max_digits=8, decimal_places=5)
 
     def seed_libor_database(self):
+        print("Seeding libor database.")
         libor_list = Quandl().get_all_libor_rates_and_dates()
         for libor_dict in libor_list:
-            libor = Libor(
-                date=libor_dict['date'],
-                rate=libor_dict['rate']
-            )
-            libor.save()
+            try:
+                Libor.objects.get(date=libor_dict['date'])
+            except:
+                libor = Libor(
+                    date=libor_dict['date'],
+                    rate=libor_dict['rate']
+                )
+                libor.save()
+        print("")
 
     def get_most_recent_libor_object(self):
         day = 0
-        while day < 5:
+        while day < 30:
             date = datetime.date.today() - datetime.timedelta(day)
             try:
                 return Libor.objects.get(date=date)
             except:
                 day += 1
         self.seed_libor_database()
+
         return Libor.objects.latest('date')
 
     def most_recent_libor_rate(self):
@@ -54,3 +61,17 @@ class Libor(models.Model):
                 return float(libor.rate)
             except:
                 return None
+
+    def get_latest_rate(self, date_object): 
+        while True:
+            try:
+                libor = Libor.objects.get(date=date_object)
+                return float(libor.rate)
+            except ObjectDoesNotExist:
+                date_object = date_object - datetime.timedelta(days = 1)
+                continue
+            break
+
+
+
+

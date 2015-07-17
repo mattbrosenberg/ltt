@@ -34,8 +34,8 @@ Further functionality coming soon:
 - Django Auth, Timezone
 
 ## Setup
-
-     $ virtualenv venv
+apt-get install libxml2-dev libxslt1-dev
+     $ virtualenv -p python3 venv
      $ source venv/bin/activate
      $ pip3 install -r requirements.txt
      
@@ -44,6 +44,7 @@ Further functionality coming soon:
      $ python3 manage.py setupgroups
      $ python3 manage.py createsuperuser
      $ username: admin
+     $ email: admin@flexinvest.us
      $ password: password
      
      $ python3 manage.py seed [flex_investor_user] [flex_analyst_user] [scenario1] [scenario2]
